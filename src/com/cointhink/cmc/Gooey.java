@@ -1,5 +1,6 @@
 package com.cointhink.cmc;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class Gooey {
     private TextView topTextName;
     private TextView topTextTime;
     private ListView listView;
+    private Date topTime;
 
     public Gooey(Activity ctx, List<Coin> coinList) {
         listView = (ListView) ctx.findViewById(R.id.coinAllList);
@@ -25,11 +27,40 @@ public class Gooey {
     }
 
     public void topTime(Date time) {
-        topTextTime.setText(timeFmt(time));
+        this.topTime = time;
+        topTimeFreshen();
+    }
+
+    public void topTimeFreshen() {
+        if (this.topTime != null) {
+            topTextTime.setText(timeFmt(this.topTime));
+        }
     }
 
     private String timeFmt(Date time) {
-        return time.getHours() + ":" + time.getMinutes();
+        Date now = new Date();
+        ArrayList<String> words = new ArrayList<>();
+        long duration = now.getTime() - time.getTime();
+        long seconds = duration / 1000;
+        words.add(seconds + " sec");
+
+        return wordJoin(words, " ");
+        // long minutes = duration / 1000 / 60;
+        // return "" + minutes + " min";
+        // return time.getHours() + ":" + time.getMinutes();
+    }
+
+    private String wordJoin(List<String> list, String conjunction) {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for (String item : list) {
+            if (first)
+                first = false;
+            else
+                sb.append(conjunction);
+            sb.append(item);
+        }
+        return sb.toString();
     }
 
     public void add(List<Coin> coins) {

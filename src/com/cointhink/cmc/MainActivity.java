@@ -26,6 +26,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         Log.d(Constants.APP_TAG, "onResume");
+        gooey.topTimeFreshen();
 
         if (cache.refreshNeeded()) {
             Log.d(Constants.APP_TAG, "refreshNeeded");
