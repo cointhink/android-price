@@ -42,15 +42,20 @@ public class Gooey {
 
     private String timeFmt(Date time) {
         Date now = new Date();
-//        ArrayList<String> words = new ArrayList<>();
-//        long duration = now.getTime() - time.getTime();
-//        long seconds = duration / 1000;
-//        words.add(seconds + " sec");
-//
-//        return wordJoin(words, " ");
+        // ArrayList<String> words = new ArrayList<>();
+        // long duration = now.getTime() - time.getTime();
+        // long seconds = duration / 1000;
+        // words.add(seconds + " sec");
+        //
+        // return wordJoin(words, " ");
         // long minutes = duration / 1000 / 60;
         // return "" + minutes + " min";
-         return time.getHours() + ":" + time.getMinutes();
+        int min = time.getMinutes();
+        String minPrefix = "";
+        if (min < 10) {
+            minPrefix = "0";
+        }
+        return time.getHours() + ":" + minPrefix + time.getMinutes();
     }
 
     private String wordJoin(List<String> list, String conjunction) {
