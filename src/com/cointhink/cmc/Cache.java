@@ -3,21 +3,30 @@ package com.cointhink.cmc;
 import java.util.Date;
 import java.util.List;
 
-public class Cache {
+public class Cache implements FetchCallbacks{
 
     Date last;
+    CacheCallbacks mainActivity;
+
+    public Cache(CacheCallbacks mainActivity) {
+        this.mainActivity = mainActivity;
+    }
 
     public boolean refreshNeeded() {
         return true;
     }
 
-    public List<Coin> launchRefresh() {
-        String json = Net.cmcGet();
+    public void launchRefresh() {
+        Net.cmcGet(this);
+    }
+
+    @Override
+    public void stringFetched(String json) {
         if (json != null) {
             last = new Date();
-            return CoinMarketCap.parse(json);
+            List<Coin> coins = CoinMarketCap.parse(json);
+            mainActivity.cacheUpdate(coins);
         }
-        return null; // such java
     }
 
 }

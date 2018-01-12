@@ -9,9 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements CacheCallbacks {
 
-    private Cache cache = new Cache();
+    private Cache cache;
     private List<Coin> coinList = new ArrayList<>();
     private Gooey gooey;
 
@@ -20,6 +20,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gooey = new Gooey(this, coinList);
+        cache = new Cache(this);
     }
 
     @Override
@@ -30,11 +31,7 @@ public class MainActivity extends Activity {
 
         if (cache.refreshNeeded()) {
             Log.d(Constants.APP_TAG, "refreshNeeded");
-            List<Coin> coins = cache.launchRefresh();
-            if (coins != null) {
-                gooey.add(coins);
-                gooey.topTime(cache.last);
-            }
+            cache.launchRefresh();
         }
     }
 
@@ -55,5 +52,13 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void cacheUpdate(List<Coin> coins) {
+        if (coins != null) {
+            gooey.add(coins);
+            gooey.topTime(cache.last);
+        }
     }
 }
