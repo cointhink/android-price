@@ -25,8 +25,12 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         }
         // Lookup view for data population
         ((TextView) convertView.findViewById(R.id.coinName)).setText(coin.name);
+        String symbol = coin.symbol;
+        if (symbol.length() < 4) {
+            symbol = symbol + "_";
+        }
         ((TextView) convertView.findViewById(R.id.coinSymbol))
-                .setText(coin.symbol);
+                .setText(symbol);
         ((TextView) convertView.findViewById(R.id.coinPrice))
                 .setText(coin.price);
 

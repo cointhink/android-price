@@ -14,7 +14,8 @@ public class CoinMarketCap {
         ArrayList<Coin> coins = new ArrayList<>();
         try {
             JSONArray arr = new JSONArray(json);
-            Log.d(Constants.APP_TAG, "coinmarketcap count" + arr.length());
+            Log.d(Constants.APP_TAG,
+                    "coinmarketcap parsing " + arr.length() + " records");
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
                 Coin coin = new Coin(o);
@@ -24,8 +25,7 @@ public class CoinMarketCap {
             String eStr = e.toString();
             String eMsg = eStr.length() > 199 ? eStr.substring(0, 200)
                     + eStr.substring(eStr.length() - 200) : eStr;
-            Log.e(Constants.APP_TAG,
-                    "Error parsing f/e " + eMsg);
+            Log.e(Constants.APP_TAG, "Error parsing f/e " + eMsg);
         }
         return coins;
     }

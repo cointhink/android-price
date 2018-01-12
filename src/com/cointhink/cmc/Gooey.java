@@ -26,6 +26,10 @@ public class Gooey {
         topTextName.setText("CoinMarketCap");
     }
 
+    public void topTime(String text) {
+        topTextTime.setText(text);
+    }
+
     public void topTime(Date time) {
         this.topTime = time;
         topTimeFreshen();
@@ -33,7 +37,7 @@ public class Gooey {
 
     public void topTimeFreshen() {
         if (this.topTime != null) {
-            topTextTime.setText(timeFmt(this.topTime));
+            topTime(timeFmt(this.topTime));
         }
     }
 

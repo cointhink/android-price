@@ -17,6 +17,7 @@ public class Cache implements FetchCallbacks{
     }
 
     public void launchRefresh() {
+        mainActivity.cacheUpdateStarted();
         Net.cmcGet(this);
     }
 
@@ -25,7 +26,7 @@ public class Cache implements FetchCallbacks{
         if (json != null) {
             last = new Date();
             List<Coin> coins = CoinMarketCap.parse(json);
-            mainActivity.cacheUpdate(coins);
+            mainActivity.cacheUpdateDone(coins);
         }
     }
 

@@ -30,7 +30,7 @@ public class MainActivity extends Activity implements CacheCallbacks {
         gooey.topTimeFreshen();
 
         if (cache.refreshNeeded()) {
-            Log.d(Constants.APP_TAG, "refreshNeeded");
+            Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
             cache.launchRefresh();
         }
     }
@@ -55,10 +55,18 @@ public class MainActivity extends Activity implements CacheCallbacks {
     }
 
     @Override
-    public void cacheUpdate(List<Coin> coins) {
+    public void cacheUpdateDone(List<Coin> coins) {
+        Log.d(Constants.APP_TAG, "cacheUpdateDone()");
         if (coins != null) {
             gooey.add(coins);
-            gooey.topTime(cache.last);
+            //gooey.topTime(cache.last);
+            gooey.topTime("loaded");
         }
+    }
+
+    @Override
+    public void cacheUpdateStarted() {
+        Log.d(Constants.APP_TAG, "cacheUpdateStarted()");
+        gooey.topTime("-refreshing-");
     }
 }
