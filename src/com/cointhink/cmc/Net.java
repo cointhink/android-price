@@ -1,13 +1,12 @@
 package com.cointhink.cmc;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import android.util.Log;
 
 public class Net {
 
-    public static List<Coin> cmcGet() {
+    public static String cmcGet() {
         // Some url endpoint that you may have
         String myUrl = "https://api.coinmarketcap.com/v1/ticker/?limit=50";
 
@@ -25,7 +24,7 @@ public class Net {
             if (result == null) {
                 Log.d(Constants.APP_TAG, "NULL response");
             } else {
-                return CoinMarketCap.parse(result);
+                return result;
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
