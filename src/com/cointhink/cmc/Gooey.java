@@ -1,6 +1,5 @@
 package com.cointhink.cmc;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,15 +42,15 @@ public class Gooey {
 
     private String timeFmt(Date time) {
         Date now = new Date();
-        ArrayList<String> words = new ArrayList<>();
-        long duration = now.getTime() - time.getTime();
-        long seconds = duration / 1000;
-        words.add(seconds + " sec");
-
-        return wordJoin(words, " ");
+//        ArrayList<String> words = new ArrayList<>();
+//        long duration = now.getTime() - time.getTime();
+//        long seconds = duration / 1000;
+//        words.add(seconds + " sec");
+//
+//        return wordJoin(words, " ");
         // long minutes = duration / 1000 / 60;
         // return "" + minutes + " min";
-        // return time.getHours() + ":" + time.getMinutes();
+         return time.getHours() + ":" + time.getMinutes();
     }
 
     private String wordJoin(List<String> list, String conjunction) {

@@ -24,17 +24,31 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
                     .inflate(R.layout.item_coin, parent, false);
         }
         // Lookup view for data population
+        String capStr = longParse(coin.marketCap);
+        ((TextView) convertView.findViewById(R.id.coinCap)).setText(capStr);
         ((TextView) convertView.findViewById(R.id.coinName)).setText(coin.name);
-        String symbol = coin.symbol;
-        if (symbol.length() < 4) {
-            symbol = symbol + "_";
-        }
         ((TextView) convertView.findViewById(R.id.coinSymbol))
-                .setText(symbol);
+                .setText(coin.symbol);
         ((TextView) convertView.findViewById(R.id.coinPrice))
-                .setText(coin.price);
+                .setText("$"+coin.price);
 
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    public String longParse(String longStr) {
+        int decimalPos = longStr.indexOf(".");
+        if (decimalPos > 0) {
+         longStr = longStr.substring(0, decimalPos);
+        }
+        long longCap = Long.parseLong(longStr);
+        String capStr = "?M";
+        if (longCap > 1e6) {
+            capStr = (longCap/1000000L)+"M";
+        }
+        if (longCap > 1e9) {
+            capStr = (longCap/1000000000L)+"B";
+        }
+        return capStr;
     }
 }

@@ -59,8 +59,8 @@ public class MainActivity extends Activity implements CacheCallbacks {
         Log.d(Constants.APP_TAG, "cacheUpdateDone()");
         if (coins != null) {
             gooey.add(coins);
-            //gooey.topTime(cache.last);
-            gooey.topTime("loaded");
+            gooey.topTime(cache.last);
+            //gooey.topTime("loaded");
         }
     }
 

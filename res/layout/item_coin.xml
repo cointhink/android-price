@@ -2,14 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal" 
+    android:paddingLeft="0sp"
+    >
+
+    <TextView
+        android:id="@+id/coinCap"
+        android:layout_width="45sp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingLeft="0sp"
+        android:paddingRight="2sp"
+        android:text = "COIN" />
 
     <TextView
         android:id="@+id/coinSymbol"
-        android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_height="wrap_content" />
-
+        android:layout_width="50sp"
+        android:layout_height="wrap_content"
+        android:text = "COIN" />
+    
     <TextView
         android:id="@+id/coinName"
         android:layout_weight="4"
@@ -18,8 +29,7 @@
 
     <TextView
         android:id="@+id/coinPrice"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
+        android:layout_width="85sp"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
