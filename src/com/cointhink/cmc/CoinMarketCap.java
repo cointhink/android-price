@@ -39,6 +39,8 @@ public class CoinMarketCap {
         coin.chg_1h = o.getString("percent_change_1h");
         coin.chg_24h = o.getString("percent_change_24h");
         coin.chg_7d = o.getString("percent_change_7d");
+
+        coin.img_url = imgUrl(coin.name);
         return coin;
         /*
          * { "id": "bitcoin", "name": "Bitcoin", "symbol": "BTC", "rank": "1",
@@ -52,6 +54,10 @@ public class CoinMarketCap {
          */
     }
 
-
+    private static String imgUrl(String name) {
+        String url = "https://files.coinmarketcap.com/static/img/coins/32x32/";
+        String urlName = name.toLowerCase().replaceAll(" ", "-");
+        return url+urlName+".png";
+    }
 
 }
