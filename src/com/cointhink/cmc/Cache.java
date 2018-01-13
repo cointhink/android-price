@@ -1,5 +1,6 @@
 package com.cointhink.cmc;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -22,12 +23,17 @@ public class Cache implements FetchCallbacks {
     }
 
     @Override
-    public void stringFetched(String json) {
-        if (json != null) {
-            last = new Date();
-            List<Coin> coins = CoinMarketCap.parse(json);
-            mainActivity.cacheUpdateDone(coins);
+    public void bytesFetched(byte[] data) {
+        String json;
+        try {
+            json = new String(data,"UTF-8");
+            if (json != null) {
+                last = new Date();
+                List<Coin> coins = CoinMarketCap.parse(json);
+                mainActivity.cacheUpdateDone(coins);
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
-
 }

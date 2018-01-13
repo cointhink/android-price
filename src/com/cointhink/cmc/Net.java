@@ -7,7 +7,7 @@ public class Net {
 
     public static void cmcGet(String url, FetchCallbacks cache) {
         // String to place our result in
-        AsyncTask<String, Void, String> task;
+        AsyncTask<String, Void, byte[]> task;
 
         // Instantiate new instance of our class
         HttpAsync getRequest = new HttpAsync(cache);

@@ -28,8 +28,7 @@ public class IconMgr implements FetchCallbacks{
     }
 
     @Override
-    public void stringFetched(String json) {
-        // TODO Auto-generated method stub
+    public void bytesFetched(byte[] data) {
 
     }
 
