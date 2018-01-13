@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingBottom="0sp"
     android:paddingLeft="0sp"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingRight="0sp"
     android:paddingTop="0sp"
     tools:context="com.cointhink.cmc.MainActivity" >
 

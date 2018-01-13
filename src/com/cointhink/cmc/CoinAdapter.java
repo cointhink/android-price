@@ -32,6 +32,8 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
                 .setText(coin.symbol);
         ((TextView) convertView.findViewById(R.id.coinPrice))
                 .setText("$" + priceMangle(coin.price));
+        ((TextView) convertView.findViewById(R.id.coinPercentages))
+        .setText("1h "+coin.chg_1h+"% 24h "+coin.chg_24h+"% 7d "+coin.chg_7d+"%");
 
         // Return the completed view to render on screen
         return convertView;

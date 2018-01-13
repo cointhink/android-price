@@ -36,6 +36,9 @@ public class CoinMarketCap {
         coin.symbol = o.getString("symbol");
         coin.price = o.getString("price_usd");
         coin.marketCap = o.getString("market_cap_usd");
+        coin.chg_1h = o.getString("percent_change_1h");
+        coin.chg_24h = o.getString("percent_change_24h");
+        coin.chg_7d = o.getString("percent_change_7d");
         return coin;
         /*
          * { "id": "bitcoin", "name": "Bitcoin", "symbol": "BTC", "rank": "1",
