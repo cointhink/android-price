@@ -15,7 +15,7 @@ public class IconMgr implements FetchCallbacks{
         directory = cw.getDir("icons", Context.MODE_PRIVATE);
     }
 
-    public boolean hasCoin(String symbol) {
+    public boolean hasCoin(String symbol, String url) {
         String coinIconFilename = directory.getAbsolutePath()+"/"+symbol;
         Log.d(Constants.APP_TAG, "icon check: "+coinIconFilename);
         File coinIconFile = new File(coinIconFilename);
@@ -23,13 +23,14 @@ public class IconMgr implements FetchCallbacks{
             return true;
         } else {
             // fetch
+            Net.cmcGet(url, this);
         }
         return false;
     }
 
     @Override
     public void bytesFetched(byte[] data) {
-
+        Log.d(Constants.APP_TAG, "icon fetched "+data.length);
     }
 
 }

@@ -32,7 +32,7 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         String capStr = capParse(coin.marketCap);
         ((TextView) convertView.findViewById(R.id.coinCap)).setText(capStr);
         ImageView icon = (ImageView) convertView.findViewById(R.id.coinIcon);
-        if (iconMgr.hasCoin(coin.symbol)) {
+        if (iconMgr.hasCoin(coin.symbol, coin.img_url)) {
 
         }
         ((TextView) convertView.findViewById(R.id.coinName)).setText(coin.name);
