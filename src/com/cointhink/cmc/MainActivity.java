@@ -28,6 +28,7 @@ public class MainActivity extends Activity implements CacheCallbacks {
         super.onResume();
         Log.d(Constants.APP_TAG, "onResume");
         gooey.topTimeFreshen();
+        gooey.countFreshen();
 
         if (cache.refreshNeeded()) {
             Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
@@ -60,6 +61,7 @@ public class MainActivity extends Activity implements CacheCallbacks {
         if (coins != null) {
             gooey.add(coins);
             gooey.topTime(cache.last);
+            gooey.countFreshen();
             //gooey.topTime("loaded");
         }
     }

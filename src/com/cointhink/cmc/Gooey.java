@@ -40,6 +40,10 @@ public class Gooey {
         }
     }
 
+    public void countFreshen() {
+        topTextName.setText(""+adapter.getCount()+" coins loaded from coinmarketcap.com");
+    }
+
     private String timeFmt(Date time) {
         Date now = new Date();
         // ArrayList<String> words = new ArrayList<>();
