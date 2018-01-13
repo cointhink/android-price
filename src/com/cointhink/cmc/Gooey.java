@@ -17,12 +17,12 @@ public class Gooey {
     private ListView listView;
     private Date topTime;
 
-    public Gooey(Activity ctx, List<Coin> coinList) {
+    public Gooey(Activity ctx, List<Coin> coinList, IconMgr iconMgr) {
         listView = (ListView) ctx.findViewById(R.id.coinAllList);
         topTextName = (TextView) ctx.findViewById(R.id.toptext);
         topTextTime = (TextView) ctx.findViewById(R.id.toptime);
         topTextCount = (TextView) ctx.findViewById(R.id.topcount);
-        adapter = new CoinAdapter(ctx, coinList);
+        adapter = new CoinAdapter(ctx, coinList, iconMgr);
         listView.setAdapter(adapter);
         topTextName.setText("CoinMarketCap");
     }

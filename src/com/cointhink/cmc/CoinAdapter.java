@@ -8,11 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CoinAdapter extends ArrayAdapter<Coin> {
-    public CoinAdapter(Context context, List<Coin> coinList) {
+    IconMgr iconMgr;
+
+    public CoinAdapter(Context context, List<Coin> coinList, IconMgr iconMgr) {
         super(context, 0, coinList);
+        this.iconMgr = iconMgr;
     }
 
     @Override
@@ -27,13 +31,16 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         // Lookup view for data population
         String capStr = capParse(coin.marketCap);
         ((TextView) convertView.findViewById(R.id.coinCap)).setText(capStr);
+        ImageView icon = (ImageView) convertView.findViewById(R.id.coinIcon);
+
         ((TextView) convertView.findViewById(R.id.coinName)).setText(coin.name);
         ((TextView) convertView.findViewById(R.id.coinSymbol))
                 .setText(coin.symbol);
         ((TextView) convertView.findViewById(R.id.coinPrice))
                 .setText("$" + priceMangle(coin.price));
         ((TextView) convertView.findViewById(R.id.coinPercentages))
-        .setText("1h "+coin.chg_1h+"% 24h "+coin.chg_24h+"% 7d "+coin.chg_7d+"%");
+                .setText("1h " + coin.chg_1h + "% 24h " + coin.chg_24h + "% 7d "
+                        + coin.chg_7d + "%");
 
         // Return the completed view to render on screen
         return convertView;
@@ -56,8 +63,9 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         if (decMangled.length() > 0) {
             mangled = mangled + "." + decMangled;
         }
-//        Log.d(Constants.APP_TAG, "pricemangle " + price + " intPart:" + intPart
-//                + " decPart(" + decSize + "):" + decPart + " => " + mangled);
+        // Log.d(Constants.APP_TAG, "pricemangle " + price + " intPart:" +
+        // intPart
+        // + " decPart(" + decSize + "):" + decPart + " => " + mangled);
         return mangled;
     }
 
