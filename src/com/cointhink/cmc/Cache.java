@@ -3,7 +3,7 @@ package com.cointhink.cmc;
 import java.util.Date;
 import java.util.List;
 
-public class Cache implements FetchCallbacks{
+public class Cache implements FetchCallbacks {
 
     Date last;
     CacheCallbacks mainActivity;
@@ -18,7 +18,7 @@ public class Cache implements FetchCallbacks{
 
     public void launchRefresh() {
         mainActivity.cacheUpdateStarted();
-        Net.cmcGet(this);
+        Net.cmcGet("https://api.coinmarketcap.com/v1/ticker/?limit=50", this);
     }
 
     @Override

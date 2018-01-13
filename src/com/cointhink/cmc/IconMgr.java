@@ -1,0 +1,36 @@
+package com.cointhink.cmc;
+
+import java.io.File;
+
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.util.Log;
+
+public class IconMgr implements FetchCallbacks{
+    private File directory;
+
+    public IconMgr(Context context) {
+        ContextWrapper cw = new ContextWrapper(context);
+        // Create imageDir
+        directory = cw.getDir("icons", Context.MODE_PRIVATE);
+    }
+
+    public boolean hasCoin(String symbol) {
+        String coinIconFilename = directory.getAbsolutePath()+"/"+symbol;
+        Log.d(Constants.APP_TAG, "icon check: "+coinIconFilename);
+        File coinIconFile = new File(coinIconFilename);
+        if(coinIconFile.exists()) {
+            return true;
+        } else {
+            // fetch
+        }
+        return false;
+    }
+
+    @Override
+    public void stringFetched(String json) {
+        // TODO Auto-generated method stub
+
+    }
+
+}
