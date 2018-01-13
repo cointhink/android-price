@@ -13,6 +13,7 @@ public class Gooey {
     private ArrayAdapter<Coin> adapter;
     private TextView topTextName;
     private TextView topTextTime;
+    private TextView topTextCount;
     private ListView listView;
     private Date topTime;
 
@@ -20,12 +21,13 @@ public class Gooey {
         listView = (ListView) ctx.findViewById(R.id.coinAllList);
         topTextName = (TextView) ctx.findViewById(R.id.toptext);
         topTextTime = (TextView) ctx.findViewById(R.id.toptime);
+        topTextCount = (TextView) ctx.findViewById(R.id.topcount);
         adapter = new CoinAdapter(ctx, coinList);
         listView.setAdapter(adapter);
         topTextName.setText("CoinMarketCap");
     }
 
-    public void topTime(String text) {
+    private void topTime(String text) {
         topTextTime.setText(text);
     }
 
@@ -35,13 +37,17 @@ public class Gooey {
     }
 
     public void topTimeFreshen() {
+        String timeStr;
         if (this.topTime != null) {
-            topTime(timeFmt(this.topTime));
+            timeStr = timeFmt(this.topTime);
+        } else {
+            timeStr = "...";
         }
+        topTime(adapter.getCount() + " coins@" + timeStr);
     }
 
     public void countFreshen() {
-        topTextName.setText(""+adapter.getCount()+" coins loaded from coinmarketcap.com");
+        topTextName.setText("coinmarketcap.com");
     }
 
     private String timeFmt(Date time) {
@@ -76,7 +82,16 @@ public class Gooey {
     }
 
     public void add(List<Coin> coins) {
+        adapter.clear(); // yuk
         adapter.addAll(coins);
+    }
+
+    public void refreshing(boolean b) {
+        if (b){
+            topTextCount.setText("(refreshing)");
+        } else {
+            topTextCount.setText("");
+        }
     }
 
 }

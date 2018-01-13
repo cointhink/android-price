@@ -62,13 +62,13 @@ public class MainActivity extends Activity implements CacheCallbacks {
             gooey.add(coins);
             gooey.topTime(cache.last);
             gooey.countFreshen();
-            //gooey.topTime("loaded");
+            gooey.refreshing(false);
         }
     }
 
     @Override
     public void cacheUpdateStarted() {
         Log.d(Constants.APP_TAG, "cacheUpdateStarted()");
-        gooey.topTime("-refreshing-");
+        gooey.refreshing(true);
     }
 }
