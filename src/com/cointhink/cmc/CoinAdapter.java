@@ -59,6 +59,10 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
             intPart = price.substring(0, decimalPos);
             decPart = price.substring(decimalPos + 1, price.length());
         }
+        if (intPart.length() > 3) {
+            int ilen = intPart.length();
+            intPart = intPart.substring(0,ilen-3)+","+intPart.substring(ilen-3, ilen);
+        }
         String mangled = intPart;
         int decSize = Math.max(0, 5 - intPart.length());
         String decMangled = decMassage(decPart, decSize);
