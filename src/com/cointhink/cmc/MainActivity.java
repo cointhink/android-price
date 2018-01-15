@@ -61,6 +61,7 @@ public class MainActivity extends Activity implements CacheCallbacks {
     public void cacheUpdateDone(List<Coin> coins) {
         Log.d(Constants.APP_TAG, "cacheUpdateDone()");
         if (coins != null) {
+            gooey.fetchErr("");
             gooey.add(coins);
             gooey.topTime(cache.last);
             gooey.countFreshen();
@@ -72,5 +73,10 @@ public class MainActivity extends Activity implements CacheCallbacks {
     public void cacheUpdateStarted() {
         Log.d(Constants.APP_TAG, "cacheUpdateStarted()");
         gooey.refreshing(true);
+    }
+
+    @Override
+    public void cacheErr(String err) {
+        gooey.fetchErr(err);
     }
 }

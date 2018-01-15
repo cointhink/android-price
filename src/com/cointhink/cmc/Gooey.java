@@ -94,4 +94,12 @@ public class Gooey {
         }
     }
 
+    public void fetchErr(String msg) {
+        if (msg.length() > 0){
+            topTextCount.setText("("+msg+")");
+        } else {
+            topTextCount.setText("");
+        }
+    }
+
 }

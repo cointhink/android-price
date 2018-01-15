@@ -26,14 +26,21 @@ public class Cache implements FetchCallbacks {
     public void bytesFetched(byte[] data) {
         String json;
         try {
-            json = new String(data,"UTF-8");
-            if (json != null) {
+            if (data != null) {
+                json = new String(data,"UTF-8");
                 last = new Date();
                 List<Coin> coins = CoinMarketCap.parse(json);
                 mainActivity.cacheUpdateDone(coins);
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void progressUpdate(Integer i) {
+        if (i == -1) {
+            mainActivity.cacheErr("dns error");
         }
     }
 }
