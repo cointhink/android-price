@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements CacheCallbacks {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = new Database(getApplicationContext());
+        //db = new Database(getApplicationContext());
         iconMgr = new IconMgr(getApplicationContext());
         gooey = new Gooey(this, coinList, iconMgr);
         cache = new Cache(this);
