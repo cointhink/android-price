@@ -13,6 +13,7 @@ import android.util.Log;
 
 public class IconMgr implements FetchCallbacks {
     private File directory;
+    public IconCallback iconCallback;
 
     public IconMgr(Context context) {
         ContextWrapper cw = new ContextWrapper(context);
@@ -28,11 +29,7 @@ public class IconMgr implements FetchCallbacks {
         String coinIconFilename = iconPath(symbol);
         File coinIconFile = new File(coinIconFilename);
         if (coinIconFile.exists()) {
-            Log.d(Constants.APP_TAG,
-                    "icon check: " + coinIconFilename + " exists!");
-            Bitmap bitmap = BitmapFactory.decodeFile(coinIconFilename);
-            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 64, 64, true);
-            return scaled;
+            return fileToBitmap(coinIconFilename);
         } else {
             // fetch
             Net.cmcGet(symbol, url, this);
@@ -40,16 +37,22 @@ public class IconMgr implements FetchCallbacks {
         return null;
     }
 
+    public Bitmap fileToBitmap(String coinIconFilename) {
+        Bitmap bitmap = BitmapFactory.decodeFile(coinIconFilename);
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 64, 64, true);
+        return scaled;
+    }
+
     @Override
     public void bytesFetched(HttpResponse response) {
         if (response.data != null) {
-            Log.d(Constants.APP_TAG, "icon fetched " + response.data.length);
             try {
                 String path = iconPath(response.id);
-                Log.d(Constants.APP_TAG, "icon saving to " + path);
+                Log.d(Constants.APP_TAG, "icon saved " + response.data.length+"bytes to " + path );
                 FileOutputStream fos = new FileOutputStream(path);
                 fos.write(response.data);
                 fos.close();
+                iconCallback.iconReady(response.id, fileToBitmap(path));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -58,7 +61,6 @@ public class IconMgr implements FetchCallbacks {
             }
         } else {
             Log.d(Constants.APP_TAG, "icon fetched failed. NULL.");
-
         }
     }
 

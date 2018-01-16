@@ -14,20 +14,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="5dip" >
+        android:paddingBottom="5dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip" >
 
         <TextView
             android:id="@+id/toptext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="1sp"
-            android:text="Data source" />
+            android:text="data source" />
 
         <TextView
             android:id="@+id/topcount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Data source" />
+            android:text="0 coins" />
 
         <TextView
             android:id="@+id/toptime"

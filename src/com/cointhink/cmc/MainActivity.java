@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends Activity implements CacheCallbacks {
 
+    
     private Cache cache;
     private List<Coin> coinList = new ArrayList<>();
     private Gooey gooey;

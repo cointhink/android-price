@@ -34,7 +34,9 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         ((TextView) convertView.findViewById(R.id.coinCap)).setText(capStr);
         ImageView iconView = (ImageView) convertView.findViewById(R.id.coinIcon);
         Bitmap icon = iconMgr.loadOrFetch(coin.symbol, coin.img_url);
-        if (icon != null) {
+        if (icon == null) {
+            iconView.setImageResource(R.mipmap.icon_blank);
+        } else {
             iconView.setImageBitmap(icon);
         }
         ((TextView) convertView.findViewById(R.id.coinName)).setText(coin.name);

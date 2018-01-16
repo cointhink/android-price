@@ -4,11 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class Gooey {
+public class Gooey implements IconCallback {
 
     private ArrayAdapter<Coin> adapter;
     private TextView topTextName;
@@ -24,7 +25,7 @@ public class Gooey {
         topTextCount = (TextView) ctx.findViewById(R.id.topcount);
         adapter = new CoinAdapter(ctx, coinList, iconMgr);
         listView.setAdapter(adapter);
-        topTextName.setText("CoinMarketCap");
+        iconMgr.iconCallback = this;
     }
 
     private void topTime(String text) {
@@ -51,7 +52,7 @@ public class Gooey {
     }
 
     private String timeFmt(Date time) {
-        Date now = new Date();
+        // Date now = new Date();
         // ArrayList<String> words = new ArrayList<>();
         // long duration = now.getTime() - time.getTime();
         // long seconds = duration / 1000;
@@ -100,6 +101,11 @@ public class Gooey {
         } else {
             topTextCount.setText("");
         }
+    }
+
+    @Override
+    public void iconReady(String id, Bitmap bitmap) {
+        adapter.notifyDataSetChanged();
     }
 
 }
