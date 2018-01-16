@@ -105,7 +105,7 @@ public class Gooey implements IconCallback {
 
     @Override
     public void iconReady(String id, Bitmap bitmap) {
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
     }
 
 }
