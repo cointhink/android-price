@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class IconMgr implements FetchCallbacks {
@@ -22,18 +24,20 @@ public class IconMgr implements FetchCallbacks {
         return directory.getAbsolutePath() + "/" + name.toLowerCase();
     }
 
-    public boolean hasCoin(String symbol, String url) {
+    public Bitmap loadOrFetch(String symbol, String url) {
         String coinIconFilename = iconPath(symbol);
         File coinIconFile = new File(coinIconFilename);
         if (coinIconFile.exists()) {
             Log.d(Constants.APP_TAG,
                     "icon check: " + coinIconFilename + " exists!");
-            return true;
+            Bitmap bitmap = BitmapFactory.decodeFile(coinIconFilename);
+            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 64, 64, true);
+            return scaled;
         } else {
             // fetch
             Net.cmcGet(symbol, url, this);
         }
-        return false;
+        return null;
     }
 
     @Override
