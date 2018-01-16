@@ -19,6 +19,7 @@ public class Database {
     public static final String TABLE_COINS = "coins";
     public static final String COINS_SYMBOL = "symbol";
     public static final String COINS_ICON_URL = "icon_url";
+    public static final String COINS_SUBREDDIT= "subreddit";
     public static final boolean COINS_FAVORITE = false;
 
     public Database(Context context) {
@@ -39,6 +40,7 @@ public class Database {
                     ROW_ID+" integer primary key, "+
                     COINS_SYMBOL + " text," +
                     COINS_ICON_URL + " text," +
+                    COINS_SUBREDDIT + " text," +
                     COINS_FAVORITE + " boolean," +
                     ROW_CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
                     ")");
