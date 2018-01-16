@@ -29,11 +29,18 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
             convertView = LayoutInflater.from(getContext())
                     .inflate(R.layout.item_coin, parent, false);
         }
+        viewFreshed(convertView, coin);
+
+        // Return the completed view to render on screen
+        return convertView;
+    }
+
+    public void viewFreshed(View convertView, Coin coin) {
         // Lookup view for data population
         String capStr = capParse(coin.marketCap);
         ((TextView) convertView.findViewById(R.id.coinCap)).setText(capStr);
         ImageView iconView = (ImageView) convertView.findViewById(R.id.coinIcon);
-        Bitmap icon = iconMgr.loadOrFetch(coin.symbol, coin.img_url);
+        Bitmap icon = iconMgr.loadOrFetch(coin, coin.img_url);
         if (icon == null) {
             iconView.setImageResource(R.mipmap.icon_blank);
         } else {
@@ -47,9 +54,6 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         ((TextView) convertView.findViewById(R.id.coinPercentages))
                 .setText("1h " + coin.chg_1h + "% 24h " + coin.chg_24h + "% 7d "
                         + coin.chg_7d + "%");
-
-        // Return the completed view to render on screen
-        return convertView;
     }
 
     private String priceMangle(String price) {
@@ -79,6 +83,9 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         return mangled;
     }
 
+    public void notifyItemChanged(int pos) {
+
+    }
     private String decMassage(String decPart, int bestLen) {
         if (bestLen == 1) {
             bestLen = 2; // USD-like

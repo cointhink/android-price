@@ -26,7 +26,7 @@ public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
         HttpRequest request = params[0];
         byte[] result;
 
-        Log.d(Constants.APP_TAG, "HTTP: "+request.id+" " + request.url);
+        Log.d(Constants.APP_TAG, "HTTP GET "+ request.url);
         try {
             // Create a URL object holding our url
             URL myUrl = new URL(request.url);
@@ -51,7 +51,7 @@ public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
             result = null;
         }
 
-        return new HttpResponse(request.id, result);
+        return new HttpResponse(request.coin, result);
     }
 
     // runs on the UI thread

@@ -3,5 +3,5 @@ package com.cointhink.cmc;
 import android.graphics.Bitmap;
 
 public interface IconCallback {
-    public void iconReady(String id, Bitmap bitmap);
+    public void iconReady(Coin coin, Bitmap bitmap);
 }

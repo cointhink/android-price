@@ -4,12 +4,13 @@ import android.util.Log;
 
 public class Net {
 
-    public static void cmcGet(String id, String url, FetchCallbacks cache) {
+    public static void cmcGet(Coin coin, String url, FetchCallbacks cache) {
         // Instantiate new instance of our class
         HttpAsync task = new HttpAsync(cache);
-        HttpRequest request = new HttpRequest(id, url);
+        HttpRequest request = new HttpRequest(coin, url);
 
-        Log.d(Constants.APP_TAG, request.id+": "+request.url);
+        String symbol = request.coin == null ? "" : request.coin.symbol;
+        Log.d(Constants.APP_TAG, symbol+": "+request.url);
         task.execute(request);
     }
 }

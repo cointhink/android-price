@@ -25,14 +25,14 @@ public class IconMgr implements FetchCallbacks {
         return directory.getAbsolutePath() + "/" + name.toLowerCase();
     }
 
-    public Bitmap loadOrFetch(String symbol, String url) {
-        String coinIconFilename = iconPath(symbol);
+    public Bitmap loadOrFetch(Coin coin, String url) {
+        String coinIconFilename = iconPath(coin.symbol);
         File coinIconFile = new File(coinIconFilename);
         if (coinIconFile.exists()) {
             return fileToBitmap(coinIconFilename);
         } else {
             // fetch
-            Net.cmcGet(symbol, url, this);
+            Net.cmcGet(coin, url, this);
         }
         return null;
     }
@@ -47,12 +47,12 @@ public class IconMgr implements FetchCallbacks {
     public void bytesFetched(HttpResponse response) {
         if (response.data != null) {
             try {
-                String path = iconPath(response.id);
+                String path = iconPath(response.coin.symbol);
                 Log.d(Constants.APP_TAG, "icon saved " + response.data.length+"bytes to " + path );
                 FileOutputStream fos = new FileOutputStream(path);
                 fos.write(response.data);
                 fos.close();
-                iconCallback.iconReady(response.id, fileToBitmap(path));
+                iconCallback.iconReady(response.coin, fileToBitmap(path));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

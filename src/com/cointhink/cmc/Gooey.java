@@ -5,13 +5,13 @@ import java.util.List;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class Gooey implements IconCallback {
 
-    private ArrayAdapter<Coin> adapter;
+    private CoinAdapter adapter;
     private TextView topTextName;
     private TextView topTextTime;
     private TextView topTextCount;
@@ -88,7 +88,7 @@ public class Gooey implements IconCallback {
     }
 
     public void refreshing(boolean b) {
-        if (b){
+        if (b) {
             topTextCount.setText("(refreshing)");
         } else {
             topTextCount.setText("");
@@ -96,16 +96,21 @@ public class Gooey implements IconCallback {
     }
 
     public void fetchErr(String msg) {
-        if (msg.length() > 0){
-            topTextCount.setText("("+msg+")");
+        if (msg.length() > 0) {
+            topTextCount.setText("(" + msg + ")");
         } else {
             topTextCount.setText("");
         }
     }
 
     @Override
-    public void iconReady(String id, Bitmap bitmap) {
-        //adapter.notifyDataSetChanged();
+    public void iconReady(Coin coin, Bitmap bitmap) {
+        int pos = adapter.getPosition(coin);
+        View v = listView.getChildAt(pos - listView.getFirstVisiblePosition());
+
+        if (v != null) {
+            adapter.viewFreshed(v, coin);
+        }
     }
 
 }

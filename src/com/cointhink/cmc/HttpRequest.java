@@ -1,11 +1,11 @@
 package com.cointhink.cmc;
 
 public class HttpRequest {
-    public String id;
+    public Coin coin;
     public String url;
 
-    public HttpRequest(String id, String url) {
-        this.id = id;
+    public HttpRequest(Coin coin, String url) {
+        this.coin = coin;
         this.url = url;
     }
 }

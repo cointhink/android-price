@@ -19,7 +19,7 @@ public class Cache implements FetchCallbacks {
 
     public void launchRefresh() {
         mainActivity.cacheUpdateStarted();
-        Net.cmcGet(new Date().toGMTString(), "https://api.coinmarketcap.com/v1/ticker/?limit=50", this);
+        Net.cmcGet(null, "https://api.coinmarketcap.com/v1/ticker/?limit=50", this);
     }
 
     @Override

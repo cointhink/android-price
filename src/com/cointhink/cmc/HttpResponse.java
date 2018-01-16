@@ -1,11 +1,11 @@
 package com.cointhink.cmc;
 
 public class HttpResponse {
-    public String id;
+    public Coin coin;
     public byte[] data;
 
-    public HttpResponse(String id, byte[] data) {
-        this.id = id;
+    public HttpResponse(Coin coin, byte[] data) {
+        this.coin = coin;
         this.data = data;
     }
 }
