@@ -11,16 +11,18 @@ import android.view.MenuItem;
 
 public class MainActivity extends Activity implements CacheCallbacks {
 
-    
+
     private Cache cache;
     private List<Coin> coinList = new ArrayList<>();
     private Gooey gooey;
     private IconMgr iconMgr;
+    private Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = new Database(getApplicationContext());
         iconMgr = new IconMgr(getApplicationContext());
         gooey = new Gooey(this, coinList, iconMgr);
         cache = new Cache(this);
