@@ -26,7 +26,7 @@ public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
         HttpRequest request = params[0];
         byte[] result;
 
-        Log.d(Constants.APP_TAG, "Background fetching " + request.url);
+        Log.d(Constants.APP_TAG, "HTTP: "+request.id+" " + request.url);
         try {
             // Create a URL object holding our url
             URL myUrl = new URL(request.url);

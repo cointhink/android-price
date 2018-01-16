@@ -3,6 +3,7 @@ package com.cointhink.cmc;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -17,11 +18,16 @@ public class IconMgr implements FetchCallbacks {
         directory = cw.getDir("icons", Context.MODE_PRIVATE);
     }
 
+    private String iconPath(String name) {
+        return directory.getAbsolutePath() + "/" + name.toLowerCase();
+    }
+
     public boolean hasCoin(String symbol, String url) {
-        String coinIconFilename = directory.getAbsolutePath() + "/" + symbol;
-        Log.d(Constants.APP_TAG, "icon check: " + coinIconFilename);
+        String coinIconFilename = iconPath(symbol);
         File coinIconFile = new File(coinIconFilename);
         if (coinIconFile.exists()) {
+            Log.d(Constants.APP_TAG,
+                    "icon check: " + coinIconFilename + " exists!");
             return true;
         } else {
             // fetch
@@ -35,8 +41,15 @@ public class IconMgr implements FetchCallbacks {
         if (response.data != null) {
             Log.d(Constants.APP_TAG, "icon fetched " + response.data.length);
             try {
-                FileOutputStream fos = new FileOutputStream(response.id);
+                String path = iconPath(response.id);
+                Log.d(Constants.APP_TAG, "icon saving to " + path);
+                FileOutputStream fos = new FileOutputStream(path);
+                fos.write(response.data);
+                fos.close();
             } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } else {
