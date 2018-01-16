@@ -10,7 +10,7 @@ import org.apache.commons.io.IOUtils;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class HttpAsync extends AsyncTask<String, Integer, byte[]> {
+public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
     public static final String REQUEST_METHOD = "GET";
     public static final int READ_TIMEOUT = 15000;
     public static final int CONNECTION_TIMEOUT = 15000;
@@ -22,14 +22,14 @@ public class HttpAsync extends AsyncTask<String, Integer, byte[]> {
     }
 
     @Override
-    protected byte[] doInBackground(String... params) {
-        String stringUrl = params[0];
+    protected HttpResponse doInBackground(HttpRequest... params) {
+        HttpRequest request = params[0];
         byte[] result;
 
-        Log.d(Constants.APP_TAG, "Background fetching " + stringUrl);
+        Log.d(Constants.APP_TAG, "Background fetching " + request.url);
         try {
             // Create a URL object holding our url
-            URL myUrl = new URL(stringUrl);
+            URL myUrl = new URL(request.url);
 
             // Create a connection
             HttpURLConnection connection = (HttpURLConnection) myUrl
@@ -51,7 +51,7 @@ public class HttpAsync extends AsyncTask<String, Integer, byte[]> {
             result = null;
         }
 
-        return result;
+        return new HttpResponse(request.id, result);
     }
 
     // runs on the UI thread
@@ -62,14 +62,15 @@ public class HttpAsync extends AsyncTask<String, Integer, byte[]> {
 
     // runs on the UI thread
     @Override
-    protected void onPostExecute(byte[] result) {
-        super.onPostExecute(result);
-        if (result != null) {
+    protected void onPostExecute(HttpResponse response) {
+        super.onPostExecute(response);
+        if (response.data != null) {
             Log.d(Constants.APP_TAG,
-                    "Background fetch done. result len " + result.length);
+                    "Background fetch done. result len " + response.data.length);
         } else {
             Log.d(Constants.APP_TAG, "Background fetch done. result NULL ");
         }
-        fetcher.bytesFetched(result);
+        fetcher.bytesFetched(response);
     }
 }
+

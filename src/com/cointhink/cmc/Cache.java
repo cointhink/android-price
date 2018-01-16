@@ -19,15 +19,15 @@ public class Cache implements FetchCallbacks {
 
     public void launchRefresh() {
         mainActivity.cacheUpdateStarted();
-        Net.cmcGet("https://api.coinmarketcap.com/v1/ticker/?limit=50", this);
+        Net.cmcGet(new Date().toGMTString(), "https://api.coinmarketcap.com/v1/ticker/?limit=50", this);
     }
 
     @Override
-    public void bytesFetched(byte[] data) {
+    public void bytesFetched(HttpResponse request) {
         String json;
         try {
-            if (data != null) {
-                json = new String(data,"UTF-8");
+            if (request.data != null) {
+                json = new String(request.data,"UTF-8");
                 last = new Date();
                 List<Coin> coins = CoinMarketCap.parse(json);
                 mainActivity.cacheUpdateDone(coins);

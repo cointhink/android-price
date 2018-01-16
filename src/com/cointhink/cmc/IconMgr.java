@@ -1,6 +1,8 @@
 package com.cointhink.cmc;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -23,15 +25,24 @@ public class IconMgr implements FetchCallbacks {
             return true;
         } else {
             // fetch
-            //Net.cmcGet(url, this);
+            Net.cmcGet(symbol, url, this);
         }
         return false;
     }
 
     @Override
-    public void bytesFetched(byte[] data) {
-        Log.d(Constants.APP_TAG, "icon fetched " + data.length);
-        // fos = new FileOutputStream(mypath);
+    public void bytesFetched(HttpResponse response) {
+        if (response.data != null) {
+            Log.d(Constants.APP_TAG, "icon fetched " + response.data.length);
+            try {
+                FileOutputStream fos = new FileOutputStream(response.id);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d(Constants.APP_TAG, "icon fetched failed. NULL.");
+
+        }
     }
 
     @Override
