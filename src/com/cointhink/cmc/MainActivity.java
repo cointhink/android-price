@@ -35,6 +35,7 @@ public class MainActivity extends FragmentActivity {
     private void setupFragments() {
         List<Fragment> fragments = new Vector<>();
         fragments.add(Fragment.instantiate(this, CoinMasterListFragment.class.getName()));
+        fragments.add(Fragment.instantiate(this, CoinFavoritesFragment.class.getName()));
         this.pagerAdapter  = new PagerAdapter(super.getSupportFragmentManager(), fragments);
         //
         ViewPager pager = (ViewPager)super.findViewById(R.id.viewpager);

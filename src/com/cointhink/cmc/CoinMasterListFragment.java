@@ -35,7 +35,7 @@ public class CoinMasterListFragment extends Fragment implements CacheCallbacks {
             // the view hierarchy; it would just never be used.
             return null;
         }
-        return inflater.inflate(R.layout.activity_main,
+        return inflater.inflate(R.layout.list_all_fragment,
                 container, false);
     }
 
