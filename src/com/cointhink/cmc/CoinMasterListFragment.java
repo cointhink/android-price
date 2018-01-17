@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-public class CoinMasterListFragment extends FragmentActivity implements CacheCallbacks {
-
+public class CoinMasterListFragment extends Fragment implements CacheCallbacks {
 
     private Cache cache;
     private List<Coin> coinList = new ArrayList<>();
@@ -18,47 +18,28 @@ public class CoinMasterListFragment extends FragmentActivity implements CacheCal
     private IconMgr iconMgr;
     private Database db;
 
+    // db = new Database(getApplicationContext());
+    // iconMgr = new IconMgr(getApplicationContext());
+    // gooey = new Gooey(this, coinList, iconMgr);
+    // cache = new Cache(this);
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //db = new Database(getApplicationContext());
-        iconMgr = new IconMgr(getApplicationContext());
-        gooey = new Gooey(this, coinList, iconMgr);
-        cache = new Cache(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(Constants.APP_TAG, "onResume");
-        gooey.topTimeFreshen();
-        gooey.countFreshen();
-
-        if (cache.refreshNeeded()) {
-            Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
-            cache.launchRefresh();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        if (container == null) {
+            // We have different layouts, and in one of them this
+            // fragment's containing frame doesn't exist. The fragment
+            // may still be created from its saved state, but there is
+            // no reason to try to create its view hierarchy because it
+            // won't be displayed. Note this is not needed -- we could
+            // just run the code below, where we would create and return
+            // the view hierarchy; it would just never be used.
+            return null;
         }
+        return inflater.inflate(R.layout.activity_main,
+                container, false);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void cacheUpdateDone(List<Coin> coins) {
