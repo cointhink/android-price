@@ -42,7 +42,7 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         ImageView iconView = (ImageView) convertView.findViewById(R.id.coinIcon);
         Bitmap icon = iconMgr.loadOrFetch(coin, coin.img_url);
         if (icon == null) {
-            iconView.setImageResource(R.mipmap.icon_blank);
+            iconView.setImageResource(R.drawable.icon_blank);
         } else {
             iconView.setImageBitmap(icon);
         }
