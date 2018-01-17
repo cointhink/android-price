@@ -1,27 +1,32 @@
 package com.cointhink.cmc;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
-public class CoinMasterListFragment extends Fragment implements CacheCallbacks {
+public class CoinMasterListFragment extends Fragment implements IconCallback {
 
+    public List<Coin> coinList;
+    public IconMgr iconMgr;
     private Cache cache;
-    private List<Coin> coinList = new ArrayList<>();
     private Gooey gooey;
-    private IconMgr iconMgr;
     private Database db;
 
-    // db = new Database(getApplicationContext());
-    // iconMgr = new IconMgr(getApplicationContext());
-    // gooey = new Gooey(this, coinList, iconMgr);
-    // cache = new Cache(this);
+    private CoinAdapter adapter;
+    private TextView topTextName;
+    private TextView topTextTime;
+    private TextView topTextCount;
+    private ListView listView;
+    private Date topTime;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -35,32 +40,101 @@ public class CoinMasterListFragment extends Fragment implements CacheCallbacks {
             // the view hierarchy; it would just never be used.
             return null;
         }
-        return inflater.inflate(R.layout.list_all_fragment,
+        View view = inflater.inflate(R.layout.list_all_fragment,
                 container, false);
+        listView = (ListView) view.findViewById(R.id.coinAllList);
+        topTextName = (TextView) view.findViewById(R.id.toptext);
+        topTextTime = (TextView) view.findViewById(R.id.toptime);
+        topTextCount = (TextView) view.findViewById(R.id.topcount);
+        adapter = new CoinAdapter(this.getActivity(), coinList, iconMgr);
+        listView.setAdapter(adapter);
+        iconMgr.iconCallback = this;
+        return view;
     }
 
+    private void topTime(String text) {
+        topTextTime.setText(text);
+    }
 
+    public void topTime(Date time) {
+        this.topTime = time;
+        topTimeFreshen();
+    }
 
-    @Override
-    public void cacheUpdateDone(List<Coin> coins) {
-        Log.d(Constants.APP_TAG, "cacheUpdateDone()");
-        if (coins != null) {
-            gooey.fetchErr("");
-            gooey.add(coins);
-            gooey.topTime(cache.last);
-            gooey.countFreshen();
-            gooey.refreshing(false);
+    public void topTimeFreshen() {
+        String timeStr;
+        if (this.topTime != null) {
+            timeStr = timeFmt(this.topTime);
+        } else {
+            timeStr = "...";
+        }
+        topTime(adapter.getCount() + " coins@" + timeStr);
+    }
+
+    public void countFreshen() {
+        topTextName.setText("coinmarketcap.com");
+    }
+
+    private String timeFmt(Date time) {
+        // Date now = new Date();
+        // ArrayList<String> words = new ArrayList<>();
+        // long duration = now.getTime() - time.getTime();
+        // long seconds = duration / 1000;
+        // words.add(seconds + " sec");
+        //
+        // return wordJoin(words, " ");
+        // long minutes = duration / 1000 / 60;
+        // return "" + minutes + " min";
+        int min = time.getMinutes();
+        String minPrefix = "";
+        if (min < 10) {
+            minPrefix = "0";
+        }
+        return time.getHours() + ":" + minPrefix + time.getMinutes();
+    }
+
+    private String wordJoin(List<String> list, String conjunction) {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for (String item : list) {
+            if (first)
+                first = false;
+            else
+                sb.append(conjunction);
+            sb.append(item);
+        }
+        return sb.toString();
+    }
+
+    public void add(List<Coin> coins) {
+        adapter.clear(); // yuk
+        adapter.addAll(coins);
+    }
+
+    public void refreshing(boolean b) {
+        if (b) {
+            topTextCount.setText("(refreshing)");
+        } else {
+            topTextCount.setText("");
+        }
+    }
+
+    public void fetchErr(String msg) {
+        if (msg.length() > 0) {
+            topTextCount.setText("(" + msg + ")");
+        } else {
+            topTextCount.setText("");
         }
     }
 
     @Override
-    public void cacheUpdateStarted() {
-        Log.d(Constants.APP_TAG, "cacheUpdateStarted()");
-        gooey.refreshing(true);
+    public void iconReady(Coin coin, Bitmap bitmap) {
+        int pos = adapter.getPosition(coin);
+        View v = listView.getChildAt(pos - listView.getFirstVisiblePosition());
+
+        if (v != null) {
+            adapter.viewFreshed(v, coin);
+        }
     }
 
-    @Override
-    public void cacheErr(String err) {
-        gooey.fetchErr(err);
-    }
 }
