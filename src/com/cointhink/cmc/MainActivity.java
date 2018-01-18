@@ -32,7 +32,10 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
         coinMasterList = new CoinMasterListFragment();
         coinMasterList.coinList = new ArrayList<>();
         coinMasterList.iconMgr = iconMgr;
+
         coinFavorites = new CoinFavoritesFragment();
+        coinFavorites.coinList = new ArrayList<>();
+        coinFavorites.iconMgr = iconMgr;
 
         if (findViewById(R.id.viewpager) != null) {
             if (savedInstanceState != null) {
