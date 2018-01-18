@@ -60,7 +60,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(Constants.APP_TAG, "onResume");
+        Log.d(Constants.APP_TAG, "MainActivity onResume");
         if (cache.refreshNeeded()) {
             Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
             cache.launchRefresh();
@@ -71,12 +71,17 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
     public void cacheUpdateDone(List<Coin> coins) {
         Log.d(Constants.APP_TAG, "cacheUpdateDone()");
         if (coins != null) {
-            coinMasterList.fetchErr("");
-            coinMasterList.add(coins);
-            coinMasterList.topTime(cache.last);
-            coinMasterList.countFreshen();
-            coinMasterList.refreshing(false);
+            fragCacheGoodFixup(coinMasterList, coins);
+            fragCacheGoodFixup(coinFavorites, coins);
         }
+    }
+
+    public void fragCacheGoodFixup(CoinListFragment coinFrag, List<Coin> coins) {
+        coinFrag.fetchErr("");
+        coinFrag.add(coins);
+        coinFrag.topTime(cache.last);
+        coinFrag.countFreshen();
+        coinFrag.refreshing(false);
     }
 
     @Override

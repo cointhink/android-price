@@ -3,12 +3,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
+    <LinearLayout
+        android:id="@+id/topFavbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip" >
+
         <TextView
-            android:id="@+id/toptext"
+            android:id="@+id/topFavtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="1sp"
-            android:text="Favorites" />
-    
+            android:text="data source" />
+
+        <TextView
+            android:id="@+id/topFavcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 coins" />
+
+        <TextView
+            android:id="@+id/topFavtime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Time" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/coinFavList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="0sp" >
+    </ListView>
+
 </LinearLayout>
