@@ -4,15 +4,10 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-public class CoinAdapter extends ArrayAdapter<Coin> {
+public abstract class CoinAdapter extends ArrayAdapter<Coin> {
     IconMgr iconMgr;
 
     public CoinAdapter(Context context, List<Coin> coinList, IconMgr iconMgr) {
@@ -20,43 +15,8 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         this.iconMgr = iconMgr;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        Coin coin = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.item_coin, parent, false);
-        }
-        viewFreshed(convertView, coin);
 
-        // Return the completed view to render on screen
-        return convertView;
-    }
-
-    public void viewFreshed(View convertView, Coin coin) {
-        // Lookup view for data population
-        String capStr = capParse(coin.marketCap);
-        ((TextView) convertView.findViewById(R.id.coinCap)).setText(capStr);
-        ImageView iconView = (ImageView) convertView.findViewById(R.id.coinIcon);
-        Bitmap icon = iconMgr.loadOrFetch(coin, coin.img_url);
-        if (icon == null) {
-            iconView.setImageResource(R.drawable.icon_blank);
-        } else {
-            iconView.setImageBitmap(icon);
-        }
-        ((TextView) convertView.findViewById(R.id.coinName)).setText(coin.name);
-        ((TextView) convertView.findViewById(R.id.coinSymbol))
-                .setText(coin.symbol);
-        ((TextView) convertView.findViewById(R.id.coinPrice))
-                .setText(priceMangle(coin.price));
-        ((TextView) convertView.findViewById(R.id.coinPercentages))
-                .setText("1h " + coin.chg_1h + "% 24h " + coin.chg_24h + "% 7d "
-                        + coin.chg_7d + "%");
-    }
-
-    private String priceMangle(String price) {
+    protected String priceMangle(String price) {
         int decimalPos = price.indexOf(".");
         int sigFigInt, sigFigDec;
         String intPart, decPart;
@@ -86,7 +46,8 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
     public void notifyItemChanged(int pos) {
 
     }
-    private String decMassage(String decPart, int bestLen) {
+
+    protected String decMassage(String decPart, int bestLen) {
         if (bestLen == 1) {
             bestLen = 2; // USD-like
         }
@@ -106,7 +67,7 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         return decPart;
     }
 
-    public String capParse(String longStr) {
+    protected String capParse(String longStr) {
         int decimalPos = longStr.indexOf(".");
         if (decimalPos > 0) {
             longStr = longStr.substring(0, decimalPos);
@@ -135,4 +96,7 @@ public class CoinAdapter extends ArrayAdapter<Coin> {
         String capStr = countStr + unit;
         return capStr;
     }
+
+
+    public abstract void viewFreshed(View convertView, Coin coin);
 }

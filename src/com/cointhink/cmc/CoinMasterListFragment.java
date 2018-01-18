@@ -29,7 +29,7 @@ public class CoinMasterListFragment extends CoinListFragment {
         topTextName = (TextView) view.findViewById(R.id.toptext);
         topTextTime = (TextView) view.findViewById(R.id.toptime);
         topTextCount = (TextView) view.findViewById(R.id.topcount);
-        adapter = new CoinAdapter(this.getActivity(), coinList, iconMgr);
+        adapter = new CoinMasterAdapter(this.getActivity(), coinList, iconMgr);
         listView.setAdapter(adapter);
         iconMgr.iconCallback = this;
         return view;
