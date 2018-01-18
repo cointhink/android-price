@@ -79,6 +79,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
     public void fragCacheGoodFixup(CoinListFragment coinFrag, List<Coin> coins) {
         coinFrag.fetchErr("");
         coinFrag.add(coins);
+        db.add(coins);
         coinFrag.topTime(cache.last);
         coinFrag.countFreshen();
         coinFrag.refreshing(false);
