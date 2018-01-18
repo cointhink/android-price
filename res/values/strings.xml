@@ -4,4 +4,7 @@
     <string name="app_name">CoinThink Price</string>
     <string name="action_settings">Settings</string>
 
+    <string name="preference_category">Cat 1</string>
+    <string name="preference_thing">Thing</string>
+    <string name="preference_thing_summary">The thing</string>
 </resources>

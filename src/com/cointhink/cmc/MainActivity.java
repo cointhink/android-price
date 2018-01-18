@@ -14,11 +14,11 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
 
     private Cache cache;
     private List<Coin> coinList = new ArrayList<>();
-    private Gooey gooey;
     private IconMgr iconMgr;
     private Database db;
     private PagerAdapter pagerAdapter;
     private CoinMasterListFragment coinMasterList;
+    private CoinFavoritesFragment coinFavorites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +32,13 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
         coinMasterList = new CoinMasterListFragment();
         coinMasterList.coinList = new ArrayList<>();
         coinMasterList.iconMgr = iconMgr;
+        coinFavorites = new CoinFavoritesFragment();
 
         if (findViewById(R.id.viewpager) != null) {
             if (savedInstanceState != null) {
                 return;
             }
-            setupFragments(coinMasterList);
+            setupFragments(coinMasterList, coinFavorites);
         }
     }
 
@@ -57,6 +58,10 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
     protected void onResume() {
         super.onResume();
         Log.d(Constants.APP_TAG, "onResume");
+        if (cache.refreshNeeded()) {
+            Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
+            cache.launchRefresh();
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,8 @@ public class CoinMasterListFragment extends Fragment implements IconCallback {
     public List<Coin> coinList;
     public IconMgr iconMgr;
     private Cache cache;
-    private Gooey gooey;
     private Database db;
+    public boolean refreshing;
 
     private CoinAdapter adapter;
     private TextView topTextName;
@@ -40,8 +41,8 @@ public class CoinMasterListFragment extends Fragment implements IconCallback {
             // the view hierarchy; it would just never be used.
             return null;
         }
-        View view = inflater.inflate(R.layout.list_all_fragment,
-                container, false);
+        View view = inflater.inflate(R.layout.list_all_fragment, container,
+                false);
         listView = (ListView) view.findViewById(R.id.coinAllList);
         topTextName = (TextView) view.findViewById(R.id.toptext);
         topTextTime = (TextView) view.findViewById(R.id.toptime);
@@ -50,6 +51,15 @@ public class CoinMasterListFragment extends Fragment implements IconCallback {
         listView.setAdapter(adapter);
         iconMgr.iconCallback = this;
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(Constants.APP_TAG, "coinMasterListFragment onResume");
+        topTimeFreshen();
+        countFreshen();
+        refreshing(this.refreshing);
     }
 
     private void topTime(String text) {
@@ -68,7 +78,8 @@ public class CoinMasterListFragment extends Fragment implements IconCallback {
         } else {
             timeStr = "...";
         }
-        topTime(adapter.getCount() + " coins@" + timeStr);
+        int count = adapter == null ? 0 : adapter.getCount();
+        topTime(count + " coins@" + timeStr);
     }
 
     public void countFreshen() {
@@ -112,10 +123,13 @@ public class CoinMasterListFragment extends Fragment implements IconCallback {
     }
 
     public void refreshing(boolean b) {
-        if (b) {
-            topTextCount.setText("(refreshing)");
-        } else {
-            topTextCount.setText("");
+        this.refreshing = b;
+        if (topTextCount != null) {
+            if (b) {
+                topTextCount.setText("(refreshing)");
+            } else {
+                topTextCount.setText("");
+            }
         }
     }
 
