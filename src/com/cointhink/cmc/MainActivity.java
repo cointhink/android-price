@@ -1,6 +1,5 @@
 package com.cointhink.cmc;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -13,7 +12,6 @@ import android.util.Log;
 public class MainActivity extends FragmentActivity implements CacheCallbacks {
 
     private Cache cache;
-    private List<Coin> coinList = new ArrayList<>();
     private IconMgr iconMgr;
     private Database db;
     private PagerAdapter pagerAdapter;
@@ -26,16 +24,10 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
         setContentView(R.layout.view_pager);
 
         db = new Database(getApplicationContext());
-        iconMgr = new IconMgr(getApplicationContext());
         cache = new Cache(this);
 
         coinMasterList = new CoinMasterListFragment();
-        coinMasterList.coinList = new ArrayList<>();
-        coinMasterList.iconMgr = iconMgr;
-
         coinFavorites = new CoinFavoritesFragment();
-        coinFavorites.coinList = new ArrayList<>();
-        coinFavorites.iconMgr = iconMgr;
 
         if (findViewById(R.id.viewpager) != null) {
             if (savedInstanceState != null) {

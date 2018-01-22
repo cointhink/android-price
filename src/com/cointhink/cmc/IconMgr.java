@@ -13,10 +13,11 @@ import android.util.Log;
 
 public class IconMgr implements FetchCallbacks {
     private File directory;
-    public IconCallback iconCallback;
+    private IconCallback iconCallback;
 
-    public IconMgr(Context context) {
+    public IconMgr(Context context, CoinListFragment coinListFragment) {
         ContextWrapper cw = new ContextWrapper(context);
+        iconCallback = coinListFragment;
         // Create imageDir
         directory = cw.getDir("icons", Context.MODE_PRIVATE);
     }
@@ -48,11 +49,16 @@ public class IconMgr implements FetchCallbacks {
         if (response.data != null) {
             try {
                 String path = iconPath(response.coin.symbol);
-                Log.d(Constants.APP_TAG, "icon saved " + response.data.length+"bytes to " + path );
+                Log.d(Constants.APP_TAG, "icon saved " + response.data.length
+                        + " bytes to " + path);
                 FileOutputStream fos = new FileOutputStream(path);
                 fos.write(response.data);
                 fos.close();
-                iconCallback.iconReady(response.coin, fileToBitmap(path));
+                if (iconCallback != null) {
+                    iconCallback.iconReady(response.coin, fileToBitmap(path));
+                } else {
+                    Log.d(Constants.APP_TAG, "icon callback is null!");
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

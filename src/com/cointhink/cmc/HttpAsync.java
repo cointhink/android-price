@@ -65,8 +65,8 @@ public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
     protected void onPostExecute(HttpResponse response) {
         super.onPostExecute(response);
         if (response.data != null) {
-            Log.d(Constants.APP_TAG,
-                    "Background fetch done. result len " + response.data.length);
+//            Log.d(Constants.APP_TAG,
+//                    "Background fetch done. result len " + response.data.length);
         } else {
             Log.d(Constants.APP_TAG, "Background fetch done. result NULL ");
         }

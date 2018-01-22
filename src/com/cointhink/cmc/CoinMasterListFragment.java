@@ -15,23 +15,18 @@ public class CoinMasterListFragment extends CoinListFragment {
     private Cache cache;
     private Database db;
 
-    private ListView listView;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        if (container == null) {
-            return null;
-        }
         View view = inflater.inflate(R.layout.list_all_fragment, container,
                 false);
         listView = (ListView) view.findViewById(R.id.coinAllList);
         topTextName = (TextView) view.findViewById(R.id.toptext);
         topTextTime = (TextView) view.findViewById(R.id.toptime);
         topTextCount = (TextView) view.findViewById(R.id.topcount);
+        iconMgr = new IconMgr(getActivity(), this);
         adapter = new CoinMasterAdapter(this.getActivity(), coinList, iconMgr);
         listView.setAdapter(adapter);
-        iconMgr.iconCallback = this;
         return view;
     }
 

@@ -1,19 +1,18 @@
 package com.cointhink.cmc;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class CoinListFragment extends Fragment implements IconCallback {
-    public List<Coin> coinList;
+    public List<Coin> coinList = new ArrayList<>();
     public IconMgr iconMgr;
 
     protected ListView listView;
@@ -25,13 +24,6 @@ public class CoinListFragment extends Fragment implements IconCallback {
     public boolean refreshing;
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.list_all_fragment, container,
-                false);
-        return view;
-    }
     private void topTime(String text) {
         topTextTime.setText(text);
     }
@@ -85,7 +77,6 @@ public class CoinListFragment extends Fragment implements IconCallback {
         }
     }
 
-
     @Override
     public void iconReady(Coin coin, Bitmap bitmap) {
         int pos = adapter.getPosition(coin);
@@ -93,8 +84,11 @@ public class CoinListFragment extends Fragment implements IconCallback {
 
         if (v != null) {
             adapter.viewFreshed(v, coin);
+        } else {
+            Log.d(Constants.APP_TAG, "listView does not have a child at position"+pos+" of "+coinList.size());
         }
     }
+
     public void add(List<Coin> coins) {
         adapter.clear(); // yuk
         adapter.addAll(coins);

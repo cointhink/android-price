@@ -12,18 +12,16 @@ public class CoinFavoritesFragment extends CoinListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        if (container == null) {
-            return null;
-        }
         View view = inflater.inflate(R.layout.favorites_fragment, container,
                 false);
         listView = (ListView) view.findViewById(R.id.coinFavList);
         topTextName = (TextView) view.findViewById(R.id.topFavtext);
         topTextTime = (TextView) view.findViewById(R.id.topFavtime);
         topTextCount = (TextView) view.findViewById(R.id.topFavcount);
-        adapter = new CoinFavoritesAdapter(this.getActivity(), coinList, iconMgr);
+        iconMgr = new IconMgr(getActivity(), this);
+        adapter = new CoinFavoritesAdapter(this.getActivity(), coinList,
+                iconMgr);
         listView.setAdapter(adapter);
-        iconMgr.iconCallback = this;
         return view;
     }
 
