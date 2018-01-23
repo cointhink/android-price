@@ -87,8 +87,6 @@ public class Database {
     void update(Coin coin) {
         ContentValues attributes = coin.getAttributes();
         int id = findId(coin.symbol);
-        Log.d(Constants.APP_TAG, "db update id " + id + " symbol " + coin.symbol
-                + " fav " + coin.favorited);
         if (id >= 0) {
             attributes.put(ROW_ID, id);
             int rows = db.update(Database.TABLE_COINS, attributes, ROW_ID + " = ?",
@@ -97,7 +95,6 @@ public class Database {
         } else {
             db.insertWithOnConflict(Database.TABLE_COINS, null, attributes,
                     SQLiteDatabase.CONFLICT_REPLACE);
-            Log.d(Constants.APP_TAG, "db inserted");
         }
     }
 
@@ -108,9 +105,7 @@ public class Database {
                 null, null);
         if (cursor.moveToFirst()) {
             id = cursor.getInt(cursor.getColumnIndex(ROW_ID));
-            Log.d(Constants.APP_TAG, "db find symbol " + symbol + ": " + id);
         } else {
-            Log.d(Constants.APP_TAG, "db not find symbol " + symbol);
         }
         cursor.close();
         return id;
@@ -124,10 +119,8 @@ public class Database {
         if (cursor.moveToFirst()) {
             int favInt = cursor.getInt(cursor.getColumnIndex(COINS_FAVORITED));
             cursor.close();
-            Log.d(Constants.APP_TAG, "db isFavorited symbol " + coin.symbol + " favInt: " + favInt);
             return favInt == 1;
         }
-        Log.d(Constants.APP_TAG, "db isFavorited not found " + coin.symbol );
         return false;
     }
 }

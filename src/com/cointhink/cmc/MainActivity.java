@@ -39,6 +39,7 @@ public class MainActivity extends FragmentActivity
             }
             setupFragments(coinMasterList, coinFavorites);
         }
+        switchFragment(new PrefsFragment());
     }
 
     private void setupFragments(Fragment... fments) {
@@ -61,6 +62,11 @@ public class MainActivity extends FragmentActivity
             Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
             cache.launchRefresh();
         }
+    }
+
+    protected void switchFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+            .replace(R.id.mainframe, fragment, "frags").commit();
     }
 
     @Override

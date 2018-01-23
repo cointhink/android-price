@@ -1,7 +1,6 @@
 package com.cointhink.cmc;
 
 import android.content.ContentValues;
-import android.util.Log;
 
 
 public class Coin implements Sqlable {
@@ -25,7 +24,6 @@ public class Coin implements Sqlable {
         ContentValues cv = new ContentValues();
         cv.put(Database.COINS_SYMBOL, symbol);
         cv.put(Database.COINS_FAVORITED, favorited ? "1" : "0");
-        Log.d(Constants.APP_TAG, cv.toString());
         return cv;
     }
 }
