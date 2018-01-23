@@ -37,9 +37,8 @@ public class MainActivity extends FragmentActivity
             if (savedInstanceState != null) {
                 return;
             }
-            setupFragments(coinMasterList, coinFavorites);
+            setupFragments(coinMasterList, coinFavorites, new PrefsFragment());
         }
-        switchFragment(new PrefsFragment());
     }
 
     private void setupFragments(Fragment... fments) {
@@ -47,6 +46,7 @@ public class MainActivity extends FragmentActivity
         for (int i = 0; i < fments.length; i++) { // such Java
             fragments.add(fments[i]);
         }
+
         this.pagerAdapter = new PagerAdapter(super.getSupportFragmentManager(),
                 fragments);
 
