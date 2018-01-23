@@ -23,8 +23,7 @@ public class CoinListFragment extends Fragment implements IconCallback {
     protected CoinAdapter adapter;
     public boolean refreshing;
 
-
-    private void topTime(String text) {
+    protected void topTime(String text) {
         topTextTime.setText(text);
     }
 
@@ -34,14 +33,18 @@ public class CoinListFragment extends Fragment implements IconCallback {
     }
 
     public void topTimeFreshen() {
+        int count = adapter == null ? 0 : adapter.getCount();
+        topTime(count + " coins@" + timeStr());
+    }
+
+    public String timeStr() {
         String timeStr;
         if (this.topTime != null) {
             timeStr = timeFmt(this.topTime);
         } else {
             timeStr = "...";
         }
-        int count = adapter == null ? 0 : adapter.getCount();
-        topTime(count + " coins@" + timeStr);
+        return timeStr;
     }
 
     public void countFreshen() {

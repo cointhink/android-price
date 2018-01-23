@@ -10,6 +10,9 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class CoinMarketCap {
+
+    static String COIN_URL = "https://api.coinmarketcap.com/v1/ticker/?limit=100";
+
     public static List<Coin> parse(String json, Database db) {
         ArrayList<Coin> coins = new ArrayList<>();
         try {

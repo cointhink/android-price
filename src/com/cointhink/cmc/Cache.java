@@ -21,7 +21,7 @@ public class Cache implements FetchCallbacks {
 
     public void launchRefresh() {
         mainActivity.cacheUpdateStarted();
-        Net.cmcGet(null, "https://api.coinmarketcap.com/v1/ticker/?limit=50", this);
+        Net.cmcGet(null, CoinMarketCap.COIN_URL, this);
     }
 
     @Override

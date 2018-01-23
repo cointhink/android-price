@@ -34,4 +34,9 @@ public class CoinFavoritesFragment extends CoinListFragment {
         refreshing(this.refreshing);
     }
 
+    @Override
+    public void topTimeFreshen() {
+        int count = adapter == null ? 0 : adapter.getCount();
+        topTime(count + " favorites@" + timeStr());
+    }
 }
