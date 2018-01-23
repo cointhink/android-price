@@ -56,9 +56,10 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
     }
 
     @Override
-    public void click(Coin c) {
+    public void click(Coin c, View v) {
         Log.d(Constants.APP_TAG, "masterListFragment favStar click "+c.symbol);
-        favHand.favoriteToggle(c);
+        boolean newFav = favHand.favoriteToggle(c);
+        adapter.viewFreshed(v, c);
     }
 
 }

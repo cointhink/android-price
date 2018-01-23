@@ -52,7 +52,7 @@ public class Database {
         public void onCreate(SQLiteDatabase db) {
             Log.d(Constants.APP_TAG, "sql table " + TABLE_COINS + " created.");
             db.execSQL("CREATE TABLE " + TABLE_COINS + " (" + ROW_ID
-                    + " integer primary key, " + COINS_SYMBOL + " text,"
+                    + " integer primary key, " + COINS_SYMBOL + " text unique,"
                     + COINS_ICON_URL + " text," + COINS_SUBREDDIT + " text,"
                     + COINS_FAVORITED + " boolean," + ROW_CREATED_AT
                     + " DATETIME DEFAULT CURRENT_TIMESTAMP" + ")");
@@ -73,8 +73,15 @@ public class Database {
 
     public void add(List<Coin> coins) {
         for (int i = 0; i < coins.size(); i++) {
-            update(coins.get(i));
+            Coin coin = coins.get(i);
+            establish(coin);
+            coin.favorited = isFavorited(coin);
         }
+    }
+
+    void establish(Coin coin) {
+        db.insertWithOnConflict(Database.TABLE_COINS, null, coin.getAttributes(),
+                SQLiteDatabase.CONFLICT_IGNORE);
     }
 
     void update(Coin coin) {
@@ -96,7 +103,7 @@ public class Database {
 
     private int findId(String symbol) {
         int id = -1;
-        Cursor cursor = db.query(Database.TABLE_COINS, null,
+        Cursor cursor = db.query(Database.TABLE_COINS, new String[]{ROW_ID},
                 COINS_SYMBOL + " = ?", new String[] { symbol }, null, null,
                 null, null);
         if (cursor.moveToFirst()) {
@@ -110,6 +117,17 @@ public class Database {
     }
 
     public boolean isFavorited(Coin coin) {
+        int coinId = findId(coin.symbol);
+        Cursor cursor = db.query(Database.TABLE_COINS, null,
+                ROW_ID + " = ?", new String[] { ""+coinId }, null, null,
+                null, null);
+        if (cursor.moveToFirst()) {
+            int favInt = cursor.getInt(cursor.getColumnIndex(COINS_FAVORITED));
+            cursor.close();
+            Log.d(Constants.APP_TAG, "db isFavorited symbol " + coin.symbol + " favInt: " + favInt);
+            return favInt == 1;
+        }
+        Log.d(Constants.APP_TAG, "db isFavorited not found " + coin.symbol );
         return false;
     }
 }

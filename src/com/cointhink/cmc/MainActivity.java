@@ -92,12 +92,13 @@ public class MainActivity extends FragmentActivity
     }
 
     @Override
-    public void favoriteToggle(Coin c) {
+    public boolean favoriteToggle(Coin c) {
         if (c.favorited) {
             c.favorited = false;
         } else {
             c.favorited = true;
         }
         db.update(c);
+        return c.favorited;
     }
 }

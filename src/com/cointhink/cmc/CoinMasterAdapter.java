@@ -35,7 +35,7 @@ public class CoinMasterAdapter extends CoinAdapter {
     }
 
     @Override
-    public void viewFreshed(View convertView, final Coin coin) {
+    public void viewFreshed(final View convertView, final Coin coin) {
         // Lookup view for data population
         String capStr = capParse(coin.marketCap);
         ((TextView) convertView.findViewById(R.id.coinCap)).setText(capStr);
@@ -59,7 +59,7 @@ public class CoinMasterAdapter extends CoinAdapter {
         favStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                starClick.click(coin);
+                starClick.click(coin, convertView);
             }
         });
         if (coin.favorited) {
