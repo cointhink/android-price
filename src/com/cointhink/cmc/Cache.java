@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
+import com.cointhink.cmc.pricedata.CoinMarketCap;
+
 public class Cache implements FetchCallbacks {
 
     Date last;

@@ -1,4 +1,4 @@
-package com.cointhink.cmc;
+package com.cointhink.cmc.pricedata;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +7,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.cointhink.cmc.Coin;
+import com.cointhink.cmc.Constants;
+import com.cointhink.cmc.Database;
+
 import android.util.Log;
 
 public class CoinMarketCap {
 
-    static String COIN_URL = "https://api.coinmarketcap.com/v1/ticker/?limit=100";
+    public static String NAME = "coinmarketcap.com";
+    public static String COIN_URL = "https://api.coinmarketcap.com/v1/ticker/?limit=100";
 
     public static List<Coin> parse(String json, Database db) {
         ArrayList<Coin> coins = new ArrayList<>();
@@ -58,10 +63,10 @@ public class CoinMarketCap {
          */
     }
 
-    private static String imgUrl(String name) {
+    static String imgUrl(String name) {
         String url = "https://files.coinmarketcap.com/static/img/coins/32x32/";
         String urlName = name.toLowerCase().replaceAll(" ", "-");
-        return url+urlName+".png";
+        return url + urlName + ".png";
     }
 
 }
