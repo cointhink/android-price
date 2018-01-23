@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class CoinMasterListFragment extends CoinListFragment implements StarClick {
 
-    private Cache cache;
+    FavoriteHandler favHand;
 
     ImageView favStar;
 
@@ -26,6 +26,7 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
         topTextName = (TextView) view.findViewById(R.id.toptext);
         topTextTime = (TextView) view.findViewById(R.id.toptime);
         topTextCount = (TextView) view.findViewById(R.id.topcount);
+        favHand = (FavoriteHandler) getActivity();
         iconMgr = new IconMgr(getActivity(), this);
         adapter = new CoinMasterAdapter(this.getActivity(), coinList, iconMgr, this);
         listView.setAdapter(adapter);
@@ -56,9 +57,8 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
 
     @Override
     public void click(Coin c) {
-        c.favorited = true;
-        Log.d(Constants.APP_TAG, "favStar click "+c.symbol);
+        Log.d(Constants.APP_TAG, "masterListFragment favStar click "+c.symbol);
+        favHand.favoriteToggle(c);
     }
-
 
 }

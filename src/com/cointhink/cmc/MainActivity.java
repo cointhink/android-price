@@ -9,10 +9,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
-public class MainActivity extends FragmentActivity implements CacheCallbacks {
+public class MainActivity extends FragmentActivity
+        implements CacheCallbacks, FavoriteHandler {
 
     private Cache cache;
-    private IconMgr iconMgr;
     private Database db;
     private PagerAdapter pagerAdapter;
     private CoinMasterListFragment coinMasterList;
@@ -89,5 +89,15 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
     @Override
     public void cacheErr(String err) {
         coinMasterList.fetchErr(err);
+    }
+
+    @Override
+    public void favoriteToggle(Coin c) {
+        if (c.favorited) {
+            c.favorited = false;
+        } else {
+            c.favorited = true;
+        }
+        db.update(c);
     }
 }

@@ -52,11 +52,10 @@ public class Database {
         public void onCreate(SQLiteDatabase db) {
             Log.d(Constants.APP_TAG, "sql table " + TABLE_COINS + " created.");
             db.execSQL("CREATE TABLE " + TABLE_COINS + " (" + ROW_ID
-                    + " integer primary key, " + COINS_SYMBOL
-                    + " text," + COINS_ICON_URL + " text,"
-                    + COINS_SUBREDDIT + " text," + COINS_FAVORITED + " boolean,"
-                    + ROW_CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP"
-                    + ")");
+                    + " integer primary key, " + COINS_SYMBOL + " text,"
+                    + COINS_ICON_URL + " text," + COINS_SUBREDDIT + " text,"
+                    + COINS_FAVORITED + " boolean," + ROW_CREATED_AT
+                    + " DATETIME DEFAULT CURRENT_TIMESTAMP" + ")");
         }
 
         @Override
@@ -79,14 +78,20 @@ public class Database {
     }
 
     void update(Coin coin) {
-        Log.d(Constants.APP_TAG, "db update symbol "+coin.symbol);
         ContentValues attributes = coin.getAttributes();
         int id = findId(coin.symbol);
+        Log.d(Constants.APP_TAG, "db update id " + id + " symbol " + coin.symbol
+                + " fav " + coin.favorited);
         if (id >= 0) {
             attributes.put(ROW_ID, id);
+            int rows = db.update(Database.TABLE_COINS, attributes, ROW_ID + " = ?",
+                    new String[] { Integer.toString(id) });
+            Log.d(Constants.APP_TAG, "db updated "+rows);
+        } else {
+            db.insertWithOnConflict(Database.TABLE_COINS, null, attributes,
+                    SQLiteDatabase.CONFLICT_REPLACE);
+            Log.d(Constants.APP_TAG, "db inserted");
         }
-        db.insertWithOnConflict(Database.TABLE_COINS, null, attributes,
-                SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     private int findId(String symbol) {
@@ -96,9 +101,9 @@ public class Database {
                 null, null);
         if (cursor.moveToFirst()) {
             id = cursor.getInt(cursor.getColumnIndex(ROW_ID));
-            Log.d(Constants.APP_TAG, "db find symbol "+symbol+": "+id);
+            Log.d(Constants.APP_TAG, "db find symbol " + symbol + ": " + id);
         } else {
-            Log.d(Constants.APP_TAG, "db not find symbol "+symbol);
+            Log.d(Constants.APP_TAG, "db not find symbol " + symbol);
         }
         cursor.close();
         return id;
