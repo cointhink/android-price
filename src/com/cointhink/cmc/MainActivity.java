@@ -23,8 +23,10 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_pager);
 
-        db = new Database(getApplicationContext());
-        cache = new Cache(this);
+        db = new Database(getApplicationContext()).open();
+        Log.d(Constants.APP_TAG,
+                "db open. count count " + db.rowCount(Database.TABLE_COINS));
+        cache = new Cache(this, db);
 
         coinMasterList = new CoinMasterListFragment();
         coinFavorites = new CoinFavoritesFragment();
@@ -68,7 +70,8 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks {
         }
     }
 
-    public void fragCacheGoodFixup(CoinListFragment coinFrag, List<Coin> coins) {
+    public void fragCacheGoodFixup(CoinListFragment coinFrag,
+            List<Coin> coins) {
         coinFrag.fetchErr("");
         coinFrag.add(coins);
         db.add(coins);

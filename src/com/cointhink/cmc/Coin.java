@@ -1,6 +1,9 @@
 package com.cointhink.cmc;
 
-public class Coin {
+import android.content.ContentValues;
+
+
+public class Coin implements Sqlable {
     public String name;
     public String symbol;
     public String price;
@@ -9,4 +12,18 @@ public class Coin {
     public String chg_24h;
     public String chg_7d;
     public String img_url;
+    public boolean favorited;
+
+    @Override
+    public String getTableName() {
+        return Database.TABLE_COINS;
+    }
+
+    @Override
+    public ContentValues getAttributes() {
+        ContentValues cv = new ContentValues();
+        cv.put(Database.COINS_SYMBOL, symbol);
+        cv.put(Database.COINS_FAVORITED, ""+favorited);
+        return cv;
+    }
 }

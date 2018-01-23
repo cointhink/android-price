@@ -8,9 +8,11 @@ public class Cache implements FetchCallbacks {
 
     Date last;
     CacheCallbacks mainActivity;
+    private Database db;
 
-    public Cache(CacheCallbacks mainActivity) {
+    public Cache(CacheCallbacks mainActivity, Database db) {
         this.mainActivity = mainActivity;
+        this.db = db;
     }
 
     public boolean refreshNeeded() {
@@ -29,7 +31,7 @@ public class Cache implements FetchCallbacks {
             if (request.data != null) {
                 json = new String(request.data,"UTF-8");
                 last = new Date();
-                List<Coin> coins = CoinMarketCap.parse(json);
+                List<Coin> coins = CoinMarketCap.parse(json, db);
                 mainActivity.cacheUpdateDone(coins);
             }
         } catch (UnsupportedEncodingException e) {

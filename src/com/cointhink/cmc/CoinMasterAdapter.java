@@ -10,10 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CoinMasterAdapter extends CoinAdapter  {
+public class CoinMasterAdapter extends CoinAdapter {
+    private StarClick starClick;
+
     public CoinMasterAdapter(Context context, List<Coin> coinList,
-            IconMgr iconMgr) {
+            IconMgr iconMgr, StarClick starClick) {
         super(context, coinList, iconMgr);
+        this.starClick = starClick;
     }
 
     @Override
@@ -32,11 +35,12 @@ public class CoinMasterAdapter extends CoinAdapter  {
     }
 
     @Override
-    public void viewFreshed(View convertView, Coin coin) {
+    public void viewFreshed(View convertView, final Coin coin) {
         // Lookup view for data population
         String capStr = capParse(coin.marketCap);
         ((TextView) convertView.findViewById(R.id.coinCap)).setText(capStr);
-        ImageView iconView = (ImageView) convertView.findViewById(R.id.coinIcon);
+        ImageView iconView = (ImageView) convertView
+                .findViewById(R.id.coinIcon);
         Bitmap icon = iconMgr.loadOrFetch(coin, coin.img_url);
         if (icon == null) {
             iconView.setImageResource(R.drawable.icon_blank);
@@ -51,6 +55,19 @@ public class CoinMasterAdapter extends CoinAdapter  {
         ((TextView) convertView.findViewById(R.id.coinPercentages))
                 .setText("1h " + coin.chg_1h + "% 24h " + coin.chg_24h + "% 7d "
                         + coin.chg_7d + "%");
+        ImageView favStar = (ImageView) convertView.findViewById(R.id.favStar);
+        favStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                starClick.click(coin);
+            }
+        });
+        if (coin.favorited) {
+            favStar.setImageResource(android.R.drawable.star_on);
+        } else {
+            favStar.setImageResource(android.R.drawable.star_off);
+        }
+
     }
 
 }

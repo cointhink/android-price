@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class CoinMarketCap {
-    public static List<Coin> parse(String json) {
+    public static List<Coin> parse(String json, Database db) {
         ArrayList<Coin> coins = new ArrayList<>();
         try {
             JSONArray arr = new JSONArray(json);
@@ -19,6 +19,7 @@ public class CoinMarketCap {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
                 Coin coin = coinFormat(o);
+                coin.favorited = db.isFavorited(coin);
                 coins.add(coin);
             }
         } catch (JSONException e) {

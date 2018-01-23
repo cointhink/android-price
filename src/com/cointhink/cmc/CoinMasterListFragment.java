@@ -7,13 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CoinMasterListFragment extends CoinListFragment {
+public class CoinMasterListFragment extends CoinListFragment implements StarClick {
 
     private Cache cache;
-    private Database db;
+
+    ImageView favStar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,7 +27,7 @@ public class CoinMasterListFragment extends CoinListFragment {
         topTextTime = (TextView) view.findViewById(R.id.toptime);
         topTextCount = (TextView) view.findViewById(R.id.topcount);
         iconMgr = new IconMgr(getActivity(), this);
-        adapter = new CoinMasterAdapter(this.getActivity(), coinList, iconMgr);
+        adapter = new CoinMasterAdapter(this.getActivity(), coinList, iconMgr, this);
         listView.setAdapter(adapter);
         return view;
     }
@@ -50,6 +52,12 @@ public class CoinMasterListFragment extends CoinListFragment {
             sb.append(item);
         }
         return sb.toString();
+    }
+
+    @Override
+    public void click(Coin c) {
+        c.favorited = true;
+        Log.d(Constants.APP_TAG, "favStar click "+c.symbol);
     }
 
 
