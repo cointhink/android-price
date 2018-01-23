@@ -1,5 +1,6 @@
 package com.cointhink.cmc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -17,6 +18,7 @@ public class MainActivity extends FragmentActivity
     private PagerAdapter pagerAdapter;
     private CoinMasterListFragment coinMasterList;
     private CoinFavoritesFragment coinFavorites;
+    private List<Coin> coins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +67,29 @@ public class MainActivity extends FragmentActivity
     public void cacheUpdateDone(List<Coin> coins) {
         Log.d(Constants.APP_TAG, "cacheUpdateDone()");
         if (coins != null) {
+            this.coins = coins;
+            db.add(coins);
             fragCacheGoodFixup(coinMasterList, coins);
-            fragCacheGoodFixup(coinFavorites, coins);
+            ArrayList<Coin> favCoins = coinListFavFilter(coins);
+            fragCacheGoodFixup(coinFavorites, favCoins);
         }
+    }
+
+    public ArrayList<Coin> coinListFavFilter(List<Coin> coins) {
+        ArrayList<Coin> favCoins = new ArrayList<>();
+        for (int i=0, s=coins.size(); i < s; i++) {
+            Coin coin = coins.get(i);
+            if(coin.favorited) {
+                favCoins.add(coin);
+            }
+        }
+        return favCoins;
     }
 
     public void fragCacheGoodFixup(CoinListFragment coinFrag,
             List<Coin> coins) {
         coinFrag.fetchErr("");
         coinFrag.add(coins);
-        db.add(coins);
         coinFrag.topTime(cache.last);
         coinFrag.countFreshen();
         coinFrag.refreshing(false);
@@ -99,6 +114,8 @@ public class MainActivity extends FragmentActivity
             c.favorited = true;
         }
         db.update(c);
+        ArrayList<Coin> favCoins = coinListFavFilter(coins);
+        fragCacheGoodFixup(coinFavorites, favCoins);
         return c.favorited;
     }
 }
