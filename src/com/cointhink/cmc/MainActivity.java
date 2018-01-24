@@ -16,8 +16,6 @@ public class MainActivity extends FragmentActivity
     private Cache cache;
     private Database db;
     private PagerAdapter pagerAdapter;
-    private CoinMasterListFragment coinMasterList;
-    private CoinFavoritesFragment coinFavorites;
     private List<Coin> coins;
 
     @Override
@@ -30,14 +28,9 @@ public class MainActivity extends FragmentActivity
                 "db open. count count " + db.rowCount(Database.TABLE_COINS));
         cache = new Cache(this, db);
 
-        coinMasterList = new CoinMasterListFragment();
-        coinFavorites = new CoinFavoritesFragment();
-
         if (findViewById(R.id.viewpager) != null) {
-            if (savedInstanceState != null) {
-                return;
-            }
-            setupFragments(coinMasterList, coinFavorites, new PrefsFragment());
+            setupFragments(new CoinMasterListFragment(),
+                    new CoinFavoritesFragment(), new PrefsFragment());
         }
     }
 
@@ -57,7 +50,7 @@ public class MainActivity extends FragmentActivity
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(Constants.APP_TAG, "MainActivity onResume");
+        Log.d(Constants.APP_TAG, "MainActivity onResume.");
         if (cache.refreshNeeded()) {
             Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
             cache.launchRefresh();
@@ -66,7 +59,7 @@ public class MainActivity extends FragmentActivity
 
     protected void switchFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
-            .replace(R.id.mainframe, fragment, "frags").commit();
+                .replace(R.id.mainframe, fragment, "frags").commit();
     }
 
     @Override
@@ -75,41 +68,45 @@ public class MainActivity extends FragmentActivity
         if (coins != null) {
             this.coins = coins;
             db.add(coins);
-            fragCacheGoodFixup(coinMasterList, coins);
+            Log.d(Constants.APP_TAG, "fragCacheFixup for Master");
+            fragCacheGoodFixup((CoinListFragment) pagerAdapter.getItem(0),
+                    coins);
             ArrayList<Coin> favCoins = coinListFavFilter(coins);
-            fragCacheGoodFixup(coinFavorites, favCoins);
+            Log.d(Constants.APP_TAG, "fragCacheFixup for Favorites");
+            fragCacheGoodFixup((CoinListFragment) pagerAdapter.getItem(1),
+                    favCoins);
         }
     }
 
     public ArrayList<Coin> coinListFavFilter(List<Coin> coins) {
         ArrayList<Coin> favCoins = new ArrayList<>();
-        for (int i=0, s=coins.size(); i < s; i++) {
+        for (int i = 0, s = coins.size(); i < s; i++) {
             Coin coin = coins.get(i);
-            if(coin.favorited) {
+            if (coin.favorited) {
                 favCoins.add(coin);
             }
         }
         return favCoins;
     }
 
-    public void fragCacheGoodFixup(CoinListFragment coinFrag,
+    public void fragCacheGoodFixup(CoinListFragment fragment,
             List<Coin> coins) {
-        coinFrag.fetchErr("");
-        coinFrag.add(coins);
-        coinFrag.topTime(cache.last);
-        coinFrag.countFreshen();
-        coinFrag.refreshing(false);
+        fragment.fetchErr("");
+        fragment.add(coins);
+        fragment.topTime(cache.last);
+        fragment.countFreshen();
+        fragment.refreshing(false);
     }
 
     @Override
     public void cacheUpdateStarted() {
         Log.d(Constants.APP_TAG, "cacheUpdateStarted()");
-        coinMasterList.refreshing(true);
+        ((CoinListFragment) pagerAdapter.getItem(0)).refreshing(true);
     }
 
     @Override
     public void cacheErr(String err) {
-        coinMasterList.fetchErr(err);
+        ((CoinListFragment) pagerAdapter.getItem(0)).fetchErr(err);
     }
 
     @Override
@@ -121,7 +118,8 @@ public class MainActivity extends FragmentActivity
         }
         db.update(c);
         ArrayList<Coin> favCoins = coinListFavFilter(coins);
-        fragCacheGoodFixup(coinFavorites, favCoins);
+        fragCacheGoodFixup((CoinListFragment) pagerAdapter.getItem(1),
+                favCoins);
         return c.favorited;
     }
 }

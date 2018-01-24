@@ -5,9 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +25,28 @@ public class CoinListFragment extends Fragment implements IconCallback {
     protected TextView topTextCount;
     protected CoinAdapter adapter;
     public boolean refreshing;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        return container;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+    @Override
+    public void onStop() {
+        super.onResume();
+    }
 
     protected void topTime(String text) {
         topTextTime.setText(text);
@@ -88,11 +113,14 @@ public class CoinListFragment extends Fragment implements IconCallback {
         if (v != null) {
             adapter.viewFreshed(v, coin);
         } else {
-            Log.d(Constants.APP_TAG, "listView does not have a child at position"+pos+" of "+coinList.size());
+            Log.d(Constants.APP_TAG,
+                    "listView does not have a child at position" + pos + " of "
+                            + coinList.size());
         }
     }
 
     public void add(List<Coin> coins) {
+        Log.d(Constants.APP_TAG, "coinListFragment.add this is "+this.hashCode()+" adapter is" + adapter);
         adapter.clear(); // yuk
         adapter.addAll(coins);
     }

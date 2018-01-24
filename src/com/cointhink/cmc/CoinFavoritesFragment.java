@@ -1,7 +1,6 @@
 package com.cointhink.cmc;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ public class CoinFavoritesFragment extends CoinListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.favorites_fragment, container,
                 false);
         listView = (ListView) view.findViewById(R.id.coinFavList);
@@ -28,7 +28,6 @@ public class CoinFavoritesFragment extends CoinListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(Constants.APP_TAG, "coinFavoritesListFragment onResume");
         topTimeFreshen();
         countFreshen();
         refreshing(this.refreshing);

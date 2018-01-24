@@ -20,6 +20,7 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.list_all_fragment, container,
                 false);
         listView = (ListView) view.findViewById(R.id.coinAllList);
@@ -36,7 +37,6 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(Constants.APP_TAG, "coinMasterListFragment onResume");
         topTimeFreshen();
         countFreshen();
         refreshing(this.refreshing);
