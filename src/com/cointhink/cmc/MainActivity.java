@@ -54,21 +54,21 @@ public class MainActivity extends FragmentActivity
     protected void onResume() {
         super.onResume();
         Log.d(Constants.APP_TAG, "MainActivity onResume.");
-    }
-
-    @Override
-    public void onFragementReady() {
-        Log.d(Constants.APP_TAG, "MainActivity onFragmentReady.");
         if (cache.refreshNeeded()) {
             Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
             cache.launchRefresh();
         }
     }
 
-    protected void switchFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mainframe, fragment, "frags").commit();
+    @Override
+    public void onFragementReady() {
+        Log.d(Constants.APP_TAG, "MainActivity onFragmentReady.");
     }
+
+//    protected void switchFragment(Fragment fragment) {
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.mainframe, fragment, "frags").commit();
+//    }
 
     @Override
     public void cacheUpdateDone(List<Coin> coins) {
