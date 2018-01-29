@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,27 +26,43 @@ public class CoinListFragment extends Fragment implements IconCallback {
     protected TextView topTextCount;
     protected CoinAdapter adapter;
     public boolean refreshing;
+    protected FragmentReadyListener mListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        Log.d(Constants.APP_TAG, "CoinListFragment "+this+" onCreate has adapter "+adapter);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        Log.d(Constants.APP_TAG, "CoinListFragment "+this+" onCreateView has adapter "+adapter);
         return container;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(Constants.APP_TAG, "CoinListFragment "+this+" onResume has adapter "+adapter);
     }
+
     @Override
     public void onStop() {
-        super.onResume();
+        super.onStop();
+        Log.d(Constants.APP_TAG, "CoinListFragment "+this+" onStop has adapter "+adapter);
+    }
+
+    @Override
+    public void onAttach(Activity context) {
+        super.onAttach(context);
+        try {
+            this.mListener = (FragmentReadyListener)context;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement FragmentReadyListener");
+        }
     }
 
     protected void topTime(String text) {
@@ -120,7 +137,7 @@ public class CoinListFragment extends Fragment implements IconCallback {
     }
 
     public void add(List<Coin> coins) {
-        Log.d(Constants.APP_TAG, "coinListFragment.add this is "+this.hashCode()+" adapter is" + adapter);
+        Log.d(Constants.APP_TAG, "coinListFragment.add this is "+this+" Adapter is " + adapter);
         adapter.clear(); // yuk
         adapter.addAll(coins);
     }

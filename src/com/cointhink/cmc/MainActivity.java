@@ -11,7 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 public class MainActivity extends FragmentActivity
-        implements CacheCallbacks, FavoriteHandler {
+        implements CacheCallbacks, FavoriteHandler, FragmentReadyListener {
 
     private Cache cache;
     private Database db;
@@ -24,13 +24,16 @@ public class MainActivity extends FragmentActivity
         setContentView(R.layout.view_pager);
 
         db = new Database(getApplicationContext()).open();
-        Log.d(Constants.APP_TAG,
-                "db open. count count " + db.rowCount(Database.TABLE_COINS));
+        Log.d(Constants.APP_TAG, "MainActivity onCreate db open. count count "
+                + db.rowCount(Database.TABLE_COINS));
         cache = new Cache(this, db);
 
         if (findViewById(R.id.viewpager) != null) {
-            setupFragments(new CoinMasterListFragment(),
-                    new CoinFavoritesFragment(), new PrefsFragment());
+            CoinMasterListFragment masterFrag = new CoinMasterListFragment();
+            Log.d(Constants.APP_TAG,
+                    "MainActivity onCreate made masterFrag " + masterFrag);
+            setupFragments(masterFrag, new CoinFavoritesFragment(),
+                    new PrefsFragment());
         }
     }
 
@@ -51,6 +54,11 @@ public class MainActivity extends FragmentActivity
     protected void onResume() {
         super.onResume();
         Log.d(Constants.APP_TAG, "MainActivity onResume.");
+    }
+
+    @Override
+    public void onFragementReady() {
+        Log.d(Constants.APP_TAG, "MainActivity onFragmentReady.");
         if (cache.refreshNeeded()) {
             Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
             cache.launchRefresh();
@@ -65,16 +73,21 @@ public class MainActivity extends FragmentActivity
     @Override
     public void cacheUpdateDone(List<Coin> coins) {
         Log.d(Constants.APP_TAG, "cacheUpdateDone()");
-        if (coins != null) {
+        if (coins == null) {
+        } else {
             this.coins = coins;
             db.add(coins);
-            Log.d(Constants.APP_TAG, "fragCacheFixup for Master");
-            fragCacheGoodFixup((CoinListFragment) pagerAdapter.getItem(0),
-                    coins);
+            CoinListFragment masterFrag =
+                    //(CoinListFragment) getSupportFragmentManager()
+                    //.findFragmentById(R.id.masterListFragment);
+             (CoinListFragment) pagerAdapter.getItem(0);
+            Log.d(Constants.APP_TAG,
+                    "cacheUpdateDone found masterFrag " + masterFrag);
+            fragCacheGoodFixup(masterFrag, coins);
             ArrayList<Coin> favCoins = coinListFavFilter(coins);
-            Log.d(Constants.APP_TAG, "fragCacheFixup for Favorites");
-            fragCacheGoodFixup((CoinListFragment) pagerAdapter.getItem(1),
-                    favCoins);
+            CoinListFragment favoritesFrag = (CoinListFragment) pagerAdapter.getItem(1);
+            Log.d(Constants.APP_TAG, "cacheUpdateDone found favoritesFrag "+favoritesFrag);
+            fragCacheGoodFixup(favoritesFrag, favCoins);
         }
     }
 
@@ -100,7 +113,6 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public void cacheUpdateStarted() {
-        Log.d(Constants.APP_TAG, "cacheUpdateStarted()");
         ((CoinListFragment) pagerAdapter.getItem(0)).refreshing(true);
     }
 
@@ -122,4 +134,5 @@ public class MainActivity extends FragmentActivity
                 favCoins);
         return c.favorited;
     }
+
 }

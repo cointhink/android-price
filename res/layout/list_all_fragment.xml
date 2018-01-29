@@ -7,6 +7,7 @@
     android:paddingLeft="0sp"
     android:paddingRight="0sp"
     android:paddingTop="0sp"
+    android:id="@+id/masterListFragment"
     tools:context="com.cointhink.cmc.MainActivity" >
 
     <LinearLayout
