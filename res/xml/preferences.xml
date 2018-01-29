@@ -5,14 +5,9 @@
         <ListPreference
             android:entries="@array/Providers"
             android:entryValues="@array/ProvidersKeys"
-            android:key="listpref"
+            android:key="data_source"
             android:summary="The provider"
             android:title="Provider" />
     </PreferenceCategory>
-
-    <CheckBoxPreference
-        android:key="checkbox_preference"
-        android:summary="@string/preference_thing_summary"
-        android:title="@string/preference_thing" />
 
 </PreferenceScreen>

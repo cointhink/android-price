@@ -31,27 +31,23 @@ public class CoinListFragment extends Fragment implements IconCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(Constants.APP_TAG, "CoinListFragment "+this+" onCreate has adapter "+adapter);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        Log.d(Constants.APP_TAG, "CoinListFragment "+this+" onCreateView has adapter "+adapter);
         return container;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(Constants.APP_TAG, "CoinListFragment "+this+" onResume has adapter "+adapter);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(Constants.APP_TAG, "CoinListFragment "+this+" onStop has adapter "+adapter);
     }
 
     @Override
@@ -137,7 +133,6 @@ public class CoinListFragment extends Fragment implements IconCallback {
     }
 
     public void add(List<Coin> coins) {
-        Log.d(Constants.APP_TAG, "coinListFragment.add this is "+this+" Adapter is " + adapter);
         adapter.clear(); // yuk
         adapter.addAll(coins);
     }

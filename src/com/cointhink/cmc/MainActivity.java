@@ -17,11 +17,15 @@ public class MainActivity extends FragmentActivity
     private Database db;
     private PagerAdapter pagerAdapter;
     private List<Coin> coins;
+    private Prefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_pager);
+
+        prefs = new Prefs(this);
+        Log.d(Constants.APP_TAG, "MainActivity onCreate prefs data_source " + prefs.getDataSource());
 
         db = new Database(getApplicationContext()).open();
         Log.d(Constants.APP_TAG, "MainActivity onCreate db open. count count "
@@ -65,10 +69,10 @@ public class MainActivity extends FragmentActivity
         Log.d(Constants.APP_TAG, "MainActivity onFragmentReady.");
     }
 
-//    protected void switchFragment(Fragment fragment) {
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.mainframe, fragment, "frags").commit();
-//    }
+    // protected void switchFragment(Fragment fragment) {
+    // getSupportFragmentManager().beginTransaction()
+    // .replace(R.id.mainframe, fragment, "frags").commit();
+    // }
 
     @Override
     public void cacheUpdateDone(List<Coin> coins) {
@@ -78,15 +82,13 @@ public class MainActivity extends FragmentActivity
             this.coins = coins;
             db.add(coins);
             CoinListFragment masterFrag =
-                    //(CoinListFragment) getSupportFragmentManager()
-                    //.findFragmentById(R.id.masterListFragment);
-             (CoinListFragment) pagerAdapter.getItem(0);
-            Log.d(Constants.APP_TAG,
-                    "cacheUpdateDone found masterFrag " + masterFrag);
+                    // (CoinListFragment) getSupportFragmentManager()
+                    // .findFragmentById(R.id.masterListFragment);
+                    (CoinListFragment) pagerAdapter.getItem(0);
             fragCacheGoodFixup(masterFrag, coins);
             ArrayList<Coin> favCoins = coinListFavFilter(coins);
-            CoinListFragment favoritesFrag = (CoinListFragment) pagerAdapter.getItem(1);
-            Log.d(Constants.APP_TAG, "cacheUpdateDone found favoritesFrag "+favoritesFrag);
+            CoinListFragment favoritesFrag = (CoinListFragment) pagerAdapter
+                    .getItem(1);
             fragCacheGoodFixup(favoritesFrag, favCoins);
         }
     }
