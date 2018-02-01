@@ -25,7 +25,7 @@ public class Cache {
 
     public void launchRefresh(Provider provider) {
         mainActivity.cacheUpdateStarted();
-        Log.d(Constants.APP_TAG, "cachelaunchRefresh using "+provider);
+        Log.d(Constants.APP_TAG, "cachelaunchRefresh using " + provider);
         Net.cmcGet(null, provider.getDataUrl(), new OnFetched(provider));
     }
 
@@ -53,6 +53,7 @@ public class Cache {
 
         @Override
         public void progressUpdate(Integer i) {
+            mainActivity.cacheErr("" + i + " bytes");
             if (i == -1) {
                 mainActivity.cacheErr("dns error");
             }

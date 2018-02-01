@@ -42,8 +42,6 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
 
         if (findViewById(R.id.viewpager) != null) {
             CoinMasterListFragment masterFrag = new CoinMasterListFragment();
-            Log.d(Constants.APP_TAG,
-                    "MainActivity onCreate made masterFrag " + masterFrag);
             setupFragments(masterFrag, new CoinFavoritesFragment(),
                     new PrefsFragment());
         }
@@ -62,8 +60,6 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         pager.setAdapter(this.pagerAdapter);
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(prefs.getDisplayFrag());
-        Log.d(Constants.APP_TAG, "mainActivity setupFragments setCurrentItem "
-                + prefs.getDisplayFrag());
     }
 
     @Override
