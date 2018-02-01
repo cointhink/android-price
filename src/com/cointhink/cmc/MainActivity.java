@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import com.cointhink.cmc.pricedata.CoinMarketCap;
+import com.cointhink.cmc.pricedata.Provider;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,14 +14,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 
-public class MainActivity extends FragmentActivity
-        implements CacheCallbacks, FavoriteHandler, FragmentReadyListener, OnPageChangeListener {
+public class MainActivity extends FragmentActivity implements CacheCallbacks,
+        FavoriteHandler, FragmentReadyListener, OnPageChangeListener {
 
     private Cache cache;
     private Database db;
     private PagerAdapter pagerAdapter;
     private List<Coin> coins;
     private Prefs prefs;
+    private List<Provider> providers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +30,15 @@ public class MainActivity extends FragmentActivity
         setContentView(R.layout.view_pager);
 
         prefs = new Prefs(this);
-        Log.d(Constants.APP_TAG, "MainActivity onCreate prefs data_source " + prefs.getDataSource());
+        Log.d(Constants.APP_TAG, "MainActivity onCreate prefs data_source "
+                + prefs.getDataSource());
 
         db = new Database(getApplicationContext()).open();
         Log.d(Constants.APP_TAG, "MainActivity onCreate db open. count count "
                 + db.rowCount(Database.TABLE_COINS));
         cache = new Cache(this, db);
+        providers = new ArrayList<>();
+        providers.add(new CoinMarketCap());
 
         if (findViewById(R.id.viewpager) != null) {
             CoinMasterListFragment masterFrag = new CoinMasterListFragment();
@@ -55,7 +62,8 @@ public class MainActivity extends FragmentActivity
         pager.setAdapter(this.pagerAdapter);
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(prefs.getDisplayFrag());
-        Log.d(Constants.APP_TAG, "mainActivity setupFragments setCurrentItem "+prefs.getDisplayFrag());
+        Log.d(Constants.APP_TAG, "mainActivity setupFragments setCurrentItem "
+                + prefs.getDisplayFrag());
     }
 
     @Override
@@ -64,7 +72,7 @@ public class MainActivity extends FragmentActivity
         Log.d(Constants.APP_TAG, "MainActivity onResume.");
         if (cache.refreshNeeded()) {
             Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
-            cache.launchRefresh();
+            cache.launchRefresh(providers.get(0));
         }
     }
 

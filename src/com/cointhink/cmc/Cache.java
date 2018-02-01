@@ -5,8 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.cointhink.cmc.pricedata.CoinMarketCap;
+import com.cointhink.cmc.pricedata.Provider;
 
-public class Cache implements FetchCallbacks {
+public class Cache {
 
     Date last;
     CacheCallbacks mainActivity;
@@ -21,30 +22,38 @@ public class Cache implements FetchCallbacks {
         return true;
     }
 
-    public void launchRefresh() {
+    public void launchRefresh(Provider provider) {
         mainActivity.cacheUpdateStarted();
-        Net.cmcGet(null, CoinMarketCap.COIN_URL, this);
+        Net.cmcGet(null, CoinMarketCap.COIN_URL, new OnFetched(provider));
     }
 
-    @Override
-    public void bytesFetched(HttpResponse request) {
-        String json;
-        try {
-            if (request.data != null) {
-                json = new String(request.data,"UTF-8");
-                last = new Date();
-                List<Coin> coins = CoinMarketCap.parse(json, db);
-                mainActivity.cacheUpdateDone(coins);
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+    class OnFetched implements FetchCallbacks {
+        Provider provider;
+
+        public OnFetched(Provider provider) {
+            this.provider = provider;
         }
-    }
 
-    @Override
-    public void progressUpdate(Integer i) {
-        if (i == -1) {
-            mainActivity.cacheErr("dns error");
+        @Override
+        public void bytesFetched(HttpResponse request) {
+            String json;
+            try {
+                if (request.data != null) {
+                    json = new String(request.data, "UTF-8");
+                    last = new Date();
+                    List<Coin> coins = provider.parse(json, db);
+                    mainActivity.cacheUpdateDone(coins);
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void progressUpdate(Integer i) {
+            if (i == -1) {
+                mainActivity.cacheErr("dns error");
+            }
         }
     }
 }

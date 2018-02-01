@@ -13,12 +13,13 @@ import com.cointhink.cmc.Database;
 
 import android.util.Log;
 
-public class CoinMarketCap {
+public class CoinMarketCap implements Provider {
 
     public static String NAME = "coinmarketcap.com";
     public static String COIN_URL = "https://api.coinmarketcap.com/v1/ticker/?limit=100";
 
-    public static List<Coin> parse(String json, Database db) {
+    @Override
+    public List<Coin> parse(String json, Database db) {
         ArrayList<Coin> coins = new ArrayList<>();
         try {
             JSONArray arr = new JSONArray(json);
@@ -39,7 +40,8 @@ public class CoinMarketCap {
         return coins;
     }
 
-    public static Coin coinFormat(JSONObject o) throws JSONException {
+    @Override
+    public Coin coinFormat(JSONObject o) throws JSONException {
         Coin coin = new Coin();
         coin.name = o.getString("name");
         coin.symbol = o.getString("symbol");
