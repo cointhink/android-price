@@ -17,7 +17,6 @@ public class PrefsFragment extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(Constants.APP_TAG, "prefFrag onCreate");
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
     }
@@ -43,19 +42,19 @@ public class PrefsFragment extends PreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(Constants.APP_TAG, "prefsFragment onResume");
         refreshSummaries();
     }
 
     protected void refreshSummaries() {
-        for(String key: keys) {
+        for (String key : keys) {
             refreshSummary(key);
         }
     }
+
     public void refreshSummary(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
         String summary = sharedPrefs.getString(key, "<none>");
-        Log.d(Constants.APP_TAG, "prefSummary for "+key+" is "+summary);
+        Log.d(Constants.APP_TAG, "prefSummary for " + key + " is " + summary);
         preference.setSummary(summary);
     }
 }

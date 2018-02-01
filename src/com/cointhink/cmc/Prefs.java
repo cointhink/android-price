@@ -27,8 +27,29 @@ public class Prefs {
     private void ensureDefaults() {
         /* set default user preferences */
         Editor editor = sharedPrefs.edit();
-        /* Data Source: true */
+
+        /* Data Source: coinmarketcap */
         editor.putString(Constants.PREFERENCE_DATA_SOURCE, "coinmarketcap");
+
+        /* Data Source: coinmarketcap */
+        editor.putInt(Constants.PREFERENCE_DISPLAY_FRAG, 0);
+
+        /* prefs are now configured */
+        editor.putBoolean(KEY_CONFIGURED, true);
+
         editor.commit();
     }
- }
+
+    public void setDisplayFrag(int fragIdx) {
+        if (fragIdx <= 1) { // only page 0 or 1
+            Editor editor = sharedPrefs.edit();
+            editor.putInt(Constants.PREFERENCE_DISPLAY_FRAG, fragIdx);
+            editor.commit();
+        }
+    }
+
+    public int getDisplayFrag() {
+        int fragIdx = sharedPrefs.getInt(Constants.PREFERENCE_DISPLAY_FRAG, 0);
+        return fragIdx;
+    }
+}

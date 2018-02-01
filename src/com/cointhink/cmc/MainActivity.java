@@ -8,10 +8,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 
 public class MainActivity extends FragmentActivity
-        implements CacheCallbacks, FavoriteHandler, FragmentReadyListener {
+        implements CacheCallbacks, FavoriteHandler, FragmentReadyListener, OnPageChangeListener {
 
     private Cache cache;
     private Database db;
@@ -52,6 +53,9 @@ public class MainActivity extends FragmentActivity
 
         ViewPager pager = (ViewPager) super.findViewById(R.id.viewpager);
         pager.setAdapter(this.pagerAdapter);
+        pager.setOnPageChangeListener(this);
+        pager.setCurrentItem(prefs.getDisplayFrag());
+        Log.d(Constants.APP_TAG, "mainActivity setupFragments setCurrentItem "+prefs.getDisplayFrag());
     }
 
     @Override
@@ -66,13 +70,7 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public void onFragementReady() {
-        Log.d(Constants.APP_TAG, "MainActivity onFragmentReady.");
     }
-
-    // protected void switchFragment(Fragment fragment) {
-    // getSupportFragmentManager().beginTransaction()
-    // .replace(R.id.mainframe, fragment, "frags").commit();
-    // }
 
     @Override
     public void cacheUpdateDone(List<Coin> coins) {
@@ -135,6 +133,19 @@ public class MainActivity extends FragmentActivity
         fragCacheGoodFixup((CoinListFragment) pagerAdapter.getItem(1),
                 favCoins);
         return c.favorited;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int arg0) {
+    }
+
+    @Override
+    public void onPageScrolled(int arg0, float arg1, int arg2) {
+    }
+
+    @Override
+    public void onPageSelected(int fragIdx) {
+        prefs.setDisplayFrag(fragIdx);
     }
 
 }
