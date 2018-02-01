@@ -44,7 +44,7 @@ public class Cache {
                     json = new String(request.data, "UTF-8");
                     last = new Date();
                     List<Coin> coins = provider.parse(json, db);
-                    mainActivity.cacheUpdateDone(coins);
+                    mainActivity.cacheUpdateDone(coins, provider);
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();

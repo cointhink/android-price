@@ -39,7 +39,6 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
     public void onResume() {
         super.onResume();
         topTimeFreshen();
-        countFreshen();
         refreshing(this.refreshing);
     }
 

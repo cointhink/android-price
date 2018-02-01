@@ -42,8 +42,8 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
 
         if (findViewById(R.id.viewpager) != null) {
             CoinMasterListFragment masterFrag = new CoinMasterListFragment();
-            setupFragments(masterFrag, new CoinFavoritesFragment(),
-                    new PrefsFragment());
+            CoinFavoritesFragment favoritesFrag = new CoinFavoritesFragment();
+            setupFragments(masterFrag, favoritesFrag, new PrefsFragment());
         }
     }
 
@@ -67,18 +67,24 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         super.onResume();
         Log.d(Constants.APP_TAG, "MainActivity onResume.");
         if (cache.refreshNeeded()) {
-            String datasource = prefs.getDataSource();
-            int providerIdx = 0;
-            if (datasource.equals("coinmarketcap")) {
-                providerIdx = 0;
-            }
-            if (datasource.equals("coincapio")) {
-                providerIdx = 1;
-            }
-            Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh using "+datasource+" idx "+providerIdx);
-            Provider provider = providers.get(providerIdx);
+            Provider provider = providerFromPrefIndex();
             cache.launchRefresh(provider);
         }
+    }
+
+    public Provider providerFromPrefIndex() {
+        String datasource = prefs.getDataSource();
+        int providerIdx = 0;
+        if (datasource.equals("coinmarketcap")) {
+            providerIdx = 0;
+        }
+        if (datasource.equals("coincapio")) {
+            providerIdx = 1;
+        }
+        Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh using "
+                + datasource + " idx " + providerIdx);
+        Provider provider = providers.get(providerIdx);
+        return provider;
     }
 
     @Override
@@ -86,7 +92,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     }
 
     @Override
-    public void cacheUpdateDone(List<Coin> coins) {
+    public void cacheUpdateDone(List<Coin> coins, Provider provider) {
         Log.d(Constants.APP_TAG, "cacheUpdateDone()");
         if (coins == null) {
         } else {
@@ -96,11 +102,11 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
                     // (CoinListFragment) getSupportFragmentManager()
                     // .findFragmentById(R.id.masterListFragment);
                     (CoinListFragment) pagerAdapter.getItem(0);
-            fragCacheGoodFixup(masterFrag, coins);
+            fragCacheGoodFixup(masterFrag, coins, provider);
             ArrayList<Coin> favCoins = coinListFavFilter(coins);
             CoinListFragment favoritesFrag = (CoinListFragment) pagerAdapter
                     .getItem(1);
-            fragCacheGoodFixup(favoritesFrag, favCoins);
+            fragCacheGoodFixup(favoritesFrag, favCoins, provider);
         }
     }
 
@@ -115,12 +121,12 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         return favCoins;
     }
 
-    public void fragCacheGoodFixup(CoinListFragment fragment,
-            List<Coin> coins) {
+    public void fragCacheGoodFixup(CoinListFragment fragment, List<Coin> coins,
+            Provider provider) {
         fragment.fetchErr("");
         fragment.add(coins);
         fragment.topTime(cache.last);
-        fragment.countFreshen();
+        fragment.setDataSourceName(provider.getDisplayName());
         fragment.refreshing(false);
     }
 
@@ -143,8 +149,9 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         }
         db.update(c);
         ArrayList<Coin> favCoins = coinListFavFilter(coins);
-        fragCacheGoodFixup((CoinListFragment) pagerAdapter.getItem(1),
-                favCoins);
+        Provider provider = providerFromPrefIndex();
+        fragCacheGoodFixup((CoinListFragment) pagerAdapter.getItem(1), favCoins,
+                provider);
         return c.favorited;
     }
 

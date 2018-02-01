@@ -85,8 +85,8 @@ public class CoinListFragment extends Fragment implements IconCallback {
         return timeStr;
     }
 
-    public void countFreshen() {
-        topTextName.setText("coinmarketcap.com");
+    public void setDataSourceName(String name) {
+        topTextName.setText(name);
     }
 
     private String timeFmt(Date time) {

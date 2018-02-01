@@ -12,4 +12,5 @@ public interface Provider {
     List<Coin> parse(String json, Database db);
     Coin coinFormat(JSONObject o) throws JSONException;
     String getDataUrl();
+    String getDisplayName();
 }

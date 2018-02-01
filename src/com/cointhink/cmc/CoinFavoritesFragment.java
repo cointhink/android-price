@@ -29,7 +29,6 @@ public class CoinFavoritesFragment extends CoinListFragment {
     public void onResume() {
         super.onResume();
         topTimeFreshen();
-        countFreshen();
         refreshing(this.refreshing);
     }
 

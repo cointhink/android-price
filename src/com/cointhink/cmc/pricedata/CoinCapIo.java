@@ -62,4 +62,9 @@ public class CoinCapIo implements Provider {
     public String getDataUrl() {
         return COIN_URL;
     }
+
+    @Override
+    public String getDisplayName() {
+        return NAME;
+    }
 }

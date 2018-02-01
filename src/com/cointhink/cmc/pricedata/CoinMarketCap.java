@@ -76,4 +76,9 @@ public class CoinMarketCap implements Provider {
         return COIN_URL;
     }
 
+    @Override
+    public String getDisplayName() {
+        return NAME;
+    }
+
 }
