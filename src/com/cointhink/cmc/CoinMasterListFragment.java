@@ -21,7 +21,6 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        Log.d(Constants.APP_TAG, "masterListFragment onCreateView savedInstanceState: "+(savedInstanceState!=null));
         View view = inflater.inflate(R.layout.list_all_fragment, container,
                 false);
         listView = (ListView) view.findViewById(R.id.coinAllList);
@@ -31,7 +30,6 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
         favHand = (FavoriteHandler) getActivity();
         iconMgr = new IconMgr(getActivity(), this);
         adapter = new CoinMasterAdapter(this.getActivity(), coinList, iconMgr, this);
-        Log.d(Constants.APP_TAG, "masterListFragment made adapter "+adapter);
         listView.setAdapter(adapter);
         mListener.onFragementReady();
         return view;

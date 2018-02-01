@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import com.cointhink.cmc.pricedata.CoinCapIo;
 import com.cointhink.cmc.pricedata.CoinMarketCap;
 import com.cointhink.cmc.pricedata.Provider;
 
@@ -30,8 +31,6 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         setContentView(R.layout.view_pager);
 
         prefs = new Prefs(this);
-        Log.d(Constants.APP_TAG, "MainActivity onCreate prefs data_source "
-                + prefs.getDataSource());
 
         db = new Database(getApplicationContext()).open();
         Log.d(Constants.APP_TAG, "MainActivity onCreate db open. count count "
@@ -39,6 +38,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         cache = new Cache(this, db);
         providers = new ArrayList<>();
         providers.add(new CoinMarketCap());
+        providers.add(new CoinCapIo());
 
         if (findViewById(R.id.viewpager) != null) {
             CoinMasterListFragment masterFrag = new CoinMasterListFragment();
@@ -71,8 +71,17 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         super.onResume();
         Log.d(Constants.APP_TAG, "MainActivity onResume.");
         if (cache.refreshNeeded()) {
-            Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh.");
-            cache.launchRefresh(providers.get(0));
+            String datasource = prefs.getDataSource();
+            int providerIdx = 0;
+            if (datasource.equals("coinmarketcap")) {
+                providerIdx = 0;
+            }
+            if (datasource.equals("coincapio")) {
+                providerIdx = 1;
+            }
+            Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh using "+datasource+" idx "+providerIdx);
+            Provider provider = providers.get(providerIdx);
+            cache.launchRefresh(provider);
         }
     }
 

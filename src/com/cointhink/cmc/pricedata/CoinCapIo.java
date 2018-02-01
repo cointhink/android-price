@@ -43,9 +43,9 @@ public class CoinCapIo implements Provider {
         coin.symbol = o.getString("short");
         coin.price = o.getString("price");
         coin.marketCap = o.getString("mktcap");
-        //coin.chg_1h = o.getString("percent_change_1h");
+        // coin.chg_1h = o.getString("percent_change_1h");
         coin.chg_24h = o.getString("perc");
-        //coin.chg_7d = o.getString("percent_change_7d");
+        // coin.chg_7d = o.getString("percent_change_7d");
 
         coin.img_url = CoinMarketCap.imgUrl(coin.name);
 
@@ -56,5 +56,10 @@ public class CoinCapIo implements Provider {
          * "supply": 16820850, "usdVolume": 10486200000, "volume": 10486200000,
          * "vwapData": 10737.268666201282, "vwapDataBTC": 10737.268666201282 },
          */
+    }
+
+    @Override
+    public String getDataUrl() {
+        return COIN_URL;
     }
 }

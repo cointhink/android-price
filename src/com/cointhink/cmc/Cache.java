@@ -4,8 +4,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
-import com.cointhink.cmc.pricedata.CoinMarketCap;
 import com.cointhink.cmc.pricedata.Provider;
+
+import android.util.Log;
 
 public class Cache {
 
@@ -24,7 +25,8 @@ public class Cache {
 
     public void launchRefresh(Provider provider) {
         mainActivity.cacheUpdateStarted();
-        Net.cmcGet(null, CoinMarketCap.COIN_URL, new OnFetched(provider));
+        Log.d(Constants.APP_TAG, "cachelaunchRefresh using "+provider);
+        Net.cmcGet(null, provider.getDataUrl(), new OnFetched(provider));
     }
 
     class OnFetched implements FetchCallbacks {
