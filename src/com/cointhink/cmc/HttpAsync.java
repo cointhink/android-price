@@ -58,6 +58,7 @@ public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
                     outputStream.write(buffer, 0, read);
                 }
             }
+            publishProgress(-2);
             result = outputStream.toByteArray();
             // result = IOUtils.toByteArray(connection.getInputStream());
 
@@ -69,7 +70,6 @@ public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
         } finally {
             // connection.disconnect();
         }
-        publishProgress(-2);
 
         return new HttpResponse(request.coin, result);
     }
