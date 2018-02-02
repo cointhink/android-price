@@ -73,15 +73,15 @@ public abstract class CoinAdapter extends ArrayAdapter<Coin> {
             longStr = longStr.substring(0, decimalPos);
         }
         long longCap = Long.parseLong(longStr);
-        double count = longCap / 1000L;
-        String unit = "T";
-        if (longCap > 1e6) {
-            count = (longCap / 1e6);
-            unit = "M";
-        }
+        double count = longCap / 1e6;
+        String unit = "M";
         if (longCap > 1e9) {
             count = (longCap / 1e9);
             unit = "B";
+        }
+        if (longCap > 1e12) {
+            count = (longCap / 1e12);
+            unit = "T";
         }
         String countStr;
         if (count < 10) {

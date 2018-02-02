@@ -38,11 +38,12 @@ public class CoinCapIo implements Provider {
 
     @Override
     public Coin coinFormat(JSONObject o) throws JSONException {
+        Log.d(Constants.APP_TAG, ""+o);
         Coin coin = new Coin();
         coin.name = o.getString("long");
         coin.symbol = o.getString("short");
         coin.price = o.getString("price");
-        coin.marketCap = o.getString("mktcap");
+        coin.marketCap = ""+o.getLong("mktcap");
         // coin.chg_1h = o.getString("percent_change_1h");
         coin.chg_24h = o.getString("perc");
         // coin.chg_7d = o.getString("percent_change_7d");
