@@ -31,7 +31,7 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
         iconMgr = new IconMgr(getActivity(), this);
         adapter = new CoinMasterAdapter(this.getActivity(), coinList, iconMgr, this);
         listView.setAdapter(adapter);
-        mListener.onFragementReady();
+        mListener.onFragementReady(this);
         return view;
     }
 

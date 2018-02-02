@@ -57,6 +57,9 @@ public class Cache {
             if (i == -1) {
                 mainActivity.cacheErr("dns error");
             }
+            if (i == -2) {
+                mainActivity.cacheErr("parsing json");
+            }
         }
     }
 }

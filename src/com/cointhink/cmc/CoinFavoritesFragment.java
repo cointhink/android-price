@@ -22,6 +22,7 @@ public class CoinFavoritesFragment extends CoinListFragment {
         adapter = new CoinFavoritesAdapter(this.getActivity(), coinList,
                 iconMgr);
         listView.setAdapter(adapter);
+        mListener.onFragementReady(this);
         return view;
     }
 

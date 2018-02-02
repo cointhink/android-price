@@ -69,6 +69,7 @@ public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
         } finally {
             // connection.disconnect();
         }
+        publishProgress(-2);
 
         return new HttpResponse(request.coin, result);
     }

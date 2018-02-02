@@ -28,12 +28,16 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(Constants.APP_TAG,
+                "MainActivity onCreate bundle: "
+                        + ((savedInstanceState == null) ? "" : "true")
+                        + " pagerAdapter: " + pagerAdapter);
         setContentView(R.layout.view_pager);
 
         prefs = new Prefs(this);
 
         db = new Database(getApplicationContext()).open();
-        Log.d(Constants.APP_TAG, "MainActivity onCreate db open. count count "
+        Log.d(Constants.APP_TAG, "MainActivity onCreate db open. coin count "
                 + db.rowCount(Database.TABLE_COINS));
         cache = new Cache(this, db);
         providers = new ArrayList<>();
@@ -88,7 +92,10 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     }
 
     @Override
-    public void onFragementReady() {
+    public void onFragementReady(CoinListFragment frag) {
+        Log.d(Constants.APP_TAG, "onFragmentReady. setting " + frag);
+        Provider provider = providerFromPrefIndex();
+        frag.setDataSourceName(provider.getDisplayName());
     }
 
     @Override
@@ -133,11 +140,13 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     @Override
     public void cacheUpdateStarted() {
         ((CoinListFragment) pagerAdapter.getItem(0)).refreshing(true);
+        ((CoinListFragment) pagerAdapter.getItem(1)).refreshing(true);
     }
 
     @Override
     public void cacheErr(String err) {
         ((CoinListFragment) pagerAdapter.getItem(0)).fetchErr(err);
+        ((CoinListFragment) pagerAdapter.getItem(1)).fetchErr(err);
     }
 
     @Override
