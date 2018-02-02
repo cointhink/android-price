@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -14,7 +15,6 @@ public abstract class CoinAdapter extends ArrayAdapter<Coin> {
         super(context, 0, coinList);
         this.iconMgr = iconMgr;
     }
-
 
     protected String priceMangle(String price) {
         int decimalPos = price.indexOf(".");
@@ -29,7 +29,8 @@ public abstract class CoinAdapter extends ArrayAdapter<Coin> {
         }
         if (intPart.length() > 3) {
             int ilen = intPart.length();
-            intPart = intPart.substring(0,ilen-3)+","+intPart.substring(ilen-3, ilen);
+            intPart = intPart.substring(0, ilen - 3) + ","
+                    + intPart.substring(ilen - 3, ilen);
         }
         String mangled = intPart;
         int decSize = Math.max(0, 5 - intPart.length());
@@ -97,6 +98,13 @@ public abstract class CoinAdapter extends ArrayAdapter<Coin> {
         return capStr;
     }
 
+    public int floatToColor(float f) {
+        if (f < 0) {
+            return Color.RED;
+        } else {
+            return Color.argb(255, 0, 155, 0);
+        }
+    }
 
     public abstract void viewFreshed(View convertView, Coin coin);
 }

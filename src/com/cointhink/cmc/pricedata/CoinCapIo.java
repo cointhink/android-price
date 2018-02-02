@@ -47,7 +47,7 @@ public class CoinCapIo implements Provider {
         // coin.chg_1h = o.getString("percent_change_1h");
         coin.chg_24h = o.getString("perc");
         // coin.chg_7d = o.getString("percent_change_7d");
-
+        coin.vol_24h = ""+o.getLong("usdVolume");
         coin.img_url = CoinMarketCap.imgUrl(coin.name);
 
         return coin;

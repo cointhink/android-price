@@ -53,9 +53,12 @@ public class CoinMasterAdapter extends CoinAdapter {
         ((TextView) convertView.findViewById(R.id.coinPrice))
                 .setText(priceMangle(coin.price));
         ((TextView) convertView.findViewById(R.id.coinPercentages))
-                .setText("24h: " + coin.chg_24h+"%");
+                .setText("24h chg: " + coin.chg_24h + "% vol: $"
+                        + capParse(coin.vol_24h));
         // .setText("1h " + coin.chg_1h + "% 24h " + coin.chg_24h + "% 7d "
         // + coin.chg_7d + "%");
+        ((TextView) convertView.findViewById(R.id.coinPercentages))
+                .setTextColor(floatToColor(Float.parseFloat(coin.chg_24h)));
         ImageView favStar = (ImageView) convertView.findViewById(R.id.favStar);
         favStar.setOnClickListener(new View.OnClickListener() {
             @Override

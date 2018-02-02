@@ -36,7 +36,8 @@ public class CoinFavoritesAdapter extends CoinAdapter {
         // Lookup view for data population
         String capStr = capParse(coin.marketCap);
         ((TextView) convertView.findViewById(R.id.coinCap)).setText(capStr);
-        ImageView iconView = (ImageView) convertView.findViewById(R.id.coinIcon);
+        ImageView iconView = (ImageView) convertView
+                .findViewById(R.id.coinIcon);
         Bitmap icon = iconMgr.loadOrFetch(coin, coin.img_url);
         if (icon == null) {
             iconView.setImageResource(R.drawable.icon_blank);
@@ -49,8 +50,10 @@ public class CoinFavoritesAdapter extends CoinAdapter {
         ((TextView) convertView.findViewById(R.id.coinPrice))
                 .setText(priceMangle(coin.price));
         ((TextView) convertView.findViewById(R.id.coinPercentages))
-                .setText("1h " + coin.chg_1h + "% 24h " + coin.chg_24h + "% 7d "
-                        + coin.chg_7d + "%");
+                .setText("24h chg: " + coin.chg_24h + "% vol: $"
+                        + capParse(coin.vol_24h));
+        ((TextView) convertView.findViewById(R.id.coinPercentages))
+                .setTextColor(floatToColor(Float.parseFloat(coin.chg_24h)));
     }
 
 }

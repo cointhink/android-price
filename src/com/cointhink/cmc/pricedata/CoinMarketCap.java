@@ -47,6 +47,7 @@ public class CoinMarketCap implements Provider {
         coin.symbol = o.getString("symbol");
         coin.price = o.getString("price_usd");
         coin.marketCap = o.getString("market_cap_usd");
+        coin.vol_24h = o.getString("24h_volume_usd");
         coin.chg_1h = o.getString("percent_change_1h");
         coin.chg_24h = o.getString("percent_change_24h");
         coin.chg_7d = o.getString("percent_change_7d");
