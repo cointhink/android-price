@@ -53,7 +53,6 @@ public class Cache {
 
         @Override
         public void progressUpdate(Integer i) {
-            Log.d(Constants.APP_TAG, "progressUpdate: "+i);
             if (i == -1) {
                 mainActivity.cacheErr("dns error");
             }
