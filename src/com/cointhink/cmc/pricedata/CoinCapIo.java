@@ -19,8 +19,9 @@ public class CoinCapIo implements Provider {
 
     @Override
     public List<Coin> parse(String json, Database db) {
-        ArrayList<Coin> coins = new ArrayList<>();
+        ArrayList<Coin> coins = null;
         try {
+            coins = new ArrayList<>();
             JSONArray arr = new JSONArray(json);
             Log.d(Constants.APP_TAG,
                     "CoinCapIo parsing " + arr.length() + " records");

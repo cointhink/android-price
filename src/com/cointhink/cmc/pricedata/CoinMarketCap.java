@@ -16,12 +16,13 @@ import android.util.Log;
 public class CoinMarketCap implements Provider {
 
     public static String NAME = "coinmarketcap.com";
-    public static String COIN_URL = "https://api.coinmarketcap.com/v1/ticker/?limit=100";
+    public static String COIN_URL = "https://api.coinmarketcap.com/v1/ticker/";
 
     @Override
     public List<Coin> parse(String json, Database db) {
-        ArrayList<Coin> coins = new ArrayList<>();
+        ArrayList<Coin> coins = null; // null signals err
         try {
+            coins = new ArrayList<>();
             JSONArray arr = new JSONArray(json);
             Log.d(Constants.APP_TAG,
                     "coinmarketcap parsing " + arr.length() + " records");
