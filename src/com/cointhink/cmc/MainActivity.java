@@ -7,6 +7,8 @@ import java.util.Vector;
 import com.cointhink.cmc.pricedata.CoinCapIo;
 import com.cointhink.cmc.pricedata.CoinMarketCap;
 import com.cointhink.cmc.pricedata.Provider;
+import com.cointhink.cmc.ui.CoinFavoritesFragment;
+import com.cointhink.cmc.ui.CoinListFragment;
 import com.cointhink.cmc.ui.CoinMasterListFragment;
 
 import android.os.Bundle;

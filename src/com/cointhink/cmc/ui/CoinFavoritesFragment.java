@@ -1,4 +1,8 @@
-package com.cointhink.cmc;
+package com.cointhink.cmc.ui;
+
+import com.cointhink.cmc.CoinFavoritesAdapter;
+import com.cointhink.cmc.IconMgr;
+import com.cointhink.cmc.R;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

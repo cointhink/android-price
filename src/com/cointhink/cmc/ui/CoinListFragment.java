@@ -1,8 +1,15 @@
-package com.cointhink.cmc;
+package com.cointhink.cmc.ui;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.cointhink.cmc.Coin;
+import com.cointhink.cmc.CoinAdapter;
+import com.cointhink.cmc.Constants;
+import com.cointhink.cmc.FragmentReadyListener;
+import com.cointhink.cmc.IconCallback;
+import com.cointhink.cmc.IconMgr;
 
 import android.app.Activity;
 import android.graphics.Bitmap;

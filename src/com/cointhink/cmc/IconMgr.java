@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.cointhink.cmc.ui.CoinListFragment;
+
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
