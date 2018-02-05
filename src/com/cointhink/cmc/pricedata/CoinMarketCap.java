@@ -16,7 +16,7 @@ import android.util.Log;
 public class CoinMarketCap implements Provider {
 
     public static String NAME = "coinmarketcap.com";
-    public static String COIN_URL = "https://api.coinmarketcap.com/v1/ticker/";
+    public static String COIN_URL = "https://api.coinmarketcap.com/v1/ticker/?limit=0";
 
     @Override
     public List<Coin> parse(String json, Database db) {
