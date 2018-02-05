@@ -32,6 +32,7 @@ public class CoinListFragment extends Fragment implements IconCallback {
     protected TextView topTextTime;
     protected TextView topTextCount;
     protected CoinAdapter adapter;
+
     public boolean refreshing;
     protected FragmentReadyListener mListener;
 
@@ -61,10 +62,10 @@ public class CoinListFragment extends Fragment implements IconCallback {
     public void onAttach(Activity context) {
         super.onAttach(context);
         try {
-            this.mListener = (FragmentReadyListener)context;
-        }
-        catch (final ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement FragmentReadyListener");
+            this.mListener = (FragmentReadyListener) context;
+        } catch (final ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement FragmentReadyListener");
         }
     }
 

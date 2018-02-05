@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class CoinMasterAdapter extends CoinAdapter {
@@ -71,6 +72,13 @@ public class CoinMasterAdapter extends CoinAdapter {
         } else {
             favStar.setImageResource(android.R.drawable.star_off);
         }
+        LinearLayout coinNameBlock = (LinearLayout) convertView.findViewById(R.id.coinNameBlock);
+        coinNameBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                starClick.nameClick(coin, convertView);
+            }
+        });
 
     }
 

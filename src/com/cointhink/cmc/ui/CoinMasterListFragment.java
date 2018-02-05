@@ -70,4 +70,9 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
         adapter.viewFreshed(v, c);
     }
 
+    @Override
+    public void nameClick(Coin coin, View convertView) {
+        mListener.onCoinDetail(coin);
+    }
+
 }

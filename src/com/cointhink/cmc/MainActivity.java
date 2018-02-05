@@ -7,6 +7,7 @@ import java.util.Vector;
 import com.cointhink.cmc.pricedata.CoinCapIo;
 import com.cointhink.cmc.pricedata.CoinMarketCap;
 import com.cointhink.cmc.pricedata.Provider;
+import com.cointhink.cmc.ui.CoinDetail;
 import com.cointhink.cmc.ui.CoinFavoritesFragment;
 import com.cointhink.cmc.ui.CoinListFragment;
 import com.cointhink.cmc.ui.CoinMasterListFragment;
@@ -14,6 +15,7 @@ import com.cointhink.cmc.ui.CoinMasterListFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -27,6 +29,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     private List<Coin> coins;
     private Prefs prefs;
     private List<Provider> providers;
+    private CoinDetail detailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         if (findViewById(R.id.viewpager) != null) {
             CoinMasterListFragment masterFrag = new CoinMasterListFragment();
             CoinFavoritesFragment favoritesFrag = new CoinFavoritesFragment();
+            detailFragment = new CoinDetail();
             setupFragments(masterFrag, favoritesFrag, new PrefsFragment());
         }
     }
@@ -178,6 +182,14 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     @Override
     public void onPageSelected(int fragIdx) {
         prefs.setDisplayFrag(fragIdx);
+    }
+
+    @Override
+    public void onCoinDetail(Coin coin) {
+        Log.d(Constants.APP_TAG, "onCoinDetail " + coin);
+        FragmentManager mgr = super.getSupportFragmentManager();
+        mgr.beginTransaction().replace(R.id.viewpager, detailFragment)
+                .addToBackStack(null).commit();
     }
 
 }
