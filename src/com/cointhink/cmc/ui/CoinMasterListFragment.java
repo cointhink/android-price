@@ -1,6 +1,15 @@
-package com.cointhink.cmc;
+package com.cointhink.cmc.ui;
 
 import java.util.List;
+
+import com.cointhink.cmc.Coin;
+import com.cointhink.cmc.CoinListFragment;
+import com.cointhink.cmc.CoinMasterAdapter;
+import com.cointhink.cmc.Constants;
+import com.cointhink.cmc.FavoriteHandler;
+import com.cointhink.cmc.IconMgr;
+import com.cointhink.cmc.R;
+import com.cointhink.cmc.StarClick;
 
 import android.os.Bundle;
 import android.util.Log;
