@@ -11,11 +11,11 @@ import android.util.Log;
 public class Cache {
 
     Date last;
-    CacheCallbacks mainActivity;
+    CacheCallbacks activity;
     private Database db;
 
     public Cache(CacheCallbacks mainActivity, Database db) {
-        this.mainActivity = mainActivity;
+        this.activity = mainActivity;
         this.db = db;
     }
 
@@ -24,7 +24,7 @@ public class Cache {
     }
 
     public void launchRefresh(Provider provider) {
-        mainActivity.cacheUpdateStarted();
+        activity.cacheUpdateStarted();
         Log.d(Constants.APP_TAG, "cachelaunchRefresh using " + provider);
         Net.cmcGet(null, provider.getDataUrl(), new OnFetched(provider));
     }
@@ -44,7 +44,7 @@ public class Cache {
                     json = new String(request.data, "UTF-8");
                     last = new Date();
                     List<Coin> coins = provider.parse(json, db);
-                    mainActivity.cacheUpdateDone(coins, provider);
+                    activity.cacheUpdateDone(coins, provider);
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -54,10 +54,10 @@ public class Cache {
         @Override
         public void progressUpdate(Integer i) {
             if (i == -1) {
-                mainActivity.cacheErr("dns error");
+                activity.cacheErr("dns error");
             }
             if (i == -2) {
-                mainActivity.cacheErr("parsing json");
+                activity.cacheErr("parsing json");
             }
         }
     }

@@ -12,6 +12,7 @@ import com.cointhink.cmc.ui.CoinFavoritesFragment;
 import com.cointhink.cmc.ui.CoinListFragment;
 import com.cointhink.cmc.ui.CoinMasterListFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -56,8 +57,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
             CoinMasterListFragment masterFrag = new CoinMasterListFragment();
             CoinFavoritesFragment favoritesFrag = new CoinFavoritesFragment();
             detailFragment = new CoinDetail();
-            setupFragments(masterFrag, favoritesFrag, new PrefsFragment(),
-                    detailFragment);
+            setupFragments(masterFrag, favoritesFrag, new PrefsFragment());
         }
     }
 
@@ -192,11 +192,12 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     @Override
     public void onCoinDetail(Coin coin) {
         Log.d(Constants.APP_TAG, "onCoinDetail " + coin);
-        /*
-         * activity Intent intent = new Intent(this, DetailActivity.class);
-         * intent.putExtra("COIN_SYMBOL", coin.symbol); startActivity(intent);
-         */
-        pager.setCurrentItem(3, false);
+
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("COIN_SYMBOL", coin.symbol);
+        startActivity(intent);
+
+        // pager.setCurrentItem(3, false);
     }
 
     public void switchFragment(Fragment frag) {
