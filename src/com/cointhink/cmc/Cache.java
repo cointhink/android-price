@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class Cache {
 
-    Date last;
+    Date last = new Date(0);
     CacheCallbacks activity;
     private Database db;
 
@@ -20,7 +20,9 @@ public class Cache {
     }
 
     public boolean refreshNeeded() {
-        return true;
+        long diffSec = ((new Date()).getTime() - last.getTime()) / 1000;
+        Log.d(Constants.APP_TAG, "refreshNeeded: " + diffSec);
+        return diffSec > 30;
     }
 
     public void launchRefresh(Provider provider) {
