@@ -15,7 +15,7 @@ public class CoinDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        Log.d(Constants.APP_TAG, "CoinDetail.onCreateView");
+        Log.d(Constants.APP_TAG, "CoinDetail.onCreateView container "+container);
         View view = inflater.inflate(R.layout.coin_detail_fragment, container,
                 false);
         return view;

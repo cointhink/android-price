@@ -43,6 +43,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         prefs = new Prefs(this);
 
         db = new Database(getApplicationContext()).open();
+
         Log.d(Constants.APP_TAG, "MainActivity onCreate db open. coin count "
                 + db.rowCount(Database.TABLE_COINS));
         cache = new Cache(this, db);
@@ -64,7 +65,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
             fragments.add(fments[i]);
         }
 
-        this.pagerAdapter = new PagerAdapter(super.getSupportFragmentManager(),
+        this.pagerAdapter = new PagerAdapter(getSupportFragmentManager(),
                 fragments);
 
         ViewPager pager = (ViewPager) super.findViewById(R.id.viewpager);

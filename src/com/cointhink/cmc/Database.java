@@ -116,11 +116,11 @@ public class Database {
         Cursor cursor = db.query(Database.TABLE_COINS, null,
                 ROW_ID + " = ?", new String[] { ""+coinId }, null, null,
                 null, null);
+        int favInt = 0;
         if (cursor.moveToFirst()) {
-            int favInt = cursor.getInt(cursor.getColumnIndex(COINS_FAVORITED));
-            cursor.close();
-            return favInt == 1;
+            favInt = cursor.getInt(cursor.getColumnIndex(COINS_FAVORITED));
         }
-        return false;
+        cursor.close();
+        return favInt == 1;
     }
 }
