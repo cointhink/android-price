@@ -12,10 +12,10 @@ import com.cointhink.cmc.ui.CoinFavoritesFragment;
 import com.cointhink.cmc.ui.CoinListFragment;
 import com.cointhink.cmc.ui.CoinMasterListFragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -30,6 +30,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     private Prefs prefs;
     private List<Provider> providers;
     private CoinDetail detailFragment;
+    private ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,8 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
             CoinMasterListFragment masterFrag = new CoinMasterListFragment();
             CoinFavoritesFragment favoritesFrag = new CoinFavoritesFragment();
             detailFragment = new CoinDetail();
-            setupFragments(masterFrag, favoritesFrag, new PrefsFragment());
+            setupFragments(masterFrag, favoritesFrag, new PrefsFragment(),
+                    detailFragment);
         }
     }
 
@@ -68,7 +70,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         this.pagerAdapter = new PagerAdapter(getSupportFragmentManager(),
                 fragments);
 
-        ViewPager pager = (ViewPager) super.findViewById(R.id.viewpager);
+        pager = (ViewPager) super.findViewById(R.id.viewpager);
         pager.setAdapter(this.pagerAdapter);
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(prefs.getDisplayFrag());
@@ -182,13 +184,31 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
 
     @Override
     public void onPageSelected(int fragIdx) {
-        prefs.setDisplayFrag(fragIdx);
+        if (fragIdx == 0 || fragIdx == 1) {
+            prefs.setDisplayFrag(fragIdx);
+        }
     }
 
     @Override
     public void onCoinDetail(Coin coin) {
         Log.d(Constants.APP_TAG, "onCoinDetail " + coin);
-        startActivity(new Intent(this, DetailActivity.class));
+        /*
+         * activity Intent intent = new Intent(this, DetailActivity.class);
+         * intent.putExtra("COIN_SYMBOL", coin.symbol); startActivity(intent);
+         */
+        pager.setCurrentItem(3, false);
     }
 
+    public void switchFragment(Fragment frag) {
+        FragmentManager mgr = super.getSupportFragmentManager();
+        mgr.beginTransaction().replace(R.id.viewpager, detailFragment)
+                .addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (pager.getCurrentItem() == 3) {
+            pager.setCurrentItem(prefs.getDisplayFrag(), false);
+        }
+    }
 }
