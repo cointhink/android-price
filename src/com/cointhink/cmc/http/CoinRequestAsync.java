@@ -1,4 +1,4 @@
-package com.cointhink.cmc;
+package com.cointhink.cmc.http;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -7,23 +7,25 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.cointhink.cmc.Constants;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
+public class CoinRequestAsync extends AsyncTask<CoinRequest, Integer, CoinResponse> {
     public static final String REQUEST_METHOD = "GET";
     public static final int READ_TIMEOUT = 15000;
     public static final int CONNECTION_TIMEOUT = 15000;
     private FetchCallbacks fetcher;
 
-    public HttpAsync(FetchCallbacks fetcher) {
+    public CoinRequestAsync(FetchCallbacks fetcher) {
         super();
         this.fetcher = fetcher;
     }
 
     @Override
-    protected HttpResponse doInBackground(HttpRequest... params) {
-        HttpRequest request = params[0];
+    protected CoinResponse doInBackground(CoinRequest... params) {
+        CoinRequest request = params[0];
         byte[] result;
 
         Log.d(Constants.APP_TAG, "HTTP GET " + request.url);
@@ -71,7 +73,7 @@ public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
             // connection.disconnect();
         }
 
-        return new HttpResponse(request.coin, result);
+        return new CoinResponse(request.coin, result);
     }
 
     // runs on the UI thread
@@ -82,7 +84,7 @@ public class HttpAsync extends AsyncTask<HttpRequest, Integer, HttpResponse> {
 
     // runs on the UI thread
     @Override
-    protected void onPostExecute(HttpResponse response) {
+    protected void onPostExecute(CoinResponse response) {
         super.onPostExecute(response);
         if (response.data != null) {
             // Log.d(Constants.APP_TAG,

@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
+import com.cointhink.cmc.http.CoinResponse;
+import com.cointhink.cmc.http.FetchCallbacks;
 import com.cointhink.cmc.pricedata.Provider;
 
 import android.util.Log;
@@ -39,7 +41,7 @@ public class Cache {
         }
 
         @Override
-        public void bytesFetched(HttpResponse request) {
+        public void bytesFetched(CoinResponse request) {
             String json;
             try {
                 if (request.data != null) {

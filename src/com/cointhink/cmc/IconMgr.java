@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.cointhink.cmc.http.CoinResponse;
+import com.cointhink.cmc.http.FetchCallbacks;
+
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
@@ -45,7 +48,7 @@ public class IconMgr implements FetchCallbacks {
     }
 
     @Override
-    public void bytesFetched(HttpResponse response) {
+    public void bytesFetched(CoinResponse response) {
         if (response.data != null) {
             try {
                 String path = iconPath(response.coin.symbol);
