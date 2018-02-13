@@ -59,7 +59,7 @@ public class Cache {
                 activity.cacheErr("dns error");
             }
             if (i == -2) {
-                activity.cacheErr("parsing json");
+                activity.cacheErr("parsing");
             }
         }
     }

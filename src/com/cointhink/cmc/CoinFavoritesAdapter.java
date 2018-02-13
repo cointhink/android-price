@@ -8,12 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class CoinFavoritesAdapter extends CoinAdapter {
+    private StarClick starClick;
+
     public CoinFavoritesAdapter(Context context, List<Coin> coinList,
-            IconMgr iconMgr) {
+            IconMgr iconMgr,  StarClick starClick) {
         super(context, coinList, iconMgr);
+        this.starClick = starClick;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class CoinFavoritesAdapter extends CoinAdapter {
     }
 
     @Override
-    public void viewFreshed(View convertView, Coin coin) {
+    public void viewFreshed(final View convertView, final Coin coin) {
         // Lookup view for data population
         String capStr = capParse(coin.marketCap);
         ((TextView) convertView.findViewById(R.id.coinCap)).setText(capStr);
@@ -54,6 +58,13 @@ public class CoinFavoritesAdapter extends CoinAdapter {
                         + capParse(coin.vol_24h));
         ((TextView) convertView.findViewById(R.id.coinPercentages))
                 .setTextColor(floatToColor(Float.parseFloat(coin.chg_24h)));
+        LinearLayout coinNameBlock = (LinearLayout) convertView.findViewById(R.id.coinNameBlock);
+        coinNameBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                starClick.nameClick(coin, convertView);
+            }
+        });
     }
 
 }

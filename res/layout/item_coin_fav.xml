@@ -11,9 +11,9 @@
         android:id="@+id/coinIcon"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/icon_blank" 
-        android:paddingLeft="5sp" />
-    
+        android:paddingLeft="5sp"
+        android:src="@drawable/icon_blank" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,6 +57,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/coinNameBlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="2"
@@ -98,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="17dp"
-            android:textStyle="bold"  />
+            android:textStyle="bold" />
     </LinearLayout>
-    
+
 </LinearLayout>
