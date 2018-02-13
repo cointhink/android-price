@@ -16,7 +16,7 @@ public abstract class CoinAdapter extends ArrayAdapter<Coin> {
         this.iconMgr = iconMgr;
     }
 
-    protected String priceMangle(String price) {
+    public static String priceMangle(String price) {
         int decimalPos = price.indexOf(".");
         int sigFigInt, sigFigDec;
         String intPart, decPart;
@@ -48,7 +48,7 @@ public abstract class CoinAdapter extends ArrayAdapter<Coin> {
 
     }
 
-    protected String decMassage(String decPart, int bestLen) {
+    protected static String decMassage(String decPart, int bestLen) {
         if (bestLen == 1) {
             bestLen = 2; // USD-like
         }

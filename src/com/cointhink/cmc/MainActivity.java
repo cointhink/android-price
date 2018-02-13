@@ -194,7 +194,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         Log.d(Constants.APP_TAG, "onCoinDetail " + coin);
 
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra("COIN_SYMBOL", coin.symbol);
+        intent.putExtra("COIN_JSON", coin.toJson());
         startActivity(intent);
 
         // pager.setCurrentItem(3, false);

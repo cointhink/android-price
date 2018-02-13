@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.cointhink.cmc.ui.CoinListFragment;
-
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
@@ -17,7 +15,7 @@ public class IconMgr implements FetchCallbacks {
     private File directory;
     private IconCallback iconCallback;
 
-    public IconMgr(Context context, CoinListFragment coinListFragment) {
+    public IconMgr(Context context, IconCallback coinListFragment) {
         ContextWrapper cw = new ContextWrapper(context);
         iconCallback = coinListFragment;
         // Create imageDir
