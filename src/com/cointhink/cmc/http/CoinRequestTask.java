@@ -12,13 +12,13 @@ import com.cointhink.cmc.Constants;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class CoinRequestAsync extends AsyncTask<CoinRequest, Integer, CoinResponse> {
+public class CoinRequestTask extends AsyncTask<CoinRequest, Integer, CoinResponse> {
     public static final String REQUEST_METHOD = "GET";
     public static final int READ_TIMEOUT = 15000;
     public static final int CONNECTION_TIMEOUT = 15000;
     private FetchCallbacks fetcher;
 
-    public CoinRequestAsync(FetchCallbacks fetcher) {
+    public CoinRequestTask(FetchCallbacks fetcher) {
         super();
         this.fetcher = fetcher;
     }

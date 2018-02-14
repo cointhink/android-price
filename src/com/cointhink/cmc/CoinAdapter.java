@@ -98,7 +98,7 @@ public abstract class CoinAdapter extends ArrayAdapter<Coin> {
         return capStr;
     }
 
-    public int floatToColor(float f) {
+    public static int floatToColor(float f) {
         if (f < 0) {
             return Color.RED;
         } else {

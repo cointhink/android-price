@@ -49,6 +49,7 @@ public class DetailActivity extends Activity
         name.setText(coin.name);
         TextView price = ((TextView) findViewById(R.id.detail_coinPrice));
         price.setText(CoinAdapter.priceMangle(coin.price));
+        price.setTextColor(CoinAdapter.floatToColor(Float.parseFloat(coin.chg_24h)));
     }
 
     @Override
