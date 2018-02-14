@@ -2,9 +2,8 @@ package com.cointhink.cmc.http;
 
 import com.cointhink.cmc.Coin;
 
-public class CoinRequest {
+public class CoinRequest extends Request {
     public Coin coin;
-    public String url;
 
     public CoinRequest(Coin coin, String url) {
         this.coin = coin;

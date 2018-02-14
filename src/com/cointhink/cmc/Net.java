@@ -18,7 +18,7 @@ public class Net {
 
     public static void redditGet(String subreddit, FetchCallbacks callback) {
         RedditRequestTask task = new RedditRequestTask(callback);
-        RedditRequest request = new RedditRequest("/r/btc");
+        RedditRequest request = new RedditRequest(subreddit);
         task.execute(request);
     }
 }

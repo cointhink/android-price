@@ -2,6 +2,8 @@ package com.cointhink.cmc;
 
 import java.util.List;
 
+import com.cointhink.cmc.http.FetchCallbacks;
+import com.cointhink.cmc.http.Response;
 import com.cointhink.cmc.pricedata.Provider;
 
 import android.app.Activity;
@@ -33,6 +35,22 @@ public class DetailActivity extends Activity
 
         setContentView(R.layout.detail_activity);
         uiFreshen(coin);
+        redditFreshen("/r/btc");
+    }
+
+    private void redditFreshen(String subreddit) {
+        Net.redditGet(subreddit, new OnFetched());
+    }
+
+    class OnFetched implements FetchCallbacks {
+
+        @Override
+        public void bytesFetched(Response response) {
+        }
+
+        @Override
+        public void progressUpdate(Integer i) {
+        }
     }
 
     public void uiFreshen(Coin coin) {
@@ -51,7 +69,8 @@ public class DetailActivity extends Activity
         price.setText(CoinAdapter.priceMangle(coin.price));
         TextView vol24 = ((TextView) findViewById(R.id.detail_coinVolume));
         vol24.setText(CoinAdapter.capParse(coin.vol_24h));
-        vol24.setTextColor(CoinAdapter.floatToColor(Float.parseFloat(coin.chg_24h)));
+        vol24.setTextColor(
+                CoinAdapter.floatToColor(Float.parseFloat(coin.chg_24h)));
     }
 
     @Override

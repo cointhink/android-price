@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import com.cointhink.cmc.http.CoinResponse;
 import com.cointhink.cmc.http.FetchCallbacks;
+import com.cointhink.cmc.http.Response;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -48,17 +49,18 @@ public class IconMgr implements FetchCallbacks {
     }
 
     @Override
-    public void bytesFetched(CoinResponse response) {
+    public void bytesFetched(Response response) {
         if (response.data != null) {
             try {
-                String path = iconPath(response.coin.symbol);
+                CoinResponse coinResponse = (CoinResponse) response;
+                String path = iconPath(coinResponse.coin.symbol);
                 Log.d(Constants.APP_TAG, "icon saved " + response.data.length
                         + " bytes to " + path);
                 FileOutputStream fos = new FileOutputStream(path);
                 fos.write(response.data);
                 fos.close();
                 if (iconCallback != null) {
-                    iconCallback.iconReady(response.coin, fileToBitmap(path));
+                    iconCallback.iconReady(coinResponse.coin, fileToBitmap(path));
                 } else {
                     Log.d(Constants.APP_TAG, "icon callback is null!");
                 }

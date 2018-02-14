@@ -2,9 +2,8 @@ package com.cointhink.cmc.http;
 
 import com.cointhink.cmc.Coin;
 
-public class CoinResponse {
+public class CoinResponse extends Response {
     public Coin coin;
-    public byte[] data;
 
     public CoinResponse(Coin coin, byte[] data) {
         this.coin = coin;
