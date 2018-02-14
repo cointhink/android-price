@@ -12,17 +12,18 @@ import com.cointhink.cmc.Constants;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class RedditRequestTask  extends AsyncTask<RedditRequest, Integer, RedditResponse> {
+public class RedditRequestTask
+        extends AsyncTask<RedditRequest, Integer, RedditResponse> {
 
     public static final String REQUEST_METHOD = "GET";
     public static final int READ_TIMEOUT = 15000;
     public static final int CONNECTION_TIMEOUT = 15000;
 
-    private FetchCallbacks fetcher;
+    private FetchCallbacks callback;
 
     public RedditRequestTask(FetchCallbacks callback) {
         super();
-        this.fetcher = fetcher;
+        this.callback = callback;
     }
 
     @Override
@@ -78,4 +79,16 @@ public class RedditRequestTask  extends AsyncTask<RedditRequest, Integer, Reddit
         return new RedditResponse(result);
     }
 
+    // runs on the UI thread
+    @Override
+    protected void onPostExecute(RedditResponse response) {
+        super.onPostExecute(response);
+        if (response.data != null) {
+            // Log.d(Constants.APP_TAG,
+            // "Background fetch done. result len " + response.data.length);
+        } else {
+            Log.d(Constants.APP_TAG, "Background fetch done. result NULL ");
+        }
+        callback.bytesFetched(response);
+    }
 }

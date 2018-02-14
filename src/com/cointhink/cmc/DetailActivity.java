@@ -1,5 +1,6 @@
 package com.cointhink.cmc;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import com.cointhink.cmc.http.FetchCallbacks;
@@ -43,9 +44,18 @@ public class DetailActivity extends Activity
     }
 
     class OnFetched implements FetchCallbacks {
-
         @Override
         public void bytesFetched(Response response) {
+            Log.d(Constants.APP_TAG, "DetailActivity bytesFetched "+response);
+            String json;
+            try {
+                if (response.data != null) {
+                    json = new String(response.data, "UTF-8");
+                    Log.d(Constants.APP_TAG, "DetailActivity bytesFetched: "+json.length());
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
