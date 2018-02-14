@@ -60,9 +60,37 @@
             android:layout_height="wrap_content"
             android:paddingLeft="3sp"
             android:paddingRight="1sp"
-            android:text="Coin Title"
+            android:text="Coin Price"
             android:textSize="23dp"
             android:textStyle="bold|normal" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+        android:gravity="center"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="0sp"
+            android:paddingRight="0sp"
+            android:text="24 hr volume $"
+            android:textSize="19dp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/detail.coinVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3sp"
+            android:paddingRight="1sp"
+            android:text="Coin Volume"
+            android:textSize="23dp"
+            android:textStyle="bold|normal" />
+    </LinearLayout>
+    
 </LinearLayout>

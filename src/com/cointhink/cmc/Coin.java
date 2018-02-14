@@ -38,7 +38,9 @@ public class Coin implements Sqlable {
             coin.name = obj.getString("name");
             coin.symbol = obj.getString("symbol");
             coin.price = obj.getString("price");
-            coin.chg_24h= obj.getString("chg_24h");
+            coin.chg_24h = obj.getString("chg_24h");
+            coin.vol_24h = obj.getString("vol_24h");
+            coin.marketCap = obj.getString("marketCap");
         } catch (JSONException e) {
             Log.e(Constants.APP_TAG, "Error parsing coin " + e);
         }
@@ -52,6 +54,8 @@ public class Coin implements Sqlable {
             obj.put("symbol", symbol);
             obj.put("price", price);
             obj.put("chg_24h", chg_24h);
+            obj.put("vol_24h", vol_24h);
+            obj.put("marketCap", marketCap);
         } catch (JSONException e) {
             Log.e(Constants.APP_TAG, "Error encoding coin " + e);
         }

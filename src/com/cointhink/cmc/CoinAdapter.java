@@ -68,7 +68,7 @@ public abstract class CoinAdapter extends ArrayAdapter<Coin> {
         return decPart;
     }
 
-    protected String capParse(String longStr) {
+    public static String capParse(String longStr) {
         int decimalPos = longStr.indexOf(".");
         if (decimalPos > 0) {
             longStr = longStr.substring(0, decimalPos);
