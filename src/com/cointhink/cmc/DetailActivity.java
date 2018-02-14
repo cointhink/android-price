@@ -3,6 +3,9 @@ package com.cointhink.cmc;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.cointhink.cmc.http.FetchCallbacks;
 import com.cointhink.cmc.http.Response;
 import com.cointhink.cmc.pricedata.Provider;
@@ -51,9 +54,13 @@ public class DetailActivity extends Activity
             try {
                 if (response.data != null) {
                     json = new String(response.data, "UTF-8");
-                    Log.d(Constants.APP_TAG, "DetailActivity bytesFetched: "+json.length());
+                    JSONObject jo = new JSONObject(json);
+                    Log.d(Constants.APP_TAG, "DetailActivity jo: "+jo.length());
                 }
             } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
