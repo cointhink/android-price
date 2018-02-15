@@ -41,16 +41,12 @@ public class DetailActivity extends Activity
 
         setContentView(R.layout.detail_activity);
         uiFreshen(coin);
-        redditFreshen(coin.symbol);
+        redditFreshen(coin);
     }
 
-    private void redditFreshen(String symbol) {
-        String subreddit = symbolToSubreddit(symbol);
+    private void redditFreshen(Coin coin) {
+        String subreddit = Reddit.coinToSubreddit(coin);
         Net.redditGet(subreddit, new OnFetched());
-    }
-
-    private String symbolToSubreddit(String symbol) {
-        return "r/" + symbol; // hack
     }
 
     class OnFetched implements FetchCallbacks {
@@ -125,11 +121,11 @@ public class DetailActivity extends Activity
         vol24.setTextColor(
                 CoinAdapter.floatToColor(Float.parseFloat(coin.chg_24h)));
         TextView sub= ((TextView) findViewById(R.id.detail_coinSubreddit1));
-        sub.setText(symbolToSubreddit(coin.symbol));
+        sub.setText(Reddit.coinToSubreddit(coin));
         sub= ((TextView) findViewById(R.id.detail_coinSubreddit2));
-        sub.setText(symbolToSubreddit(coin.symbol));
+        sub.setText(Reddit.coinToSubreddit(coin));
         sub= ((TextView) findViewById(R.id.detail_coinSubreddit3));
-        sub.setText(symbolToSubreddit(coin.symbol));
+        sub.setText(Reddit.coinToSubreddit(coin));
     }
 
     public void redditUiFreshen(List<String> headlines) {
