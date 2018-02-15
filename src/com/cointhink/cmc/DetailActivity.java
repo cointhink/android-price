@@ -1,8 +1,10 @@
 package com.cointhink.cmc;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,23 +41,38 @@ public class DetailActivity extends Activity
 
         setContentView(R.layout.detail_activity);
         uiFreshen(coin);
-        redditFreshen("/r/btc");
+        redditFreshen(coin.symbol);
     }
 
-    private void redditFreshen(String subreddit) {
+    private void redditFreshen(String symbol) {
+        String subreddit = symbolToSubreddit(symbol);
         Net.redditGet(subreddit, new OnFetched());
+    }
+
+    private String symbolToSubreddit(String symbol) {
+        return "r/" + symbol; // hack
     }
 
     class OnFetched implements FetchCallbacks {
         @Override
         public void bytesFetched(Response response) {
-            Log.d(Constants.APP_TAG, "DetailActivity bytesFetched "+response);
+            Log.d(Constants.APP_TAG, "DetailActivity bytesFetched " + response);
             String json;
             try {
                 if (response.data != null) {
                     json = new String(response.data, "UTF-8");
                     JSONObject jo = new JSONObject(json);
-                    Log.d(Constants.APP_TAG, "DetailActivity jo: "+jo.length());
+                    if (jo.has("error")) {
+                        Log.d(Constants.APP_TAG, "DetailActivity err: "
+                                + jo.getString("message"));
+                    } else {
+                        JSONArray posts = jo.getJSONObject("data")
+                                .getJSONArray("children");
+                        Log.d(Constants.APP_TAG,
+                                "DetailActivity posts: " + posts.length());
+                        List<String> headlines = nonPinned(posts);
+                        redditUiFreshen(headlines);
+                    }
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -63,6 +80,25 @@ public class DetailActivity extends Activity
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        }
+
+        private List<String> nonPinned(JSONArray posts) {
+            ArrayList<String> subjects = new ArrayList();
+            for (int i = 0, l = posts.length(); i < l; i++) {
+                try {
+                    JSONObject post = ((JSONObject) posts.get(i))
+                            .getJSONObject("data");
+                    Log.d(Constants.APP_TAG, "DetailActivity pin post " + i
+                            + " pinned " + post.getBoolean("pinned"));
+                    if (post.getBoolean("pinned") == false
+                            && post.getBoolean("stickied") == false) {
+                        subjects.add(post.getString("title"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return subjects;
         }
 
         @Override
@@ -88,6 +124,26 @@ public class DetailActivity extends Activity
         vol24.setText(CoinAdapter.capParse(coin.vol_24h));
         vol24.setTextColor(
                 CoinAdapter.floatToColor(Float.parseFloat(coin.chg_24h)));
+        TextView sub= ((TextView) findViewById(R.id.detail_coinSubreddit1));
+        sub.setText(symbolToSubreddit(coin.symbol));
+        sub= ((TextView) findViewById(R.id.detail_coinSubreddit2));
+        sub.setText(symbolToSubreddit(coin.symbol));
+        sub= ((TextView) findViewById(R.id.detail_coinSubreddit3));
+        sub.setText(symbolToSubreddit(coin.symbol));
+    }
+
+    public void redditUiFreshen(List<String> headlines) {
+        int[] views = new int[]{R.id.detail_coinReddit1,R.id.detail_coinReddit2,R.id.detail_coinReddit3};
+        for(int i=0, l=Math.min(views.length,headlines.size()); i < l; i++){
+            TextView headline = ((TextView) findViewById(
+                    views[i]));
+            if (headline != null) {
+                Log.d(Constants.APP_TAG, "reddit widget "+i+": " + headlines);
+                headline.setText(headlines.get(i));
+            } else {
+                Log.d(Constants.APP_TAG, "reddit widget missing!");
+            }
+        }
     }
 
     @Override

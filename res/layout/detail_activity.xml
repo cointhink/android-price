@@ -1,96 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/detail.coinIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:paddingLeft="5sp"
+                android:src="@drawable/icon_blank" />
+
+            <TextView
+                android:id="@+id/detail.coinSymbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5sp"
+                android:paddingRight="1sp"
+                android:text="---"
+                android:textSize="23dp"
+                android:textStyle="bold|normal" />
+
+            <TextView
+                android:id="@+id/detail.coinName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5sp"
+                android:paddingRight="1sp"
+                android:text="Coin Name"
+                android:textSize="23dp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="0sp"
+                android:paddingRight="0sp"
+                android:text="$"
+                android:textSize="19dp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/detail.coinPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3sp"
+                android:paddingRight="1sp"
+                android:text="Coin Price"
+                android:textSize="23dp"
+                android:textStyle="bold|normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="0sp"
+                android:paddingRight="0sp"
+                android:text="24 hr volume $"
+                android:textSize="19dp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/detail.coinVolume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3sp"
+                android:paddingRight="1sp"
+                android:text="Coin Volume"
+                android:textSize="23dp"
+                android:textStyle="bold|normal" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="3sp" >
+
+        <TextView
+            android:id="@+id/detail.coinSubreddit1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3sp"
+            android:paddingRight="1sp"
+            android:text="Reddit"
+            android:textSize="11dp"
+            android:textStyle="bold|normal" />
+
+        <TextView
+            android:id="@+id/detail.coinReddit1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3sp"
+            android:paddingRight="1sp"
+            android:text="Reddit"
+            android:textSize="12dp"
+            android:textStyle="normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/detail.coinIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:paddingLeft="5sp"
-            android:src="@drawable/icon_blank" />
-
         <TextView
-            android:id="@+id/detail.coinSymbol"
+            android:id="@+id/detail.coinSubreddit2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5sp"
+            android:paddingLeft="3sp"
             android:paddingRight="1sp"
-            android:text="---"
-            android:textSize="23dp"
+            android:text="Reddit"
+            android:textSize="11dp"
             android:textStyle="bold|normal" />
 
         <TextView
-            android:id="@+id/detail.coinName"
+            android:id="@+id/detail.coinReddit2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5sp"
+            android:paddingLeft="3sp"
             android:paddingRight="1sp"
-            android:text="Coin Name"
-            android:textSize="23dp"
+            android:text="Reddit"
+            android:textSize="12dp"
             android:textStyle="normal" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" 
-        android:gravity="center"
-        >
+        android:orientation="horizontal" >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingLeft="0sp"
-            android:paddingRight="0sp"
-            android:text="$"
-            android:textSize="19dp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:id="@+id/detail.coinPrice"
+            android:id="@+id/detail.coinSubreddit3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="3sp"
             android:paddingRight="1sp"
-            android:text="Coin Price"
-            android:textSize="23dp"
+            android:text="Reddit"
+            android:textSize="11dp"
             android:textStyle="bold|normal" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" 
-        android:gravity="center"
-        >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingLeft="0sp"
-            android:paddingRight="0sp"
-            android:text="24 hr volume $"
-            android:textSize="19dp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:id="@+id/detail.coinVolume"
+            android:id="@+id/detail.coinReddit3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="3sp"
             android:paddingRight="1sp"
-            android:text="Coin Volume"
-            android:textSize="23dp"
-            android:textStyle="bold|normal" />
+            android:text="Reddit"
+            android:textSize="12dp"
+            android:textStyle="normal" />
     </LinearLayout>
-    
+
 </LinearLayout>
