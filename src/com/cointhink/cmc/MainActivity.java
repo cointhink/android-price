@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.android.vending.billing.IInAppBillingService;
 import com.cointhink.cmc.pricedata.CoinCapIo;
 import com.cointhink.cmc.pricedata.CoinMarketCap;
 import com.cointhink.cmc.pricedata.Provider;
@@ -13,8 +17,15 @@ import com.cointhink.cmc.ui.CoinListFragment;
 import com.cointhink.cmc.ui.CoinMasterListFragment;
 import com.cointhink.cmc.ui.PrefsFragment;
 
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -33,6 +44,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     private List<Provider> providers;
     private CoinDetail detailFragment;
     private ViewPager pager;
+    private IInAppBillingService mService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +75,11 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
 
         prefs.versionToast();
 
+        Intent serviceIntent = new Intent(
+                "com.android.vending.billing.InAppBillingService.BIND");
+        serviceIntent.setPackage("com.android.vending");
+        bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
+
     }
 
     private void setupFragments(Fragment... fments) {
@@ -87,6 +104,14 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         if (cache.refreshNeeded()) {
             Provider provider = providerFromPrefIndex();
             cache.launchRefresh(provider);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mService != null) {
+            unbindService(mServiceConn);
         }
     }
 
@@ -214,6 +239,60 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     public void onBackPressed() {
         if (pager.getCurrentItem() == 3) {
             pager.setCurrentItem(prefs.getDisplayFrag(), false);
+        }
+    }
+
+    ServiceConnection mServiceConn = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mService = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mService = IInAppBillingService.Stub.asInterface(service);
+        }
+    };
+
+    String sku = "cointhinkprice_deluxe";
+    final int REQUEST_CODE = 1001;
+
+    public void buy() {
+        Bundle buyIntentBundle;
+        try {
+            buyIntentBundle = mService.getBuyIntent(3, getPackageName(), sku,
+                    "inapp", null);
+            PendingIntent pendingIntent = buyIntentBundle
+                    .getParcelable("BUY_INTENT");
+            startIntentSenderForResult(pendingIntent.getIntentSender(),
+                    REQUEST_CODE, new Intent(), Integer.valueOf(0),
+                    Integer.valueOf(0), Integer.valueOf(0));
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SendIntentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+        if (requestCode == REQUEST_CODE) {
+            int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
+            String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
+            String dataSignature = data.getStringExtra("INAPP_DATA_SIGNATURE");
+
+            if (resultCode == RESULT_OK) {
+                try {
+                    JSONObject jo = new JSONObject(purchaseData);
+                    String sku = jo.getString("productId");
+                    Log.d(Constants.APP_TAG, "PURCHASE");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
