@@ -69,4 +69,13 @@ public class Prefs {
         }
     }
 
+    public String providerFullName() {
+        String dataSource = getDataSource();
+        String[] keys = context.getResources().getStringArray(R.array.ProvidersKeys);
+        int idx = 0;
+        for(int l=keys.length; idx < l; idx++) {
+            if(keys[idx].equals(dataSource)) break;
+        }
+        return context.getResources().getStringArray(R.array.Providers)[idx];
+    }
 }

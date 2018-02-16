@@ -32,6 +32,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements CacheCallbacks,
         FavoriteHandler, FragmentReadyListener, OnPageChangeListener {
@@ -265,6 +266,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         try {
             if (mService == null) {
                 Log.d(Constants.APP_TAG, "InApp Purchase Service is missing");
+                Toast.makeText(this, "In-App-Purchase is Unavailable!", Toast.LENGTH_SHORT).show();
             } else {
                 buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
                         sku, "inapp", null);
@@ -301,5 +303,9 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
                 }
             }
         }
+    }
+
+    public String prefDataSourceName() {
+        return prefs.providerFullName();
     }
 }

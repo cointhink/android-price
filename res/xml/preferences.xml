@@ -13,5 +13,10 @@
         android:summary=""
         android:title="Version" >
     </Preference>
-
+    <Preference
+        android:key="beer"
+        android:summary="Send a beer to the developer"
+        android:title="Beer" >
+    </Preference>
+    
 </PreferenceScreen>

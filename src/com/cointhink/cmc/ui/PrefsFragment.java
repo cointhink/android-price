@@ -61,19 +61,20 @@ public class PrefsFragment extends PreferenceFragment
     public void refreshSummary(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
         String summary = sharedPrefs.getString(key, "<none>");
+
+        if (key.equals(Constants.PREFERENCE_DATA_SOURCE)) {
+            summary = ((MainActivity) getActivity()).prefDataSourceName();
+        }
         Log.d(Constants.APP_TAG, "prefSummary for " + key + " is " + summary);
         preference.setSummary(summary);
     }
 
     private void addMyResetListener() {
-        Preference reset = findPreference(Constants.PREFERENCE_VERSION);
-        reset.setOnPreferenceClickListener(new OnPreferenceClickListener()
-        {
+        Preference reset = findPreference(Constants.PREFERENCE_BEER);
+        reset.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference pref)
-            {
-                Log.d(Constants.APP_TAG, "pref Version click");
-                ((MainActivity)getActivity()).buy();
+            public boolean onPreferenceClick(Preference pref) {
+                ((MainActivity) getActivity()).buy();
                 return true;
             }
         });
