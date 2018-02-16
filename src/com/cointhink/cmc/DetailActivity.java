@@ -84,8 +84,6 @@ public class DetailActivity extends Activity
                 try {
                     JSONObject post = ((JSONObject) posts.get(i))
                             .getJSONObject("data");
-                    Log.d(Constants.APP_TAG, "DetailActivity pin post " + i
-                            + " pinned " + post.getBoolean("pinned"));
                     if (post.getBoolean("pinned") == false
                             && post.getBoolean("stickied") == false) {
                         subjects.add(post.getString("title"));
@@ -116,25 +114,31 @@ public class DetailActivity extends Activity
         name.setText(coin.name);
         TextView price = ((TextView) findViewById(R.id.detail_coinPrice));
         price.setText(CoinAdapter.priceMangle(coin.price));
+        TextView chg24 = ((TextView) findViewById(R.id.detail_coinChange));
+        chg24.setText(coin.chg_24h);
+        chg24.setTextColor(
+                CoinAdapter.floatToColor(Float.parseFloat(coin.chg_24h)));
         TextView vol24 = ((TextView) findViewById(R.id.detail_coinVolume));
         vol24.setText(CoinAdapter.capParse(coin.vol_24h));
         vol24.setTextColor(
-                CoinAdapter.floatToColor(Float.parseFloat(coin.chg_24h)));
-        TextView sub= ((TextView) findViewById(R.id.detail_coinSubreddit1));
+                CoinAdapter.floatToColor(Float.parseFloat(coin.vol_24h)));
+        TextView sub = ((TextView) findViewById(R.id.detail_coinSubreddit1));
         sub.setText(Reddit.coinToSubreddit(coin));
-        sub= ((TextView) findViewById(R.id.detail_coinSubreddit2));
+        sub = ((TextView) findViewById(R.id.detail_coinSubreddit2));
         sub.setText(Reddit.coinToSubreddit(coin));
-        sub= ((TextView) findViewById(R.id.detail_coinSubreddit3));
+        sub = ((TextView) findViewById(R.id.detail_coinSubreddit3));
         sub.setText(Reddit.coinToSubreddit(coin));
     }
 
     public void redditUiFreshen(List<String> headlines) {
-        int[] views = new int[]{R.id.detail_coinReddit1,R.id.detail_coinReddit2,R.id.detail_coinReddit3};
-        for(int i=0, l=Math.min(views.length,headlines.size()); i < l; i++){
-            TextView headline = ((TextView) findViewById(
-                    views[i]));
+        int[] views = new int[] { R.id.detail_coinReddit1,
+                R.id.detail_coinReddit2, R.id.detail_coinReddit3 };
+        for (int i = 0, l = Math.min(views.length,
+                headlines.size()); i < l; i++) {
+            TextView headline = ((TextView) findViewById(views[i]));
             if (headline != null) {
-                Log.d(Constants.APP_TAG, "reddit widget "+i+": " + headlines);
+                Log.d(Constants.APP_TAG,
+                        "reddit widget " + i + ": " + headlines);
                 headline.setText(headlines.get(i));
             } else {
                 Log.d(Constants.APP_TAG, "reddit widget missing!");
