@@ -58,8 +58,14 @@ public class CoinMasterAdapter extends CoinAdapter {
                         + capParse(coin.vol_24h));
         // .setText("1h " + coin.chg_1h + "% 24h " + coin.chg_24h + "% 7d "
         // + coin.chg_7d + "%");
+        Float safeFloat = (float) 0.0; // so much java
+        try {
+            safeFloat = Float.parseFloat(coin.chg_24h);
+        } catch (java.lang.NumberFormatException e) {
+        }
         ((TextView) convertView.findViewById(R.id.coinPercentages))
-                .setTextColor(floatToColor(Float.parseFloat(coin.chg_24h)));
+                .setTextColor(floatToColor(safeFloat));
+
         ImageView favStar = (ImageView) convertView.findViewById(R.id.favStar);
         favStar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +78,8 @@ public class CoinMasterAdapter extends CoinAdapter {
         } else {
             favStar.setImageResource(android.R.drawable.star_off);
         }
-        LinearLayout coinNameBlock = (LinearLayout) convertView.findViewById(R.id.coinNameBlock);
+        LinearLayout coinNameBlock = (LinearLayout) convertView
+                .findViewById(R.id.coinNameBlock);
         coinNameBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
