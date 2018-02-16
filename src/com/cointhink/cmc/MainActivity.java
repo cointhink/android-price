@@ -11,6 +11,7 @@ import com.cointhink.cmc.ui.CoinDetail;
 import com.cointhink.cmc.ui.CoinFavoritesFragment;
 import com.cointhink.cmc.ui.CoinListFragment;
 import com.cointhink.cmc.ui.CoinMasterListFragment;
+import com.cointhink.cmc.ui.PrefsFragment;
 
 import android.content.Intent;
 import android.os.Bundle;

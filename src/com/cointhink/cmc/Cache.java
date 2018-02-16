@@ -23,7 +23,7 @@ public class Cache {
 
     public boolean refreshNeeded() {
         long diffSec = ((new Date()).getTime() - last.getTime()) / 1000;
-        Log.d(Constants.APP_TAG, "refreshNeeded: cache " + diffSec + " sec. old");
+        Log.d(Constants.APP_TAG, "refreshcheck: cache " + diffSec + " sec. old");
         return diffSec > (60 * 3);
     }
 

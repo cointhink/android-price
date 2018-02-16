@@ -1,4 +1,7 @@
-package com.cointhink.cmc;
+package com.cointhink.cmc.ui;
+
+import com.cointhink.cmc.Constants;
+import com.cointhink.cmc.R;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -7,12 +10,14 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
 import android.util.Log;
+import android.widget.Toast;
 
 public class PrefsFragment extends PreferenceFragment
         implements OnSharedPreferenceChangeListener {
 
     private SharedPreferences sharedPrefs;
-    private final String[] keys = { Constants.PREFERENCE_DATA_SOURCE };
+    private final String[] keys = { Constants.PREFERENCE_DATA_SOURCE,
+            Constants.PREFERENCE_VERSION };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,16 @@ public class PrefsFragment extends PreferenceFragment
         sharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(getActivity());
         sharedPrefs.registerOnSharedPreferenceChangeListener(this);
+        String version = sharedPrefs.getString(Constants.PREFERENCE_VERSION,
+                "none");
+        if (!version.equals(Constants.VERSION)) {
+            sharedPrefs.edit()
+                    .putString(Constants.PREFERENCE_VERSION, Constants.VERSION)
+                    .commit();
+            Toast.makeText(getActivity(),
+                    "Cointhink Price upgraded to " + Constants.VERSION,
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

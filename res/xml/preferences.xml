@@ -10,4 +10,10 @@
             android:title="Provider" />
     </PreferenceCategory>
 
+    <EditTextPreference
+        android:key="version"
+        android:summary=""
+        android:title="Version" >
+    </EditTextPreference>
+
 </PreferenceScreen>
