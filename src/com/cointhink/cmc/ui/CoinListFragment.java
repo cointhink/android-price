@@ -135,8 +135,8 @@ public class CoinListFragment extends Fragment implements IconCallback {
             adapter.viewFreshed(v, coin);
         } else {
             Log.d(Constants.APP_TAG,
-                    "listView does not have a child at position" + pos + " of "
-                            + coinList.size());
+                    "listView does not have a child at position " + pos + " of "
+                            + coinList.size()+" firstVisiblePosition: "+listView.getFirstVisiblePosition());
         }
     }
 

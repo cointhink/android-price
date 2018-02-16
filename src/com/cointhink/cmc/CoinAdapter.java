@@ -1,6 +1,5 @@
 package com.cointhink.cmc;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import android.content.Context;
@@ -73,29 +72,37 @@ public abstract class CoinAdapter extends ArrayAdapter<Coin> {
         if (decimalPos > 0) {
             longStr = longStr.substring(0, decimalPos);
         }
+        try {
         long longCap = Long.parseLong(longStr);
-        double count = longCap / 1e6;
-        String unit = "M";
+        double count = longCap;
+        String unit = "";
+        if (longCap > 1e3) {
+            count = (longCap / 1e3);
+            unit = "K";
+        }
+        if (longCap > 1e6) {
+            count = (longCap / 1e6);
+            unit = "M";
+        }
         if (longCap > 1e9) {
             count = (longCap / 1e9);
             unit = "B";
         }
         if (longCap > 1e12) {
             count = (longCap / 1e12);
-            unit = "T";
+            unit = "T"; // Trillion, not thousands
         }
         String countStr;
         if (count < 10) {
-            DecimalFormat df = new DecimalFormat("#.#");
-            countStr = df.format(count);
             countStr = String.format("%.1f", count);
         } else {
-            DecimalFormat df = new DecimalFormat("#");
-            countStr = df.format(count);
             countStr = String.format("%.0f", count);
         }
         String capStr = countStr + unit;
         return capStr;
+        } catch (java.lang.NumberFormatException e) {
+            return "???";
+        }
     }
 
     public static int floatToColor(float f) {

@@ -56,8 +56,13 @@ public class CoinFavoritesAdapter extends CoinAdapter {
         ((TextView) convertView.findViewById(R.id.coinPercentages))
                 .setText("24h chg: " + coin.chg_24h + "% vol: $"
                         + capParse(coin.vol_24h));
+        Float safeFloat = (float) 0.0; // so much java
+        try {
+            safeFloat = Float.parseFloat(coin.chg_24h);
+        } catch (java.lang.NumberFormatException e) {
+        }
         ((TextView) convertView.findViewById(R.id.coinPercentages))
-                .setTextColor(floatToColor(Float.parseFloat(coin.chg_24h)));
+                .setTextColor(floatToColor(safeFloat));
         LinearLayout coinNameBlock = (LinearLayout) convertView.findViewById(R.id.coinNameBlock);
         coinNameBlock.setOnClickListener(new View.OnClickListener() {
             @Override
