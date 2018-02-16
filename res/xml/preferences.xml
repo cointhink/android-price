@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="Data Sources" >
-        <ListPreference
-            android:entries="@array/Providers"
-            android:entryValues="@array/ProvidersKeys"
-            android:key="data_source"
-            android:summary="The provider"
-            android:title="Provider" />
-    </PreferenceCategory>
+    <ListPreference
+        android:entries="@array/Providers"
+        android:entryValues="@array/ProvidersKeys"
+        android:key="data_source"
+        android:summary="The provider"
+        android:title="Provider" />
 
     <EditTextPreference
         android:key="version"

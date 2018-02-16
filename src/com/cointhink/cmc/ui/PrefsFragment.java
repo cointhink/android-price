@@ -10,7 +10,6 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
 import android.util.Log;
-import android.widget.Toast;
 
 public class PrefsFragment extends PreferenceFragment
         implements OnSharedPreferenceChangeListener {
@@ -32,16 +31,6 @@ public class PrefsFragment extends PreferenceFragment
         sharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(getActivity());
         sharedPrefs.registerOnSharedPreferenceChangeListener(this);
-        String version = sharedPrefs.getString(Constants.PREFERENCE_VERSION,
-                "none");
-        if (!version.equals(Constants.VERSION)) {
-            sharedPrefs.edit()
-                    .putString(Constants.PREFERENCE_VERSION, Constants.VERSION)
-                    .commit();
-            Toast.makeText(getActivity(),
-                    "Cointhink Price upgraded to " + Constants.VERSION,
-                    Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override

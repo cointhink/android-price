@@ -60,6 +60,9 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
             detailFragment = new CoinDetail();
             setupFragments(masterFrag, favoritesFrag, new PrefsFragment());
         }
+
+        prefs.versionToast();
+
     }
 
     private void setupFragments(Fragment... fments) {

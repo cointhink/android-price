@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 public class Prefs {
     private final SharedPreferences sharedPrefs;
     private String KEY_CONFIGURED = "configured";
+    private Context context;
 
     public Prefs(Context ctx) {
+        this.context = ctx;
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         finishConstruct();
     }
@@ -52,4 +55,18 @@ public class Prefs {
         int fragIdx = sharedPrefs.getInt(Constants.PREFERENCE_DISPLAY_FRAG, 0);
         return fragIdx;
     }
+
+    public void versionToast() {
+        String version = sharedPrefs.getString(Constants.PREFERENCE_VERSION,
+                "none");
+        if (!version.equals(Constants.VERSION)) {
+            sharedPrefs.edit()
+                    .putString(Constants.PREFERENCE_VERSION, Constants.VERSION)
+                    .commit();
+            Toast.makeText(context,
+                    "Cointhink Price upgraded to " + Constants.VERSION,
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
