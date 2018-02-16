@@ -79,6 +79,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
                 "com.android.vending.billing.InAppBillingService.BIND");
         serviceIntent.setPackage("com.android.vending");
         bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
+        Log.d(Constants.APP_TAG, "InApp Purchase Service requested.");
 
     }
 
@@ -246,11 +247,13 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mService = null;
+            Log.d(Constants.APP_TAG, "InApp Purchase Service is disconnected");
         }
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mService = IInAppBillingService.Stub.asInterface(service);
+            Log.d(Constants.APP_TAG, "InApp Purchase Service is connected");
         }
     };
 
@@ -260,13 +263,17 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
     public void buy() {
         Bundle buyIntentBundle;
         try {
-            buyIntentBundle = mService.getBuyIntent(3, getPackageName(), sku,
-                    "inapp", null);
-            PendingIntent pendingIntent = buyIntentBundle
-                    .getParcelable("BUY_INTENT");
-            startIntentSenderForResult(pendingIntent.getIntentSender(),
-                    REQUEST_CODE, new Intent(), Integer.valueOf(0),
-                    Integer.valueOf(0), Integer.valueOf(0));
+            if (mService == null) {
+                Log.d(Constants.APP_TAG, "InApp Purchase Service is missing");
+            } else {
+                buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
+                        sku, "inapp", null);
+                PendingIntent pendingIntent = buyIntentBundle
+                        .getParcelable("BUY_INTENT");
+                startIntentSenderForResult(pendingIntent.getIntentSender(),
+                        REQUEST_CODE, new Intent(), Integer.valueOf(0),
+                        Integer.valueOf(0), Integer.valueOf(0));
+            }
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

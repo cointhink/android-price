@@ -1,12 +1,14 @@
 package com.cointhink.cmc.ui;
 
 import com.cointhink.cmc.Constants;
+import com.cointhink.cmc.MainActivity;
 import com.cointhink.cmc.R;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
 import android.util.Log;
@@ -31,6 +33,7 @@ public class PrefsFragment extends PreferenceFragment
         sharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(getActivity());
         sharedPrefs.registerOnSharedPreferenceChangeListener(this);
+        addMyResetListener();
     }
 
     @Override
@@ -60,5 +63,19 @@ public class PrefsFragment extends PreferenceFragment
         String summary = sharedPrefs.getString(key, "<none>");
         Log.d(Constants.APP_TAG, "prefSummary for " + key + " is " + summary);
         preference.setSummary(summary);
+    }
+
+    private void addMyResetListener() {
+        Preference reset = findPreference(Constants.PREFERENCE_VERSION);
+        reset.setOnPreferenceClickListener(new OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference pref)
+            {
+                Log.d(Constants.APP_TAG, "pref Version click");
+                ((MainActivity)getActivity()).buy();
+                return true;
+            }
+        });
     }
 }

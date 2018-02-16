@@ -8,10 +8,10 @@
         android:summary="The provider"
         android:title="Provider" />
 
-    <EditTextPreference
+    <Preference
         android:key="version"
         android:summary=""
         android:title="Version" >
-    </EditTextPreference>
+    </Preference>
 
 </PreferenceScreen>
