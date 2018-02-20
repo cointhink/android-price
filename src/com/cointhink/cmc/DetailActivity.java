@@ -159,8 +159,6 @@ public class DetailActivity extends Activity
                 headlines.size()); i < l; i++) {
             TextView headline = ((TextView) findViewById(views[i]));
             if (headline != null) {
-                Log.d(Constants.APP_TAG,
-                        "reddit widget " + i + ": " + headlines);
                 final WebLink webLink = headlines.get(i);
                 headline.setText(webLink.headline);
                 headline.setOnClickListener(new OnClickListener() {
