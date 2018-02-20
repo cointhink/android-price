@@ -71,7 +71,7 @@ public class DetailActivity extends Activity
                                 .getJSONArray("children");
                         Log.d(Constants.APP_TAG,
                                 "DetailActivity posts: " + posts.length());
-                        List<String> headlines = nonPinned(posts);
+                        List<WebLink> headlines = nonPinned(posts);
                         redditUiFreshen(headlines);
                     }
                 }
@@ -83,15 +83,18 @@ public class DetailActivity extends Activity
             }
         }
 
-        private List<String> nonPinned(JSONArray posts) {
-            ArrayList<String> subjects = new ArrayList();
+        private List<WebLink> nonPinned(JSONArray posts) {
+            ArrayList<WebLink> subjects = new ArrayList();
             for (int i = 0, l = posts.length(); i < l; i++) {
                 try {
                     JSONObject post = ((JSONObject) posts.get(i))
                             .getJSONObject("data");
                     if (post.getBoolean("pinned") == false
                             && post.getBoolean("stickied") == false) {
-                        subjects.add(post.getString("title"));
+                        String permaPermalink = "https://reddit.com"+post.getString("permalink");
+                        WebLink webLink = new WebLink(post.getString("title"),
+                                permaPermalink);
+                        subjects.add(webLink);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -149,7 +152,7 @@ public class DetailActivity extends Activity
         });
     }
 
-    public void redditUiFreshen(List<String> headlines) {
+    public void redditUiFreshen(List<WebLink> headlines) {
         int[] views = new int[] { R.id.detail_coinReddit1,
                 R.id.detail_coinReddit2, R.id.detail_coinReddit3 };
         for (int i = 0, l = Math.min(views.length,
@@ -158,7 +161,16 @@ public class DetailActivity extends Activity
             if (headline != null) {
                 Log.d(Constants.APP_TAG,
                         "reddit widget " + i + ": " + headlines);
-                headline.setText(headlines.get(i));
+                final WebLink webLink = headlines.get(i);
+                headline.setText(webLink.headline);
+                headline.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(webLink.url));
+                        startActivity(browserIntent);
+                    }
+                });
             } else {
                 Log.d(Constants.APP_TAG, "reddit widget missing!");
             }
@@ -171,8 +183,6 @@ public class DetailActivity extends Activity
 
     @Override
     public void cacheUpdateDone(List<Coin> coins, Provider provider) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -182,7 +192,15 @@ public class DetailActivity extends Activity
 
     @Override
     public void cacheErr(String err) {
-        // TODO Auto-generated method stub
+    }
 
+    class WebLink {
+        public String headline;
+        public String url;
+
+        public WebLink(String headline, String url) {
+            this.headline = headline;
+            this.url = url;
+        }
     }
 }
