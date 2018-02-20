@@ -5,8 +5,11 @@ public interface Constants {
 
     static final String APP_TAG = "CTP";
 
-    static final String PREFERENCE_DATA_SOURCE = "data_source";
+    // Internal preference to remember which page to display
     static final String PREFERENCE_DISPLAY_FRAG = "display_frag";
+
+    // User preferences
+    static final String PREFERENCE_DATA_SOURCE = "data_source";
     static final String PREFERENCE_VERSION = "version";
     static final String PREFERENCE_BEER = "beer";
 }

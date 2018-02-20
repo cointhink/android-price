@@ -13,9 +13,14 @@ import com.cointhink.cmc.http.Response;
 import com.cointhink.cmc.pricedata.Provider;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -123,11 +128,25 @@ public class DetailActivity extends Activity
         vol24.setTextColor(
                 CoinAdapter.floatToColor(Float.parseFloat(coin.vol_24h)));
         TextView sub = ((TextView) findViewById(R.id.detail_coinSubreddit1));
-        sub.setText(Reddit.coinToSubreddit(coin));
+        redditClick(sub, coin);
         sub = ((TextView) findViewById(R.id.detail_coinSubreddit2));
-        sub.setText(Reddit.coinToSubreddit(coin));
+        redditClick(sub, coin);
         sub = ((TextView) findViewById(R.id.detail_coinSubreddit3));
-        sub.setText(Reddit.coinToSubreddit(coin));
+        redditClick(sub, coin);
+    }
+
+    private void redditClick(TextView sub, Coin coin) {
+        String subReddit = Reddit.coinToSubreddit(coin);
+        sub.setText(Html.fromHtml(subReddit));
+        final String redditUrl = "https://reddit.com/" + subReddit;
+        sub.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(redditUrl));
+                startActivity(browserIntent);
+            }
+        });
     }
 
     public void redditUiFreshen(List<String> headlines) {
