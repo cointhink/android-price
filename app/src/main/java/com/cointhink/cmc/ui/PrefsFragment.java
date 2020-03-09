@@ -7,13 +7,13 @@ import com.cointhink.cmc.R;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
+import androidx.preference.Preference;
+import androidx.preference.Preference.OnPreferenceClickListener;
+import androidx.preference.PreferenceFragmentCompat;
 import android.preference.PreferenceManager;
-import android.support.v4.preference.PreferenceFragment;
 import android.util.Log;
 
-public class PrefsFragment extends PreferenceFragment
+public class PrefsFragment extends PreferenceFragmentCompat
         implements OnSharedPreferenceChangeListener {
 
     private SharedPreferences sharedPrefs;
@@ -21,10 +21,9 @@ public class PrefsFragment extends PreferenceFragment
             Constants.PREFERENCE_VERSION };
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.preferences);
+        setPreferencesFromResource(R.xml.preferences, rootKey);
     }
 
     @Override
