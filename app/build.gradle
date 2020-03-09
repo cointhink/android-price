@@ -1,0 +1,22 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        applicationId "com.cointhink.cmc"
+        minSdkVersion 26
+        targetSdkVersion 29
+    }
+    dependencies {
+        implementation "androidx.appcompat:appcompat:1.1.0"
+        implementation "androidx.viewpager:viewpager:1.0.0"
+        implementation "androidx.preference:preference:1.1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
