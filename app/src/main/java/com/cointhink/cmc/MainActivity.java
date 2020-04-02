@@ -119,7 +119,7 @@ public class MainActivity extends FragmentActivity implements CacheCallbacks,
 
     public Provider providerFromPrefIndex() {
         String datasource = prefs.getDataSource();
-        int providerIdx = 0;
+        int providerIdx = 1; // default
         if (datasource.equals("coinmarketcap")) {
             providerIdx = 0;
         }
