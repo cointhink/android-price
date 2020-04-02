@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
 
     public Provider providerFromPrefIndex() {
         String datasource = prefs.getDataSource();
-        int providerIdx = 1; // default
+        int providerIdx = 0;
         if (datasource.equals("coinmarketcap")) {
             providerIdx = 0;
         }

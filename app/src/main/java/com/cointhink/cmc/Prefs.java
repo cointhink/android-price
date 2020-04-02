@@ -32,7 +32,7 @@ public class Prefs {
         Editor editor = sharedPrefs.edit();
 
         /* Data Source: coinmarketcap */
-        editor.putString(Constants.PREFERENCE_DATA_SOURCE, "coinmarketcap");
+        editor.putString(Constants.PREFERENCE_DATA_SOURCE, "coincapio");
 
         /* Data Source: coinmarketcap */
         editor.putInt(Constants.PREFERENCE_DISPLAY_FRAG, 0);

@@ -68,6 +68,7 @@ public class CoinMarketCap implements Provider {
     }
 
     static String imgUrl(String name) {
+        //https://s2.coinmarketcap.com/static/img/coins/32x32/1027.png
         String url = "https://files.coinmarketcap.com/static/img/coins/32x32/";
         String urlName = name.toLowerCase().replaceAll(" ", "-");
         return url + urlName + ".png";
