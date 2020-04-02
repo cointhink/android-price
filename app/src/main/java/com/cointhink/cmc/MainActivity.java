@@ -26,6 +26,9 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -34,7 +37,7 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements CacheCallbacks,
+public class MainActivity extends AppCompatActivity implements CacheCallbacks,
         FavoriteHandler, FragmentReadyListener, OnPageChangeListener {
 
     private Cache cache;
