@@ -5,8 +5,8 @@ android {
 
     defaultConfig {
         applicationId "com.cointhink.cmc"
-        versionCode 43
-        versionName "0.93"
+        versionCode 44
+        versionName "0.94"
         minSdkVersion 26
         targetSdkVersion 29
     }
