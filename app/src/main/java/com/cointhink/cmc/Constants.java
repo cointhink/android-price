@@ -1,7 +1,7 @@
 package com.cointhink.cmc;
 
 public interface Constants {
-    static final String VERSION = "0.94";
+    static final String VERSION = "0.98";
 
     static final String APP_TAG = "CTP";
 
