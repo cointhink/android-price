@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class CoinCapIo implements Provider {
     public static String NAME = "coincap.io";
-    public static String COIN_URL = "https://api.coincap.io/v2/assets";
+    public static String COIN_URL = "https://api.coincap.io/v2/assets?limit=200";
 
     @Override
     public List<Coin> parse(String json, Database db) {
