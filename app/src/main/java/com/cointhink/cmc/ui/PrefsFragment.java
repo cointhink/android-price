@@ -74,7 +74,7 @@ public class PrefsFragment extends PreferenceFragmentCompat
         reset.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference pref) {
-                ((MainActivity) getActivity()).buy(selectedOfferToken);
+                ((MainActivity) getActivity()).buy();
                 return true;
             }
         });

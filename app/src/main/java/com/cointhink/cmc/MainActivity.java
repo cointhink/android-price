@@ -15,6 +15,7 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.PendingPurchasesParams;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.ProductDetailsResponseListener;
 import com.android.billingclient.api.Purchase;
@@ -108,8 +109,12 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
             }
         };
 
+        PendingPurchasesParams pendingPurchaseParams =
+                PendingPurchasesParams.newBuilder()
+                        .enableOneTimeProducts().build();
         billingClient = BillingClient.newBuilder(MainActivity.this).setListener(purchasesUpdatedListener)
                 // Configure other settings.
+                .enablePendingPurchases(pendingPurchaseParams)
                 .build();
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
@@ -265,13 +270,16 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
     String sku = "cointhinkprice_deluxe";
     final int REQUEST_CODE = 1001;
 
-    public void buy(String selectedOfferToken) {
-        QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder().setProductList(ImmutableList.of(QueryProductDetailsParams.Product.newBuilder().setProductId("product_id_example").setProductType(BillingClient.ProductType.SUBS).build())).build();
+    public void buy() {
+        QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder().setProductList(
+                ImmutableList.of(QueryProductDetailsParams.Product.newBuilder().setProductId(sku).setProductType(
+                        BillingClient.ProductType.INAPP).build())).build();
 
         billingClient.queryProductDetailsAsync(queryProductDetailsParams, new ProductDetailsResponseListener() {
             public void onProductDetailsResponse(BillingResult billingResult, QueryProductDetailsResult queryProductDetailsResult) {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     for (ProductDetails productDetails : queryProductDetailsResult.getProductDetailsList()) {
+                        String selectedOfferToken = productDetails.getOneTimePurchaseOfferDetailsList().get(0).getOfferToken();
                         // Process successfully retrieved product details here.
                         ImmutableList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = ImmutableList.of(BillingFlowParams.ProductDetailsParams.newBuilder()
                                 // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
