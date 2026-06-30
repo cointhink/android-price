@@ -1,13 +1,27 @@
 package com.cointhink.cmc;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
-import com.android.vending.billing.IInAppBillingService;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ProductDetails;
+import com.android.billingclient.api.ProductDetailsResponseListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.QueryProductDetailsParams;
+import com.android.billingclient.api.QueryProductDetailsResult;
+import com.android.billingclient.api.UnfetchedProduct;
 import com.cointhink.cmc.pricedata.CoinCapIo;
 import com.cointhink.cmc.pricedata.CoinMarketCap;
 import com.cointhink.cmc.pricedata.Provider;
@@ -16,29 +30,16 @@ import com.cointhink.cmc.ui.CoinFavoritesFragment;
 import com.cointhink.cmc.ui.CoinListFragment;
 import com.cointhink.cmc.ui.CoinMasterListFragment;
 import com.cointhink.cmc.ui.PrefsFragment;
+import com.google.common.collect.ImmutableList;
 
-import android.app.PendingIntent;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
-import android.content.ServiceConnection;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.os.RemoteException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
-import android.util.Log;
-import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity implements CacheCallbacks,
-        FavoriteHandler, FragmentReadyListener, OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements CacheCallbacks, FavoriteHandler, FragmentReadyListener, OnPageChangeListener {
 
     private Cache cache;
     private Database db;
@@ -48,23 +49,20 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
     private List<Provider> providers;
     private CoinDetail detailFragment;
     private ViewPager pager;
-    private IInAppBillingService mService;
+
+    private BillingClient billingClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(Constants.APP_TAG,
-                "MainActivity onCreate bundle: "
-                        + ((savedInstanceState == null) ? "" : "true")
-                        + " pagerAdapter: " + pagerAdapter);
+        Log.d(Constants.APP_TAG, "MainActivity onCreate bundle: " + ((savedInstanceState == null) ? "" : "true") + " pagerAdapter: " + pagerAdapter);
         setContentView(R.layout.mainframe);
 
         prefs = new Prefs(this);
 
         db = new Database(getApplicationContext()).open();
 
-        Log.d(Constants.APP_TAG, "MainActivity onCreate db open. coin count "
-                + db.rowCount(Database.TABLE_COINS));
+        Log.d(Constants.APP_TAG, "MainActivity onCreate db open. coin count " + db.rowCount(Database.TABLE_COINS));
         cache = new Cache(this, db);
         providers = new ArrayList<>();
         providers.add(new CoinMarketCap());
@@ -78,13 +76,6 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
         }
 
         prefs.versionToast();
-
-        Intent serviceIntent = new Intent(
-                "com.android.vending.billing.InAppBillingService.BIND");
-        serviceIntent.setPackage("com.android.vending");
-        bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
-        Log.d(Constants.APP_TAG, "InApp Purchase Service requested.");
-
     }
 
     private void setupFragments(Fragment... fments) {
@@ -93,8 +84,7 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
             fragments.add(fments[i]);
         }
 
-        this.pagerAdapter = new PagerAdapter(getSupportFragmentManager(),
-                fragments);
+        this.pagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
 
         pager = (ViewPager) super.findViewById(R.id.viewpager);
         pager.setAdapter(this.pagerAdapter);
@@ -110,14 +100,44 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
             Provider provider = providerFromPrefIndex();
             cache.launchRefresh(provider);
         }
+
+        PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
+            @Override
+            public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+                // To be implemented in a later section.
+            }
+        };
+
+        billingClient = BillingClient.newBuilder(MainActivity.this).setListener(purchasesUpdatedListener)
+                // Configure other settings.
+                .build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    // It's a good practice to query products after the connection is established.
+                    //queryProductDetails();
+//                    Toast.makeText(this, "BillingReponse OK", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Billing setup OK", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                // This is automatically handled by the library when you call a method that requires a connection.
+            }
+        });
+        Log.d(Constants.APP_TAG, "InApp Purchase Service requested.");
+        Toast.makeText(this, "BillingClient", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mService != null) {
-            unbindService(mServiceConn);
-        }
     }
 
     public Provider providerFromPrefIndex() {
@@ -129,8 +149,7 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
         if (datasource.equals("coincapio")) {
             providerIdx = 1;
         }
-        Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh using "
-                + datasource + " idx " + providerIdx);
+        Log.d(Constants.APP_TAG, "refreshNeeded. launchRefresh using " + datasource + " idx " + providerIdx);
         Provider provider = providers.get(providerIdx);
         return provider;
     }
@@ -155,8 +174,7 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
                     (CoinListFragment) pagerAdapter.getItem(0);
             fragCacheGoodFixup(masterFrag, coins, provider);
             ArrayList<Coin> favCoins = coinListFavFilter(coins);
-            CoinListFragment favoritesFrag = (CoinListFragment) pagerAdapter
-                    .getItem(1);
+            CoinListFragment favoritesFrag = (CoinListFragment) pagerAdapter.getItem(1);
             fragCacheGoodFixup(favoritesFrag, favCoins, provider);
         }
     }
@@ -172,8 +190,7 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
         return favCoins;
     }
 
-    public void fragCacheGoodFixup(CoinListFragment fragment, List<Coin> coins,
-            Provider provider) {
+    public void fragCacheGoodFixup(CoinListFragment fragment, List<Coin> coins, Provider provider) {
         fragment.fetchErr("");
         fragment.add(coins);
         fragment.topTime(cache.last);
@@ -203,8 +220,7 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
         db.update(c);
         ArrayList<Coin> favCoins = coinListFavFilter(coins);
         Provider provider = providerFromPrefIndex();
-        fragCacheGoodFixup((CoinListFragment) pagerAdapter.getItem(1), favCoins,
-                provider);
+        fragCacheGoodFixup((CoinListFragment) pagerAdapter.getItem(1), favCoins, provider);
         return c.favorited;
     }
 
@@ -236,8 +252,7 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
 
     public void switchFragment(Fragment frag) {
         FragmentManager mgr = super.getSupportFragmentManager();
-        mgr.beginTransaction().replace(R.id.viewpager, detailFragment)
-                .addToBackStack(null).commit();
+        mgr.beginTransaction().replace(R.id.viewpager, detailFragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -247,50 +262,44 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks,
         }
     }
 
-    ServiceConnection mServiceConn = new ServiceConnection() {
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mService = null;
-            Log.d(Constants.APP_TAG, "InApp Purchase Service is disconnected");
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mService = IInAppBillingService.Stub.asInterface(service);
-            Log.d(Constants.APP_TAG, "InApp Purchase Service is connected");
-        }
-    };
-
     String sku = "cointhinkprice_deluxe";
     final int REQUEST_CODE = 1001;
 
-    public void buy() {
-        Bundle buyIntentBundle;
-        try {
-            if (mService == null) {
-                Log.d(Constants.APP_TAG, "InApp Purchase Service is missing");
-                Toast.makeText(this, "In-App-Purchase is Unavailable!", Toast.LENGTH_SHORT).show();
-            } else {
-                buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
-                        sku, "inapp", null);
-                PendingIntent pendingIntent = buyIntentBundle
-                        .getParcelable("BUY_INTENT");
-                startIntentSenderForResult(pendingIntent.getIntentSender(),
-                        REQUEST_CODE, new Intent(), Integer.valueOf(0),
-                        Integer.valueOf(0), Integer.valueOf(0));
+    public void buy(String selectedOfferToken) {
+        QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder().setProductList(ImmutableList.of(QueryProductDetailsParams.Product.newBuilder().setProductId("product_id_example").setProductType(BillingClient.ProductType.SUBS).build())).build();
+
+        billingClient.queryProductDetailsAsync(queryProductDetailsParams, new ProductDetailsResponseListener() {
+            public void onProductDetailsResponse(BillingResult billingResult, QueryProductDetailsResult queryProductDetailsResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    for (ProductDetails productDetails : queryProductDetailsResult.getProductDetailsList()) {
+                        // Process successfully retrieved product details here.
+                        ImmutableList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = ImmutableList.of(BillingFlowParams.ProductDetailsParams.newBuilder()
+                                // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
+                                .setProductDetails(productDetails)
+                                // Get the offer token:
+                                // a. For one-time products, call ProductDetails.getOneTimePurchaseOfferDetailsList()
+                                // for a list of offers that are available to the user.
+                                // b. For subscriptions, call ProductDetails.getSubscriptionOfferDetails()
+                                // for a list of offers that are available to the user.
+                                .setOfferToken(selectedOfferToken).build());
+
+                        BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder().setProductDetailsParamsList(productDetailsParamsList).build();
+
+                        // Launch the billing flow
+                        BillingResult billingResult2 = billingClient.launchBillingFlow(MainActivity.this, billingFlowParams);
+                    }
+
+                    for (UnfetchedProduct unfetchedProduct : queryProductDetailsResult.getUnfetchedProductList()) {
+                        // Handle any unfetched products as appropriate.
+                    }
+                }
             }
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SendIntentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-            Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE) {
             int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
             String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");

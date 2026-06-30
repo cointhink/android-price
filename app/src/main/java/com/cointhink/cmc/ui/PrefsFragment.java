@@ -1,24 +1,25 @@
 package com.cointhink.cmc.ui;
 
-import com.cointhink.cmc.Constants;
-import com.cointhink.cmc.MainActivity;
-import com.cointhink.cmc.R;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-import android.util.Log;
+
+import com.cointhink.cmc.Constants;
+import com.cointhink.cmc.MainActivity;
+import com.cointhink.cmc.R;
 
 public class PrefsFragment extends PreferenceFragmentCompat
         implements OnSharedPreferenceChangeListener {
 
     private SharedPreferences sharedPrefs;
-    private final String[] keys = { Constants.PREFERENCE_DATA_SOURCE,
-            Constants.PREFERENCE_VERSION };
+    private final String[] keys = {Constants.PREFERENCE_DATA_SOURCE,
+            Constants.PREFERENCE_VERSION};
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -37,7 +38,7 @@ public class PrefsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-            String key) {
+                                          String key) {
         Log.d(Constants.APP_TAG, "onSharedPreferenceChanged " + key);
         Preference preference = getPreferenceScreen().findPreference(key);
         if (preference != null) {
@@ -73,7 +74,7 @@ public class PrefsFragment extends PreferenceFragmentCompat
         reset.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference pref) {
-                ((MainActivity) getActivity()).buy();
+                ((MainActivity) getActivity()).buy(selectedOfferToken);
                 return true;
             }
         });
