@@ -123,8 +123,6 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
                     // The BillingClient is ready. You can query purchases here.
                     // It's a good practice to query products after the connection is established.
                     //queryProductDetails();
-//                    Toast.makeText(this, "BillingReponse OK", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(MainActivity.this, "Billing setup OK", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -280,13 +278,7 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
                         String selectedOfferToken = productDetails.getOneTimePurchaseOfferDetailsList().get(0).getOfferToken();
                         // Process successfully retrieved product details here.
                         ImmutableList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = ImmutableList.of(BillingFlowParams.ProductDetailsParams.newBuilder()
-                                // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
                                 .setProductDetails(productDetails)
-                                // Get the offer token:
-                                // a. For one-time products, call ProductDetails.getOneTimePurchaseOfferDetailsList()
-                                // for a list of offers that are available to the user.
-                                // b. For subscriptions, call ProductDetails.getSubscriptionOfferDetails()
-                                // for a list of offers that are available to the user.
                                 .setOfferToken(selectedOfferToken).build());
 
                         BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder().setProductDetailsParamsList(productDetailsParamsList).build();
