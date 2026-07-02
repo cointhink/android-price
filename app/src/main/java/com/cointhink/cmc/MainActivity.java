@@ -135,9 +135,6 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
                 // This is automatically handled by the library when you call a method that requires a connection.
             }
         });
-        Log.d(Constants.APP_TAG, "InApp Purchase Service requested.");
-        Toast.makeText(this, "BillingClient", Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
@@ -277,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
 
         billingClient.queryProductDetailsAsync(queryProductDetailsParams, new ProductDetailsResponseListener() {
             public void onProductDetailsResponse(BillingResult billingResult, QueryProductDetailsResult queryProductDetailsResult) {
+                Log.d(Constants.APP_TAG, "BillingResponseCode " + billingResult.getResponseCode() + " " + billingResult.getDebugMessage());
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     for (ProductDetails productDetails : queryProductDetailsResult.getProductDetailsList()) {
                         String selectedOfferToken = productDetails.getOneTimePurchaseOfferDetailsList().get(0).getOfferToken();
@@ -300,6 +298,13 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
                     for (UnfetchedProduct unfetchedProduct : queryProductDetailsResult.getUnfetchedProductList()) {
                         // Handle any unfetched products as appropriate.
                     }
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, "Billing Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
