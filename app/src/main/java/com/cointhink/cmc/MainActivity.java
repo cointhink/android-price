@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
         if (findViewById(R.id.viewpager) != null) {
             CoinMasterListFragment masterFrag = new CoinMasterListFragment();
             CoinFavoritesFragment favoritesFrag = new CoinFavoritesFragment();
-            detailFragment = new CoinDetail();
             setupFragments(masterFrag, favoritesFrag, new PrefsFragment());
         }
 
