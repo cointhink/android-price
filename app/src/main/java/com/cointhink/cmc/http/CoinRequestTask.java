@@ -28,7 +28,7 @@ public class CoinRequestTask extends AsyncTask<CoinRequest, String, CoinResponse
         CoinRequest request = params[0];
         byte[] result;
 
-        Log.d(Constants.APP_TAG, "HTTP GET " + request.url);
+        Log.d(Constants.APP_TAG, String.format("HTTP GET %s auth: %s", request.url, request.auth));
         HttpURLConnection connection;
         try {
             // Create a URL object holding our url
@@ -44,13 +44,21 @@ public class CoinRequestTask extends AsyncTask<CoinRequest, String, CoinResponse
 
             // Connect to our url
             connection.connect();
+            int http_response_code = connection.getResponseCode();
             Log.d(Constants.APP_TAG,
                     String.format("DoInBackground response %d(%s) len %d",
-                            connection.getResponseCode(), connection.getResponseMessage(),
+                            http_response_code, connection.getResponseMessage(),
                             connection.getContentLength()));
-            if (connection.getResponseCode() == 404) {
-                throw new IOException("" + connection.getResponseCode());
+            if (http_response_code == 401) {
+                throw new IOException("API key unrecognized");
             }
+            if (http_response_code == 403) {
+                throw new IOException("API key access denied");
+            }
+            if (http_response_code < 200 || http_response_code >= 300) {
+                throw new IOException("http " + connection.getResponseCode());
+            }
+
             int bufSize = 4096;
             InputStream bis = new BufferedInputStream(
                     connection.getInputStream(), bufSize);

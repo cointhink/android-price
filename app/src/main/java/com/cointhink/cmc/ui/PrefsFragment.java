@@ -74,8 +74,10 @@ public class PrefsFragment extends PreferenceFragmentCompat
             summary = ((MainActivity) getActivity()).prefDataSourceName();
         }
         if (key.equals(Constants.PREFERENCE_PROVIDER_KEY)) {
-            if (sharedPrefs.contains(Constants.PREFERENCE_PROVIDER_KEY)) {
-                summary = "<key recorded>";
+            String provider_key = sharedPrefs.getString(Constants.PREFERENCE_PROVIDER_KEY, "");
+            if (provider_key.length() > 0) {
+                String key_frag = provider_key.substring(0, 4);
+                summary = key_frag + "...<key recorded>";
             } else {
                 summary = "-missing key-";
             }

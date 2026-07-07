@@ -11,7 +11,7 @@ public class Net {
     public static void cmcGet(Coin coin, String url, String api_key, FetchCallbacks cache) {
         // Instantiate new instance of our class
         CoinRequestTask task = new CoinRequestTask(cache);
-        CoinRequest request = new CoinRequest(coin, url);
+        CoinRequest request = new CoinRequest(coin, url, api_key);
 
         task.execute(request);
     }
