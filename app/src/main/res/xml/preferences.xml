@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
         android:entries="@array/Providers"
@@ -11,12 +11,16 @@
     <Preference
         android:key="version"
         android:summary=""
-        android:title="Version" >
-    </Preference>
+        android:title="Version" />
+
+    <Preference
+        android:key="provider_key"
+        android:summary=""
+        android:title="Provider API Key" />
+
     <Preference
         android:key="beer"
-        android:summary="Send a beer to the developer"
-        android:title="Beer" >
-    </Preference>
-    
+        android:summary="Send a coffee to the developer"
+        android:title="Coffee" />
+
 </PreferenceScreen>

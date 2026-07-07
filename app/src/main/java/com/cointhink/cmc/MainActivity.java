@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(Constants.APP_TAG, "MainActivity onCreate bundle: " + ((savedInstanceState == null) ? "" : "true") + " pagerAdapter: " + pagerAdapter);
+        Log.d(Constants.APP_TAG, "MainActivity onCreate bundle: " + ((savedInstanceState == null) ? "null" : "true") + " pagerAdapter: " + pagerAdapter);
         setContentView(R.layout.mainframe);
 
         prefs = new Prefs(this);
@@ -69,11 +69,9 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
         providers.add(new CoinMarketCap());
         providers.add(new CoinCapIo());
 
-        if (findViewById(R.id.viewpager) != null) {
-            CoinMasterListFragment masterFrag = new CoinMasterListFragment();
-            CoinFavoritesFragment favoritesFrag = new CoinFavoritesFragment();
-            setupFragments(masterFrag, favoritesFrag, new PrefsFragment());
-        }
+        CoinMasterListFragment masterFrag = new CoinMasterListFragment();
+        CoinFavoritesFragment favoritesFrag = new CoinFavoritesFragment();
+        setupFragments(masterFrag, favoritesFrag, new PrefsFragment());
 
         prefs.versionToast();
     }
