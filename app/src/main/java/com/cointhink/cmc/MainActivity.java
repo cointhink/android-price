@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements CacheCallbacks, F
         Log.d(Constants.APP_TAG, "MainActivity onResume.");
         if (cache.refreshNeeded()) {
             Provider provider = providerFromPrefIndex();
-            cache.launchRefresh(provider);
+            String api_key = prefs.getProviderKey();
+            cache.launchRefresh(provider, api_key);
         }
 
         PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {

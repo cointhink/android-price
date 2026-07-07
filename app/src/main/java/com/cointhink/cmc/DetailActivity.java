@@ -1,17 +1,5 @@
 package com.cointhink.cmc;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.cointhink.cmc.http.FetchCallbacks;
-import com.cointhink.cmc.http.Response;
-import com.cointhink.cmc.pricedata.Provider;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,6 +11,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.cointhink.cmc.http.FetchCallbacks;
+import com.cointhink.cmc.http.Response;
+import com.cointhink.cmc.pricedata.Provider;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DetailActivity extends Activity
         implements CacheCallbacks, IconCallback {
@@ -91,7 +91,7 @@ public class DetailActivity extends Activity
                             .getJSONObject("data");
                     if (post.getBoolean("pinned") == false
                             && post.getBoolean("stickied") == false) {
-                        String permaPermalink = "https://reddit.com"+post.getString("permalink");
+                        String permaPermalink = "https://reddit.com" + post.getString("permalink");
                         WebLink webLink = new WebLink(post.getString("title"),
                                 permaPermalink);
                         subjects.add(webLink);
@@ -104,7 +104,7 @@ public class DetailActivity extends Activity
         }
 
         @Override
-        public void progressUpdate(Integer i) {
+        public void progressUpdate(String s) {
         }
     }
 
@@ -153,8 +153,8 @@ public class DetailActivity extends Activity
     }
 
     public void redditUiFreshen(List<WebLink> headlines) {
-        int[] views = new int[] { R.id.detail_coinReddit1,
-                R.id.detail_coinReddit2, R.id.detail_coinReddit3 };
+        int[] views = new int[]{R.id.detail_coinReddit1,
+                R.id.detail_coinReddit2, R.id.detail_coinReddit3};
         for (int i = 0, l = Math.min(views.length,
                 headlines.size()); i < l; i++) {
             TextView headline = ((TextView) findViewById(views[i]));

@@ -1,21 +1,21 @@
 package com.cointhink.cmc.pricedata;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.util.Log;
 
 import com.cointhink.cmc.Coin;
 import com.cointhink.cmc.Constants;
 import com.cointhink.cmc.Database;
 
-import android.util.Log;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CoinCapIo implements Provider {
     public static String NAME = "coincap.io";
-    public static String COIN_URL = "https://api.coincap.io/v2/assets?limit=200";
+    public static String COIN_URL = "https://rest.coincap.io/v3/assets?limit=200";
 
     @Override
     public List<Coin> parse(String json, Database db) {
@@ -40,16 +40,16 @@ public class CoinCapIo implements Provider {
 
     @Override
     public Coin coinFormat(JSONObject o) throws JSONException {
-        Log.d(Constants.APP_TAG, ""+o);
+        Log.d(Constants.APP_TAG, "" + o);
         Coin coin = new Coin();
         coin.name = o.getString("name");
         coin.symbol = o.getString("symbol");
         coin.price = o.getString("priceUsd");
-        coin.marketCap = ""+o.getLong("marketCapUsd");
+        coin.marketCap = "" + o.getLong("marketCapUsd");
         // coin.chg_1h = o.getString("percent_change_1h");
-        coin.chg_24h = String.format("%.1f",+o.getDouble("changePercent24Hr"));
+        coin.chg_24h = String.format("%.1f", +o.getDouble("changePercent24Hr"));
         // coin.chg_7d = o.getString("percent_change_7d");
-        coin.vol_24h = String.format("%.0f",+o.getDouble("volumeUsd24Hr"));
+        coin.vol_24h = String.format("%.0f", +o.getDouble("volumeUsd24Hr"));
         coin.img_url = imgUrl(coin.symbol);
 
         return coin;

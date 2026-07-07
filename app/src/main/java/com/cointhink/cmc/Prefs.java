@@ -27,6 +27,10 @@ public class Prefs {
         return sharedPrefs.getString(Constants.PREFERENCE_DATA_SOURCE, "none");
     }
 
+    public String getProviderKey() {
+        return sharedPrefs.getString(Constants.PREFERENCE_PROVIDER_KEY, "none");
+    }
+
     private void ensureDefaults() {
         /* set default user preferences */
         Editor editor = sharedPrefs.edit();
@@ -73,8 +77,8 @@ public class Prefs {
         String dataSource = getDataSource();
         String[] keys = context.getResources().getStringArray(R.array.ProvidersKeys);
         int idx = 0;
-        for(int l=keys.length; idx < l; idx++) {
-            if(keys[idx].equals(dataSource)) break;
+        for (int l = keys.length; idx < l; idx++) {
+            if (keys[idx].equals(dataSource)) break;
         }
         return context.getResources().getStringArray(R.array.Providers)[idx];
     }

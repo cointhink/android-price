@@ -1,5 +1,10 @@
 package com.cointhink.cmc.http;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.cointhink.cmc.Constants;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,12 +12,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.cointhink.cmc.Constants;
-
-import android.os.AsyncTask;
-import android.util.Log;
-
-public class CoinRequestTask extends AsyncTask<CoinRequest, Integer, CoinResponse> {
+public class CoinRequestTask extends AsyncTask<CoinRequest, String, CoinResponse> {
     public static final String REQUEST_METHOD = "GET";
     public static final int READ_TIMEOUT = 15000;
     public static final int CONNECTION_TIMEOUT = 15000;
@@ -45,8 +45,12 @@ public class CoinRequestTask extends AsyncTask<CoinRequest, Integer, CoinRespons
             // Connect to our url
             connection.connect();
             Log.d(Constants.APP_TAG,
-                    "DoInBackground response " + connection.getResponseMessage()
-                            + " len " + connection.getContentLength());
+                    String.format("DoInBackground response %d(%s) len %d",
+                            connection.getResponseCode(), connection.getResponseMessage(),
+                            connection.getContentLength()));
+            if (connection.getResponseCode() == 404) {
+                throw new IOException("" + connection.getResponseCode());
+            }
             int bufSize = 4096;
             InputStream bis = new BufferedInputStream(
                     connection.getInputStream(), bufSize);
@@ -55,19 +59,17 @@ public class CoinRequestTask extends AsyncTask<CoinRequest, Integer, CoinRespons
             int read;
             while (-1 != (read = bis.read(buffer, 0, bufSize))) {
 
-                publishProgress(outputStream.size());
+                publishProgress("" + outputStream.size());
                 if (read > 0) {
                     outputStream.write(buffer, 0, read);
                 }
             }
-            publishProgress(-2);
+            publishProgress("-2wha");
             result = outputStream.toByteArray();
-            // result = IOUtils.toByteArray(connection.getInputStream());
 
         } catch (IOException e) {
-            // e.printStackTrace();
             Log.d(Constants.APP_TAG, "DoInBackground err " + e);
-            publishProgress(-1);
+            publishProgress(e.getMessage());
             result = null;
         } finally {
             // connection.disconnect();
@@ -78,8 +80,8 @@ public class CoinRequestTask extends AsyncTask<CoinRequest, Integer, CoinRespons
 
     // runs on the UI thread
     @Override
-    protected void onProgressUpdate(Integer... progress) {
-        fetcher.progressUpdate(progress[0]);
+    protected void onProgressUpdate(String... s) {
+        fetcher.progressUpdate(s[0]);
     }
 
     // runs on the UI thread

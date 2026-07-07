@@ -1,14 +1,14 @@
 package com.cointhink.cmc;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.List;
+import android.util.Log;
 
 import com.cointhink.cmc.http.FetchCallbacks;
 import com.cointhink.cmc.http.Response;
 import com.cointhink.cmc.pricedata.Provider;
 
-import android.util.Log;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.List;
 
 public class Cache {
 
@@ -27,10 +27,10 @@ public class Cache {
         return diffSec > (60 * 3);
     }
 
-    public void launchRefresh(Provider provider) {
+    public void launchRefresh(Provider provider, String api_key) {
         activity.cacheUpdateStarted();
         Log.d(Constants.APP_TAG, "cachelaunchRefresh using " + provider);
-        Net.cmcGet(null, provider.getDataUrl(), new OnFetched(provider));
+        Net.cmcGet(null, provider.getDataUrl(), api_key, new OnFetched(provider));
     }
 
     class OnFetched implements FetchCallbacks {
@@ -56,13 +56,8 @@ public class Cache {
         }
 
         @Override
-        public void progressUpdate(Integer i) {
-            if (i == -1) {
-                activity.cacheErr("dns error");
-            }
-            if (i == -2) {
-                activity.cacheErr("parsing");
-            }
+        public void progressUpdate(String s) {
+            activity.cacheErr(s);
         }
     }
 }

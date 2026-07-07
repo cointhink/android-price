@@ -1,19 +1,19 @@
 package com.cointhink.cmc;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import com.cointhink.cmc.http.CoinResponse;
-import com.cointhink.cmc.http.FetchCallbacks;
-import com.cointhink.cmc.http.Response;
-
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.cointhink.cmc.http.CoinResponse;
+import com.cointhink.cmc.http.FetchCallbacks;
+import com.cointhink.cmc.http.Response;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class IconMgr implements FetchCallbacks {
     private File directory;
@@ -37,7 +37,7 @@ public class IconMgr implements FetchCallbacks {
             return fileToBitmap(coinIconFilename);
         } else {
             // fetch
-            Net.cmcGet(coin, url, this);
+            Net.cmcGet(coin, url, "", this);
         }
         return null;
     }
@@ -76,7 +76,7 @@ public class IconMgr implements FetchCallbacks {
     }
 
     @Override
-    public void progressUpdate(Integer i) {
+    public void progressUpdate(String s) {
     }
 
 }
