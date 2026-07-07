@@ -8,15 +8,15 @@
         android:summary="The provider"
         android:title="Provider" />
 
+    <EditTextPreference
+        android:key="provider_key"
+        android:summary=""
+        android:title="Provider API Key" />
+
     <Preference
         android:key="version"
         android:summary=""
         android:title="Version" />
-
-    <Preference
-        android:key="provider_key"
-        android:summary=""
-        android:title="Provider API Key" />
 
     <Preference
         android:key="beer"

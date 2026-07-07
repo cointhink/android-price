@@ -18,7 +18,7 @@ public class PrefsFragment extends PreferenceFragmentCompat
         implements OnSharedPreferenceChangeListener {
 
     private SharedPreferences sharedPrefs;
-    private final String[] keys = {Constants.PREFERENCE_DATA_SOURCE,
+    private final String[] keys = {Constants.PREFERENCE_DATA_SOURCE, Constants.PREFERENCE_PROVIDER_KEY,
             Constants.PREFERENCE_VERSION};
 
     @Override
@@ -72,6 +72,13 @@ public class PrefsFragment extends PreferenceFragmentCompat
 
         if (key.equals(Constants.PREFERENCE_DATA_SOURCE)) {
             summary = ((MainActivity) getActivity()).prefDataSourceName();
+        }
+        if (key.equals(Constants.PREFERENCE_PROVIDER_KEY)) {
+            if (sharedPrefs.contains(Constants.PREFERENCE_PROVIDER_KEY)) {
+                summary = "<key recorded>";
+            } else {
+                summary = "-missing key-";
+            }
         }
         Log.d(Constants.APP_TAG, "prefSummary for " + key + " is " + summary);
         preference.setSummary(summary);
