@@ -35,7 +35,8 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
                 false);
         SwipeRefreshLayout swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
         swipeView.setOnRefreshListener(() -> {
-            Log.d(Constants.APP_TAG, "REFRESH!");
+            Log.d(Constants.APP_TAG, "REFRESH master!");
+            swipeView.setRefreshing(false);
         });
         listView = (ListView) view.findViewById(R.id.coinAllList);
         topTextName = (TextView) view.findViewById(R.id.toptext);
