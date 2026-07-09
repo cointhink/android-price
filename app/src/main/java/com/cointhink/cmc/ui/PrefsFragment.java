@@ -37,9 +37,6 @@ public class PrefsFragment extends PreferenceFragmentCompat
         Preference preference = getPreferenceScreen().findPreference(Constants.PREFERENCE_DATA_SOURCE);
         preference.setOnPreferenceClickListener(preference1 -> {
             Log.d(Constants.APP_TAG, "onprefclick for data_source pref");
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(new DataSourcePrefFragment(), "dspf")
-                    .commit();
             return true;
         });
     }
