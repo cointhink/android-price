@@ -15,6 +15,8 @@ import java.util.List;
 
 public class CoinCapIo implements Provider {
     public static String NAME = "coincap.io";
+    // https://rest.coincap.io/v3/assets?apiKey=....
+    // Authorization: Bearer ...
     public static String COIN_URL = "https://rest.coincap.io/v3/assets?limit=200";
 
     @Override

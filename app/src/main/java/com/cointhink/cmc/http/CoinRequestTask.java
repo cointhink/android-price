@@ -41,6 +41,9 @@ public class CoinRequestTask extends AsyncTask<CoinRequest, String, CoinResponse
             connection.setRequestMethod(REQUEST_METHOD);
             connection.setReadTimeout(READ_TIMEOUT);
             connection.setConnectTimeout(CONNECTION_TIMEOUT);
+            if (request.auth.length() > 0) {
+                connection.setRequestProperty("Authorization", "Bearer " + request.auth);
+            }
 
             // Connect to our url
             connection.connect();
@@ -50,10 +53,10 @@ public class CoinRequestTask extends AsyncTask<CoinRequest, String, CoinResponse
                             http_response_code, connection.getResponseMessage(),
                             connection.getContentLength()));
             if (http_response_code == 401) {
-                throw new IOException("API key unrecognized");
+                throw new IOException("API key unrecognized (401)");
             }
             if (http_response_code == 403) {
-                throw new IOException("API key access denied");
+                throw new IOException("API key access denied (403)");
             }
             if (http_response_code < 200 || http_response_code >= 300) {
                 throw new IOException("http " + connection.getResponseCode());
