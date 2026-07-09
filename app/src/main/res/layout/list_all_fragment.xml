@@ -1,23 +1,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/masterListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="0sp"
     android:paddingLeft="0sp"
-    android:paddingRight="0sp"
     android:paddingTop="0sp"
-    android:id="@+id/masterListFragment"
-    tools:context="com.cointhink.cmc.MainActivity" >
+    android:paddingRight="0sp"
+    android:paddingBottom="0sp"
+    tools:context="com.cointhink.cmc.MainActivity">
 
     <LinearLayout
         android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="5dip"
         android:paddingLeft="5dip"
-        android:paddingRight="5dip" >
+        android:paddingRight="5dip"
+        android:paddingBottom="5dip">
 
         <TextView
             android:id="@+id/toptext"
@@ -40,12 +40,17 @@
             android:text="Time" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/coinAllList"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/topbar"
-        android:paddingLeft="0sp" >
-    </ListView>
+        android:layout_height="match_parent">
 
+        <ListView
+            android:id="@+id/coinAllList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/topbar"
+            android:paddingLeft="0sp" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

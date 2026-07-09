@@ -1,15 +1,5 @@
 package com.cointhink.cmc.ui;
 
-import java.util.List;
-
-import com.cointhink.cmc.Coin;
-import com.cointhink.cmc.CoinMasterAdapter;
-import com.cointhink.cmc.Constants;
-import com.cointhink.cmc.FavoriteHandler;
-import com.cointhink.cmc.IconMgr;
-import com.cointhink.cmc.R;
-import com.cointhink.cmc.StarClick;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +9,18 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.cointhink.cmc.Coin;
+import com.cointhink.cmc.CoinMasterAdapter;
+import com.cointhink.cmc.Constants;
+import com.cointhink.cmc.FavoriteHandler;
+import com.cointhink.cmc.IconMgr;
+import com.cointhink.cmc.R;
+import com.cointhink.cmc.StarClick;
+
+import java.util.List;
+
 public class CoinMasterListFragment extends CoinListFragment implements StarClick {
 
     FavoriteHandler favHand;
@@ -27,10 +29,14 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.list_all_fragment, container,
                 false);
+        SwipeRefreshLayout swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
+        swipeView.setOnRefreshListener(() -> {
+            Log.d(Constants.APP_TAG, "REFRESH!");
+        });
         listView = (ListView) view.findViewById(R.id.coinAllList);
         topTextName = (TextView) view.findViewById(R.id.toptext);
         topTextTime = (TextView) view.findViewById(R.id.toptime);
@@ -65,7 +71,7 @@ public class CoinMasterListFragment extends CoinListFragment implements StarClic
 
     @Override
     public void click(Coin c, View v) {
-        Log.d(Constants.APP_TAG, "masterListFragment favStar click "+c.symbol);
+        Log.d(Constants.APP_TAG, "masterListFragment favStar click " + c.symbol);
         boolean newFav = favHand.favoriteToggle(c);
         adapter.viewFreshed(v, c);
     }
