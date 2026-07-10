@@ -56,7 +56,8 @@ public class CoinMarketCap implements Provider {
         coin.chg_24h = quote.optString("percent_change_24h", "0");
         coin.chg_7d = quote.optString("percent_change_7d", "0");
 
-        coin.img_url = imgUrl(coin.name);
+        String id = o.getString("id");
+        coin.img_url = imgUrl(Integer.parseInt(id));
         return coin;
         /*
          * { "id": "bitcoin", "name": "Bitcoin", "symbol": "BTC", "rank": "1",
@@ -70,12 +71,12 @@ public class CoinMarketCap implements Provider {
          */
     }
 
-    static String imgUrl(String name) {
+    static String imgUrl(int id) {
         //https://s2.coinmarketcap.com/static/img/coins/32x32/1027.png
         //https://s2.coinmarketcap.com/static/img/coins/64x64/1.png
-        String url = "https://files.coinmarketcap.com/static/img/coins/64x64/";
-        String urlName = name.toLowerCase().replaceAll(" ", "-");
-        return url + urlName + ".png";
+        String url = "https://s2.coinmarketcap.com/static/img/coins/64x64/";
+        //String urlName = name.toLowerCase().replaceAll(" ", "-");
+        return url + id + ".png";
     }
 
     @Override

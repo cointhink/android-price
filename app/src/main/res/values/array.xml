@@ -2,12 +2,12 @@
 <resources>
 
     <string-array name="Providers">
-        <item>coinmarketcap.com(not avail)</item>
+        <item>coinmarketcap.com</item>
         <item>coincap.io</item>
     </string-array>
     <string-array name="ProvidersKeys">
         <item>coinmarketcap</item>
         <item>coincapio</item>
     </string-array>
-    
+
 </resources>
